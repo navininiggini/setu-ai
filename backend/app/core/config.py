@@ -37,7 +37,7 @@ class Settings(BaseSettings):
 
     # Gemini Decision Support
     GEMINI_API_KEY: Optional[str] = os.getenv("GEMINI_API_KEY", None)
-    GEMINI_MODEL_NAME: str = os.getenv("GEMINI_MODEL_NAME", "gemini-2.5-flash")
+    GEMINI_MODEL_NAME: str = os.getenv("GEMINI_MODEL_NAME", "gemini-3.6-flash")
     DECISION_SUPPORT_ENABLED: bool = os.getenv("DECISION_SUPPORT_ENABLED", "true").lower() in ("true", "1", "t")
     DECISION_SUPPORT_TIMEOUT_SECONDS: float = float(os.getenv("DECISION_SUPPORT_TIMEOUT_SECONDS", "5.0"))
     DECISION_SUPPORT_MAX_CONCURRENCY: int = int(os.getenv("DECISION_SUPPORT_MAX_CONCURRENCY", "5"))

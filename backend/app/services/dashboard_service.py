@@ -29,13 +29,20 @@ def get_role_scoped_dashboard(
         clean_jur = jurisdiction.strip().lower()
         filters.append(
             or_(
+                func.lower(Work.city) == clean_jur,
+                func.lower(Work.city).like(f"%{clean_jur}%"),
                 func.lower(Work.constituency).like(f"%{clean_jur}%"),
-                func.lower(Work.ida).like(f"%{clean_jur}%"),
-                func.lower(Work.city).like(f"%{clean_jur}%")
+                func.lower(Work.ida).like(f"%{clean_jur}%")
             )
         )
     elif role == "mp" and jurisdiction and jurisdiction != "National":
-        filters.append(func.lower(Work.mp_name) == jurisdiction.strip().lower())
+        clean_mp = jurisdiction.strip().lower()
+        filters.append(
+            or_(
+                func.lower(Work.mp_name) == clean_mp,
+                func.lower(Work.mp_name).like(f"%{clean_mp}%")
+            )
+        )
 
     total_works = db.query(func.count(Work.id)).filter(*filters).scalar() or 0
     total_alloc = db.query(func.sum(Work.allocation_amount)).filter(*filters).scalar() or 0.0
@@ -204,8 +211,17 @@ def get_role_scoped_dashboard(
 
     # Top Flagged Works
     top_works = db.query(Work).filter(*filters, Work.risk_score >= 50.0).order_by(desc(Work.risk_score)).limit(10).all()
+    if not top_works and total_works > 0:
+        top_works = db.query(Work).filter(*filters).order_by(desc(Work.risk_score)).limit(10).all()
     top_flagged_works = []
     for w in top_works:
+        subs = w.sub_scores if isinstance(w.sub_scores, dict) else {}
+        fraud_prob = subs.get("ml_fraud_probability")
+        if fraud_prob is not None:
+            try:
+                fraud_prob = float(fraud_prob) / 100.0 if float(fraud_prob) > 1.0 else float(fraud_prob)
+            except (ValueError, TypeError):
+                fraud_prob = None
         top_flagged_works.append(
             TopFlaggedWorkItem(
                 id=w.id,
@@ -219,7 +235,9 @@ def get_role_scoped_dashboard(
                 risk_score=w.risk_score,
                 risk_level=w.risk_level,
                 predicted_fraud_type=w.predicted_fraud_type,
-                risk_reasons=w.risk_reasons or []
+                risk_reasons=w.risk_reasons or [],
+                sub_scores=subs,
+                fraud_probability=fraud_prob
             )
         )
 

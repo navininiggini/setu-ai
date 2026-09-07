@@ -7,6 +7,7 @@ import {
   ArrowRight, AlertTriangle, Layers, MapPin, Search, 
   Info, ExternalLink, Activity, Filter, CheckCircle2, ChevronRight, BarChart3, Clock, Milestone, Coins
 } from "lucide-react";
+import { SearchableMpDropdown } from "../SearchableMpDropdown";
 
 interface MPConstituencyFundVelocityProps {
   telemetry: any;
@@ -62,41 +63,57 @@ export function MPConstituencyFundVelocity({
           </div>
         </div>
 
-        {/* Clean Pill Tabs */}
-        <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-100 border border-slate-200/80">
-          <button
-            onClick={() => setActiveTab("pipeline")}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-              activeTab === "pipeline" 
-                ? "bg-white text-blue-900 shadow-xs border border-blue-200" 
-                : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
-            }`}
-          >
-            <Activity className="h-3.5 w-3.5" />
-            Delivery Pipeline
-          </button>
-          <button
-            onClick={() => setActiveTab("dwell")}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-              activeTab === "dwell" 
-                ? "bg-white text-amber-900 shadow-xs border border-amber-200" 
-                : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
-            }`}
-          >
-            <Clock className="h-3.5 w-3.5" />
-            Delay Sinks ({dwellMatrix.length})
-          </button>
-          <button
-            onClick={() => setActiveTab("blocks")}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-              activeTab === "blocks" 
-                ? "bg-white text-cyan-900 shadow-xs border border-cyan-200" 
-                : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
-            }`}
-          >
-            <BarChart3 className="h-3.5 w-3.5" />
-            Assembly Blocks ({blocks.length})
-          </button>
+        <div className="flex items-center gap-2 flex-wrap">
+          {/* In-Component MP Search & Switcher */}
+          {availableMps && availableMps.length > 0 && onSelectMp && (
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] font-bold text-slate-500 hidden md:inline">MP:</span>
+              <SearchableMpDropdown
+                selectedMp={mpName || forensics.mp_name}
+                mps={availableMps}
+                onSelectMp={onSelectMp}
+                placeholder="Type to filter MPs..."
+                className="shrink-0"
+              />
+            </div>
+          )}
+
+          {/* Clean Pill Tabs */}
+          <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-100 border border-slate-200/80">
+            <button
+              onClick={() => setActiveTab("pipeline")}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                activeTab === "pipeline" 
+                  ? "bg-white text-blue-900 shadow-xs border border-blue-200" 
+                  : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
+              }`}
+            >
+              <Activity className="h-3.5 w-3.5" />
+              Delivery Pipeline
+            </button>
+            <button
+              onClick={() => setActiveTab("dwell")}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                activeTab === "dwell" 
+                  ? "bg-white text-amber-900 shadow-xs border border-amber-200" 
+                  : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
+              }`}
+            >
+              <Clock className="h-3.5 w-3.5" />
+              Delay Sinks ({dwellMatrix.length})
+            </button>
+            <button
+              onClick={() => setActiveTab("blocks")}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                activeTab === "blocks" 
+                  ? "bg-white text-cyan-900 shadow-xs border border-cyan-200" 
+                  : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
+              }`}
+            >
+              <BarChart3 className="h-3.5 w-3.5" />
+              Assembly Blocks ({blocks.length})
+            </button>
+          </div>
         </div>
       </div>
 

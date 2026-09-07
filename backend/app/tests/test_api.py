@@ -78,7 +78,16 @@ def test_alerts_and_cases():
     cases_list = res_cases.json()
     if len(cases_list) > 0:
         c_id = cases_list[0]["id"]
-        res_patch = client.patch(f"/api/cases/{c_id}/status", json={"status": "under_review", "note": "Field audit started"})
+        # Authenticate as ministry user
+        login_res = client.post("/api/auth/login", json={"username": "ministry", "password": "any"})
+        assert login_res.status_code == 200
+        token = login_res.json()["access_token"]
+        headers = {"Authorization": f"Bearer {token}"}
+        res_patch = client.patch(
+            f"/api/cases/{c_id}/status",
+            json={"status": "under_review", "note": "Field audit started"},
+            headers=headers
+        )
         assert res_patch.status_code == 200
         assert res_patch.json()["status"] == "under_review"
 

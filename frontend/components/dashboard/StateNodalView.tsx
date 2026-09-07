@@ -21,7 +21,6 @@ import { DashboardData } from "../../lib/types";
 import { StatCard } from "../ui/StatCard";
 import { RiskBadge } from "../ui/RiskBadge";
 import { DistrictDrilldownMap } from "../maps/DistrictDrilldownMap";
-import { FraudEvidenceVisualizer } from "../ui/FraudEvidenceVisualizer";
 import { StateVendorConcentrationMatrix } from "./visualizers/StateVendorConcentrationMatrix";
 import { MagicCard } from "../ui/MagicCard";
 import { formatTypologyLabel } from "../../lib/typologies";
@@ -35,7 +34,6 @@ interface StateNodalViewProps {
 
 export function StateNodalView({ data, districtData }: StateNodalViewProps) {
   const { summary, fraud_breakdown, top_flagged_works, extra_insights, jurisdiction } = data;
-  const topFlaggedWork = top_flagged_works && top_flagged_works.length > 0 ? top_flagged_works[0] : null;
   const highestRiskDistrict = districtData.length > 0 ? districtData[0] : null;
 
   return (
@@ -133,24 +131,6 @@ export function StateNodalView({ data, districtData }: StateNodalViewProps) {
         totalFlagged={summary.flagged_works_count}
       />
 
-      {/* Highest Risk State Project Spotlight */}
-      {topFlaggedWork && (
-        <div className="space-y-2">
-          <div className="flex items-center justify-between px-1">
-            <span className="text-xs font-mono font-bold text-[#6E4529] uppercase tracking-wider flex items-center gap-1.5">
-              <ShieldAlert className="h-4 w-4 text-rose-600" />
-              State Inspection Priority ({topFlaggedWork.id})
-            </span>
-            <Link
-              href={`/works/${topFlaggedWork.id}`}
-              className="text-xs font-mono font-bold text-[#6E4529] hover:text-[#3D2312] hover:underline flex items-center gap-1"
-            >
-              Issue State Inquiry Notice <ChevronRight className="h-3.5 w-3.5" />
-            </Link>
-          </div>
-          <FraudEvidenceVisualizer work={topFlaggedWork} />
-        </div>
-      )}
 
       {/* State Priority Inspection Works Table */}
       <MagicCard 

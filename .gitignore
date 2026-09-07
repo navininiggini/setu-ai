@@ -41,5 +41,4 @@ scratch/
 backend/.env
 frontend/.env.local
 *.tsbuildinfo
-
-
+.setu.pids

@@ -7,6 +7,7 @@ import { MoSPINationalFlow } from "../../components/graph/authority/MoSPINationa
 import { SNAStateVendorConcentration } from "../../components/graph/authority/SNAStateVendorConcentration";
 import { DADistrictVendorCapture } from "../../components/graph/authority/DADistrictVendorCapture";
 import { MPConstituencyFundVelocity } from "../../components/graph/authority/MPConstituencyFundVelocity";
+import { SearchableMpDropdown } from "../../components/graph/SearchableMpDropdown";
 import { StakeholderGuideModal } from "../../components/graph/StakeholderGuideModal";
 import { MagicCard } from "../../components/ui/MagicCard";
 import { useRole } from "../../context/RoleContext";
@@ -109,15 +110,11 @@ export default function NetworkGraphPage() {
             }
           }
 
-          // Auto-select valid MP if current one not in list
+          // Auto-select valid MP dynamically if current one is not in the state's list
           if (data.mps && data.mps.length > 0) {
             const mpNames = data.mps.map(m => m.name);
-            if (!mpNames.includes(selectedMp)) {
-              if (mpNames.includes("Mr Gopal Jee Thakur")) {
-                setSelectedMp("Mr Gopal Jee Thakur");
-              } else {
-                setSelectedMp(data.mps[0].name);
-              }
+            if (!mpNames.some(name => name.toLowerCase() === selectedMp.toLowerCase())) {
+              setSelectedMp(data.mps[0].name);
             }
           }
         }
@@ -333,19 +330,14 @@ export default function NetworkGraphPage() {
             </select>
           )}
 
-          {/* MP Dropdown for MP View */}
+          {/* Searchable MP Combobox with Type-to-Filter */}
           {activeAuthority === "mp" && entities.mps.length > 0 && (
-            <select
-              value={selectedMp}
-              onChange={(e) => setSelectedMp(e.target.value)}
-              className="rounded-xl border border-blue-300 bg-blue-50/40 px-3 py-1.5 text-xs font-semibold text-blue-900 shadow-xs focus:border-blue-500 focus:outline-hidden hover:border-blue-400 cursor-pointer"
-            >
-              {entities.mps.slice(0, 30).map((m) => (
-                <option key={m.name} value={m.name}>
-                  🗳️ {m.name} ({m.works_count}w)
-                </option>
-              ))}
-            </select>
+            <SearchableMpDropdown
+              selectedMp={selectedMp}
+              mps={entities.mps}
+              selectedState={selectedState}
+              onSelectMp={(mp) => setSelectedMp(mp)}
+            />
           )}
         </div>
       </MagicCard>

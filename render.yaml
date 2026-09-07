@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: setu-mplads-backend
+    runtime: docker
+    dockerfilePath: backend/Dockerfile
+    dockerContext: backend
+    plan: free
+    region: oregon
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL_NAME
+        value: gemini-3.6-flash
+      - key: DECISION_SUPPORT_ENABLED
+        value: "true"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        value: sqlite:////app/setu_mplads.db

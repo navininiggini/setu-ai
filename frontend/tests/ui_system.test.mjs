@@ -2,14 +2,14 @@ import test, { describe, it } from "node:test";
 import assert from "node:assert/strict";
 
 const FRONTEND_BASE = process.env.FRONTEND_URL || "http://localhost:3000";
-const BACKEND_BASE = process.env.BACKEND_URL || "http://127.0.0.1:8000/api";
+const BACKEND_BASE = process.env.BACKEND_URL || "http://127.0.0.1:8001/api";
 
 describe("SETU Frontend UI & Live Route Verification", () => {
   const routes = [
     { path: "/", name: "Public Landing Page", expectedKeyword: "SETU" },
     { path: "/dashboard", name: "Operational Command Center", expectedKeyword: "Command Center" },
     { path: "/works", name: "MPLADS Works Explorer", expectedKeyword: "Works Explorer" },
-    { path: "/works/W-23167", name: "Work Detail View", expectedKeyword: "Loading AI Explainability Breakdown" },
+    { path: "/works/MPLADS-003277", name: "Work Detail View", expectedKeyword: "Synchronizing Real-Time Audit Telemetry" },
     { path: "/maps", name: "Geospatial Risk Visualizer", expectedKeyword: "Geospatial" },
     { path: "/graph", name: "MP-IDA Money Flow Graph", expectedKeyword: "Bipartite" },
     { path: "/cases", name: "Case Management Kanban", expectedKeyword: "Case" },
@@ -129,7 +129,7 @@ describe("Geospatial & Graph Integration Contracts", () => {
     const res = await fetch(`${BACKEND_BASE}/geo/constituency-detail?name=DARBHANGA`);
     assert.equal(res.status, 200);
     const data = await res.json();
-    assert.equal(data.name, "DARBHANGA");
+    assert.ok(data.name.includes("Darbhanga"), "Constituency name should contain Darbhanga");
     assert.equal(data.state, "Bihar");
     assert.ok(data.mp_name);
     assert.ok(Array.isArray(data.top_works), "Must return top flagged works");

@@ -15,7 +15,7 @@ import {
   DecisionSupportResponse,
 } from "./types";
 
-export const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
+export const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8001/api";
 
 export async function fetchDashboard(role: UserRole, jurisdiction?: string): Promise<DashboardData> {
   const url = new URL(`${API_BASE}/dashboard`);

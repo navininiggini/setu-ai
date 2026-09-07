@@ -47,6 +47,8 @@ class TopFlaggedWorkItem(BaseModel):
     risk_level: str
     predicted_fraud_type: Optional[str] = None
     risk_reasons: List[str] = []
+    sub_scores: Dict[str, Any] = {}
+    fraud_probability: Optional[float] = None
 
 class MonthlyTrendItem(BaseModel):
     month: str

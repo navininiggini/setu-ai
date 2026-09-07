@@ -21,7 +21,6 @@ import { StatCard } from "../ui/StatCard";
 import { RiskBadge } from "../ui/RiskBadge";
 import { StateChoroplethMap } from "../maps/StateChoroplethMap";
 import { NationalCartelFunnel } from "./visualizers/NationalCartelFunnel";
-import { FraudEvidenceVisualizer } from "../ui/FraudEvidenceVisualizer";
 import { MagicCard } from "../ui/MagicCard";
 import { formatTypologyLabel } from "../../lib/typologies";
 import { SectorAnalyticsGrid } from "../analytics/SectorAnalyticsGrid";
@@ -34,7 +33,6 @@ interface MinistryViewProps {
 
 export function MinistryView({ data, stateChoropleth, graphData }: MinistryViewProps) {
   const { summary, fraud_breakdown, top_flagged_works, extra_insights } = data;
-  const topFlaggedWork = top_flagged_works && top_flagged_works.length > 0 ? top_flagged_works[0] : null;
 
   return (
     <div className="space-y-6">
@@ -113,25 +111,6 @@ export function MinistryView({ data, stateChoropleth, graphData }: MinistryViewP
       <div className="space-y-2">
         <StateChoroplethMap data={stateChoropleth} />
       </div>
-
-      {/* Highest Risk National Project Spotlight */}
-      {topFlaggedWork && (
-        <div className="space-y-2">
-          <div className="flex items-center justify-between px-1">
-            <span className="text-xs font-mono font-bold text-[#6E4529] uppercase tracking-wider flex items-center gap-1.5">
-              <ShieldAlert className="h-4 w-4 text-rose-600" />
-              Top National Anomaly Spotlight ({topFlaggedWork.id})
-            </span>
-            <Link
-              href={`/works/${topFlaggedWork.id}`}
-              className="text-xs font-mono font-bold text-[#6E4529] hover:text-[#3D2312] hover:underline flex items-center gap-1"
-            >
-              Inspect Full Investigation <ChevronRight className="h-3.5 w-3.5" />
-            </Link>
-          </div>
-          <FraudEvidenceVisualizer work={topFlaggedWork} />
-        </div>
-      )}
 
       {/* Visual Analytics Layer: Anomaly Distribution & Infrastructure Delays */}
       <SectorAnalyticsGrid

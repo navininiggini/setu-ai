@@ -65,15 +65,18 @@ export function FraudEvidenceVisualizer({ work, clusterWorks = [] }: FraudEviden
   const riskTier = normalizeRiskLevel(work.risk_level);
   const priority = normalizePriority(work.investigation_priority);
   const fraudProbPct = work.fraud_probability !== undefined
-    ? Math.round(work.fraud_probability * 100)
+    ? Math.round(work.fraud_probability > 1.0 ? work.fraud_probability : work.fraud_probability * 100)
     : work.sub_scores?.ml_fraud_probability !== undefined
     ? Math.round(work.sub_scores.ml_fraud_probability)
     : Math.min(100, Math.round(overallScore * 0.9));
 
-  // Extract domain scores from domain_scores or sub_scores
-  const subs = work.domain_scores || work.sub_scores || {};
+  // Extract domain scores from domain_scores or sub_scores or explanation
+  const subs = work.domain_scores || work.sub_scores || (work as any).explanation?.sub_scores || {};
   const getDomainScore = (key: string, altKey?: string): number => {
-    const val = subs[key] ?? (altKey ? subs[altKey] : undefined);
+    let val = subs[key] ?? (altKey ? subs[altKey] : undefined);
+    if (val === undefined && (work as any).explanation?.sub_scores) {
+      val = (work as any).explanation.sub_scores[key] ?? (altKey ? (work as any).explanation.sub_scores[altKey] : undefined);
+    }
     return typeof val === "number" && !isNaN(val) ? Math.round(val * 10) / 10 : 0;
   };
 
