@@ -434,3 +434,136 @@ export async function fetchDecisionSupport(
   }
   return res.json();
 }
+
+// ─────────────────────────────────────────────────────────────
+// STATUTORY COMPLIANCE API (MPLADS GUIDELINES 2023)
+// ─────────────────────────────────────────────────────────────
+
+export interface ComplianceSummary {
+  total_mps: number;
+  compliant_mps: number;
+  deficit_mps: number;
+  critical_lapse_mps: number;
+  compliance_rate_pct: number;
+  avg_sc_pct: number;
+  avg_st_pct: number;
+  target_sc_pct: number;
+  target_st_pct: number;
+  target_combined_pct: number;
+  national_uc_compliance_rate: number;
+  total_completed_works: number;
+  total_uc_submitted_works: number;
+  total_uc_overdue_works: number;
+  negative_list_violations_count: number;
+  trust_society_breaches_count: number;
+  total_sc_allocation: number;
+  total_st_allocation: number;
+  total_allocation: number;
+}
+
+export interface MPComplianceItem {
+  id: string;
+  name: string;
+  state: string;
+  constituency: string;
+  house: string;
+  total_works: number;
+  total_allocation: number;
+  sc_allocation_amount: number;
+  st_allocation_amount: number;
+  sc_allocation_pct: number;
+  st_allocation_pct: number;
+  earmarking_status: string;
+  uc_compliance_rate: number;
+  uc_overdue_count: number;
+  trust_society_spend: number;
+  trust_society_ceiling_breach: boolean;
+  statutory_compliance_grade: string;
+}
+
+export interface NegativeListViolationItem {
+  id: string;
+  mp_name: string;
+  work: string;
+  category: string;
+  state: string;
+  constituency: string;
+  allocation_amount: number;
+  status: string;
+  negative_list_reason: string;
+  compliance_score: number;
+  compliance_flags: string[];
+}
+
+export interface TrustSocietyReport {
+  statutory_ceiling: number;
+  statutory_rule: string;
+  total_breached: number;
+  total_approaching: number;
+  breached_mps: Array<{
+    name: string;
+    state: string;
+    constituency: string;
+    trust_society_spend: number;
+    excess_amount: number;
+  }>;
+  approaching_mps: Array<{
+    name: string;
+    state: string;
+    constituency: string;
+    trust_society_spend: number;
+    remaining_limit: number;
+  }>;
+}
+
+export async function fetchComplianceSummary(): Promise<ComplianceSummary> {
+  const res = await fetch(`${API_BASE}/compliance/summary`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to fetch compliance summary");
+  return res.json();
+}
+
+export async function fetchComplianceLeaderboard(params: Record<string, any> = {}): Promise<{
+  total: number;
+  limit: number;
+  offset: number;
+  items: MPComplianceItem[];
+}> {
+  const url = new URL(`${API_BASE}/compliance/earmarking`);
+  Object.entries(params).forEach(([k, v]) => {
+    if (v !== undefined && v !== null && v !== "") {
+      url.searchParams.append(k, String(v));
+    }
+  });
+  const res = await fetch(url.toString(), { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to fetch compliance leaderboard");
+  return res.json();
+}
+
+export async function fetchMPEarmarkingDetail(mpName: string): Promise<Record<string, any>> {
+  const res = await fetch(`${API_BASE}/compliance/earmarking/${encodeURIComponent(mpName)}`, { cache: "no-store" });
+  if (!res.ok) throw new Error(`Failed to fetch earmarking detail for MP ${mpName}`);
+  return res.json();
+}
+
+export async function fetchNegativeListViolations(params: Record<string, any> = {}): Promise<{
+  total: number;
+  limit: number;
+  offset: number;
+  items: NegativeListViolationItem[];
+}> {
+  const url = new URL(`${API_BASE}/compliance/negative-list-violations`);
+  Object.entries(params).forEach(([k, v]) => {
+    if (v !== undefined && v !== null && v !== "") {
+      url.searchParams.append(k, String(v));
+    }
+  });
+  const res = await fetch(url.toString(), { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to fetch negative list violations");
+  return res.json();
+}
+
+export async function fetchTrustSocietyReport(): Promise<TrustSocietyReport> {
+  const res = await fetch(`${API_BASE}/compliance/trust-society-ceiling`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to fetch trust/society ceiling report");
+  return res.json();
+}

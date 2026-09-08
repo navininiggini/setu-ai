@@ -15,6 +15,7 @@ import {
   AlertTriangle,
   Home,
   Sliders,
+  Scale,
 } from "lucide-react";
 
 export function Sidebar() {
@@ -29,6 +30,7 @@ export function Sidebar() {
     { label: "Public Portal", href: "/", icon: Home },
     { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
     { label: "Works Explorer", href: "/works", icon: Layers },
+    { label: "Statutory Compliance", href: "/compliance", icon: Scale, badge: "SC/ST Mandate" },
     { label: "Plan Risk Scorer", href: "/proposals", icon: Sliders, badge: "Feed Plan" },
     { label: "Geospatial Maps", href: "/maps", icon: Map },
     { label: "Money Flow & Cartels", href: "/graph", icon: Network },

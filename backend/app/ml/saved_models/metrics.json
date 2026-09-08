@@ -1,171 +1,171 @@
 {
   "model_name": "SETU Ensemble (XGBoost + Isolation Forest + Graph Centrality)",
-  "accuracy": 0.9362,
-  "precision": 0.7803,
-  "recall": 0.7973,
-  "f1_score": 0.7887,
-  "roc_auc": 0.9789,
+  "accuracy": 0.9291,
+  "precision": 0.829,
+  "recall": 0.6991,
+  "f1_score": 0.7585,
+  "roc_auc": 0.9126,
   "confusion_matrix": {
-    "tn": 3266,
-    "fp": 134,
-    "fn": 121,
-    "tp": 476
+    "tn": 3273,
+    "fp": 92,
+    "fn": 192,
+    "tp": 446
   },
   "feature_importance": [
     {
-      "feature": "STALL_RISK_SCORE",
-      "importance": 0.1978
-    },
-    {
       "feature": "ALLOC_ZSCORE_WORKTYPE",
-      "importance": 0.1975
+      "importance": 0.2067
     },
     {
-      "feature": "DUPLICATE_COUNT",
-      "importance": 0.1138
+      "feature": "STALL_RISK_SCORE",
+      "importance": 0.1527
     },
     {
       "feature": "STRUCTURING_SCORE",
-      "importance": 0.11
-    },
-    {
-      "feature": "IDA_MP_WORK_SHARE",
-      "importance": 0.0997
+      "importance": 0.1314
     },
     {
       "feature": "IDA_WORK_COUNT",
-      "importance": 0.094
+      "importance": 0.1105
     },
     {
-      "feature": "FUZZY_SIMILARITY_SCORE",
-      "importance": 0.061
+      "feature": "IDA_MP_WORK_SHARE",
+      "importance": 0.0939
     },
     {
-      "feature": "IDA_MP_ALLOC_SHARE",
-      "importance": 0.0389
+      "feature": "DUPLICATE_COUNT",
+      "importance": 0.0908
     },
     {
       "feature": "DAYS_SINCE_RECOMMENDED",
-      "importance": 0.0368
-    },
-    {
-      "feature": "ALLOCATION_AMOUNT",
-      "importance": 0.0214
-    },
-    {
-      "feature": "MP_TOTAL_WORKS",
-      "importance": 0.016
+      "importance": 0.0735
     },
     {
       "feature": "ALLOC_ZSCORE_STATE",
-      "importance": 0.0131
+      "importance": 0.0503
+    },
+    {
+      "feature": "FUZZY_SIMILARITY_SCORE",
+      "importance": 0.043
+    },
+    {
+      "feature": "ALLOCATION_AMOUNT",
+      "importance": 0.0183
+    },
+    {
+      "feature": "IDA_MP_ALLOC_SHARE",
+      "importance": 0.0152
+    },
+    {
+      "feature": "MP_TOTAL_WORKS",
+      "importance": 0.0137
     }
   ],
   "pr_curve": [
     {
       "threshold": 0.001,
-      "precision": 0.149,
+      "precision": 0.159,
       "recall": 1.0
+    },
+    {
+      "threshold": 0.002,
+      "precision": 0.167,
+      "recall": 0.995
+    },
+    {
+      "threshold": 0.002,
+      "precision": 0.175,
+      "recall": 0.991
+    },
+    {
+      "threshold": 0.002,
+      "precision": 0.185,
+      "recall": 0.987
     },
     {
       "threshold": 0.003,
-      "precision": 0.157,
-      "recall": 1.0
+      "precision": 0.195,
+      "recall": 0.978
     },
     {
       "threshold": 0.003,
-      "precision": 0.166,
-      "recall": 1.0
+      "precision": 0.205,
+      "recall": 0.962
     },
     {
       "threshold": 0.003,
-      "precision": 0.176,
-      "recall": 1.0
+      "precision": 0.218,
+      "recall": 0.953
     },
     {
       "threshold": 0.003,
-      "precision": 0.187,
-      "recall": 1.0
+      "precision": 0.233,
+      "recall": 0.947
     },
     {
-      "threshold": 0.004,
-      "precision": 0.2,
-      "recall": 1.0
+      "threshold": 0.003,
+      "precision": 0.251,
+      "recall": 0.942
     },
     {
-      "threshold": 0.004,
-      "precision": 0.214,
-      "recall": 1.0
-    },
-    {
-      "threshold": 0.004,
-      "precision": 0.231,
-      "recall": 1.0
-    },
-    {
-      "threshold": 0.004,
-      "precision": 0.25,
-      "recall": 1.0
-    },
-    {
-      "threshold": 0.005,
+      "threshold": 0.003,
       "precision": 0.273,
-      "recall": 1.0
+      "recall": 0.936
+    },
+    {
+      "threshold": 0.004,
+      "precision": 0.294,
+      "recall": 0.914
     },
     {
       "threshold": 0.005,
-      "precision": 0.3,
-      "recall": 1.0
+      "precision": 0.32,
+      "recall": 0.897
     },
     {
-      "threshold": 0.007,
-      "precision": 0.334,
-      "recall": 1.0
+      "threshold": 0.011,
+      "precision": 0.355,
+      "recall": 0.886
     },
     {
-      "threshold": 0.009,
-      "precision": 0.374,
-      "recall": 0.998
+      "threshold": 0.014,
+      "precision": 0.398,
+      "recall": 0.87
     },
     {
-      "threshold": 0.013,
-      "precision": 0.428,
-      "recall": 0.998
+      "threshold": 0.029,
+      "precision": 0.46,
+      "recall": 0.862
     },
     {
-      "threshold": 0.021,
-      "precision": 0.495,
-      "recall": 0.993
+      "threshold": 0.063,
+      "precision": 0.535,
+      "recall": 0.839
     },
     {
-      "threshold": 0.045,
-      "precision": 0.588,
-      "recall": 0.985
+      "threshold": 0.11,
+      "precision": 0.65,
+      "recall": 0.818
     },
     {
-      "threshold": 0.225,
-      "precision": 0.698,
-      "recall": 0.938
+      "threshold": 0.305,
+      "precision": 0.789,
+      "recall": 0.751
     },
     {
-      "threshold": 0.511,
-      "precision": 0.78,
-      "recall": 0.791
+      "threshold": 0.643,
+      "precision": 0.91,
+      "recall": 0.583
     },
     {
-      "threshold": 0.624,
-      "precision": 0.862,
-      "recall": 0.586
-    },
-    {
-      "threshold": 0.986,
+      "threshold": 0.995,
       "precision": 1.0,
-      "recall": 0.348
+      "recall": 0.328
     },
     {
-      "threshold": 0.999,
+      "threshold": 1.0,
       "precision": 1.0,
-      "recall": 0.015
+      "recall": 0.002
     }
   ],
   "roc_curve": [
@@ -173,152 +173,152 @@
       "threshold": Infinity,
       "fpr": 0.0,
       "tpr": 0.0,
-      "precision": 0.149,
+      "precision": 0.159,
       "recall": 0.0
     },
     {
-      "threshold": 0.732,
-      "fpr": 0.003,
-      "tpr": 0.492,
-      "precision": 0.15,
-      "recall": 0.492
-    },
-    {
-      "threshold": 0.671,
-      "fpr": 0.007,
-      "tpr": 0.526,
-      "precision": 0.151,
-      "recall": 0.526
-    },
-    {
-      "threshold": 0.639,
-      "fpr": 0.013,
-      "tpr": 0.568,
-      "precision": 0.152,
-      "recall": 0.568
-    },
-    {
-      "threshold": 0.612,
-      "fpr": 0.018,
-      "tpr": 0.601,
-      "precision": 0.152,
-      "recall": 0.601
-    },
-    {
-      "threshold": 0.591,
-      "fpr": 0.021,
-      "tpr": 0.645,
-      "precision": 0.153,
-      "recall": 0.645
-    },
-    {
-      "threshold": 0.57,
-      "fpr": 0.026,
-      "tpr": 0.687,
-      "precision": 0.154,
-      "recall": 0.687
-    },
-    {
-      "threshold": 0.544,
-      "fpr": 0.032,
-      "tpr": 0.737,
-      "precision": 0.155,
-      "recall": 0.737
-    },
-    {
-      "threshold": 0.527,
-      "fpr": 0.036,
-      "tpr": 0.764,
-      "precision": 0.156,
-      "recall": 0.764
-    },
-    {
-      "threshold": 0.493,
-      "fpr": 0.041,
-      "tpr": 0.806,
-      "precision": 0.157,
-      "recall": 0.806
-    },
-    {
-      "threshold": 0.459,
-      "fpr": 0.046,
-      "tpr": 0.838,
-      "precision": 0.157,
-      "recall": 0.838
-    },
-    {
-      "threshold": 0.402,
-      "fpr": 0.052,
-      "tpr": 0.869,
-      "precision": 0.158,
-      "recall": 0.869
-    },
-    {
-      "threshold": 0.313,
-      "fpr": 0.059,
-      "tpr": 0.899,
-      "precision": 0.159,
-      "recall": 0.899
-    },
-    {
-      "threshold": 0.27,
-      "fpr": 0.063,
-      "tpr": 0.928,
+      "threshold": 0.966,
+      "fpr": 0.001,
+      "tpr": 0.408,
       "precision": 0.16,
-      "recall": 0.928
+      "recall": 0.408
     },
     {
-      "threshold": 0.192,
-      "fpr": 0.076,
-      "tpr": 0.951,
+      "threshold": 0.76,
+      "fpr": 0.005,
+      "tpr": 0.524,
       "precision": 0.161,
-      "recall": 0.951
+      "recall": 0.524
     },
     {
-      "threshold": 0.116,
-      "fpr": 0.096,
-      "tpr": 0.97,
+      "threshold": 0.64,
+      "fpr": 0.012,
+      "tpr": 0.585,
       "precision": 0.162,
-      "recall": 0.97
+      "recall": 0.585
     },
     {
-      "threshold": 0.029,
-      "fpr": 0.14,
-      "tpr": 0.988,
-      "precision": 0.163,
-      "recall": 0.988
+      "threshold": 0.586,
+      "fpr": 0.021,
+      "tpr": 0.65,
+      "precision": 0.164,
+      "recall": 0.65
+    },
+    {
+      "threshold": 0.496,
+      "fpr": 0.028,
+      "tpr": 0.699,
+      "precision": 0.165,
+      "recall": 0.699
+    },
+    {
+      "threshold": 0.335,
+      "fpr": 0.036,
+      "tpr": 0.746,
+      "precision": 0.166,
+      "recall": 0.746
+    },
+    {
+      "threshold": 0.233,
+      "fpr": 0.045,
+      "tpr": 0.777,
+      "precision": 0.167,
+      "recall": 0.777
+    },
+    {
+      "threshold": 0.131,
+      "fpr": 0.071,
+      "tpr": 0.803,
+      "precision": 0.168,
+      "recall": 0.803
+    },
+    {
+      "threshold": 0.08,
+      "fpr": 0.112,
+      "tpr": 0.829,
+      "precision": 0.169,
+      "recall": 0.829
+    },
+    {
+      "threshold": 0.042,
+      "fpr": 0.179,
+      "tpr": 0.856,
+      "precision": 0.17,
+      "recall": 0.856
+    },
+    {
+      "threshold": 0.013,
+      "fpr": 0.273,
+      "tpr": 0.876,
+      "precision": 0.171,
+      "recall": 0.876
     },
     {
       "threshold": 0.005,
-      "fpr": 0.431,
-      "tpr": 1.0,
-      "precision": 0.163,
-      "recall": 1.0
+      "fpr": 0.359,
+      "tpr": 0.895,
+      "precision": 0.173,
+      "recall": 0.895
     },
     {
       "threshold": 0.004,
-      "fpr": 0.558,
-      "tpr": 1.0,
-      "precision": 0.164,
-      "recall": 1.0
+      "fpr": 0.428,
+      "tpr": 0.915,
+      "precision": 0.174,
+      "recall": 0.915
     },
     {
       "threshold": 0.003,
-      "fpr": 0.737,
-      "tpr": 1.0,
-      "precision": 0.165,
-      "recall": 1.0
+      "fpr": 0.477,
+      "tpr": 0.936,
+      "precision": 0.175,
+      "recall": 0.936
     },
     {
       "threshold": 0.003,
-      "fpr": 0.879,
-      "tpr": 1.0,
-      "precision": 0.166,
-      "recall": 1.0
+      "fpr": 0.555,
+      "tpr": 0.944,
+      "precision": 0.176,
+      "recall": 0.944
+    },
+    {
+      "threshold": 0.003,
+      "fpr": 0.656,
+      "tpr": 0.955,
+      "precision": 0.178,
+      "recall": 0.955
+    },
+    {
+      "threshold": 0.003,
+      "fpr": 0.724,
+      "tpr": 0.967,
+      "precision": 0.179,
+      "recall": 0.967
+    },
+    {
+      "threshold": 0.002,
+      "fpr": 0.776,
+      "tpr": 0.981,
+      "precision": 0.18,
+      "recall": 0.981
+    },
+    {
+      "threshold": 0.002,
+      "fpr": 0.826,
+      "tpr": 0.987,
+      "precision": 0.182,
+      "recall": 0.987
+    },
+    {
+      "threshold": 0.002,
+      "fpr": 0.984,
+      "tpr": 0.998,
+      "precision": 0.183,
+      "recall": 0.998
     }
   ],
-  "training_sample_size": 3997,
-  "fraud_rate": 0.1494,
-  "timestamp": "2026-09-07T04:58:20.943143",
+  "training_sample_size": 4003,
+  "fraud_rate": 0.1594,
+  "timestamp": "2026-09-07T22:57:11.598343",
   "disclosure": "Models trained and evaluated on 20,000 synthetic ground-truth labeled records (overpricing, duplicate, ghost project, vendor capture, structuring). Applied to real public MPLADS records for live scoring."
 }

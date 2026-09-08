@@ -136,7 +136,13 @@ class LiveInferenceService:
         proposal_id = str(proposal.get("project_id") or f"PROP-{int(time.time() * 1000) % 1000000:06d}")
         
         sanctioned_amount = float(proposal.get("sanctioned_amount", 2500000.0) or 0.0)
-        estimated_cost = float(proposal.get("estimated_cost") or sanctioned_amount)
+        estimated_cost_raw = proposal.get("estimated_cost")
+        if estimated_cost_raw is not None and float(estimated_cost_raw) > 0:
+            estimated_cost = float(estimated_cost_raw)
+            cost_verified = True
+        else:
+            estimated_cost = sanctioned_amount
+            cost_verified = False
         tender_amount = float(proposal.get("tender_amount") or sanctioned_amount)
         duration_days = int(proposal.get("planned_duration_days", 180) or 180)
         category = str(proposal.get("category", "Public Infrastructure"))
@@ -188,8 +194,8 @@ class LiveInferenceService:
         df_row["procurement__winning_bid_amount"] = tender_amount
         df_row["procurement__winning_bid_deviation"] = tender_dev
         if is_single_bid:
-            df_row["procurement__bid_price_similarity"] = 0.99
-            df_row["procurement__repeated_winner_flag"] = 1.0
+            df_row["procurement__bid_price_similarity"] = 0.0
+            df_row["procurement__repeated_winner_flag"] = 0.0
             df_row["procurement__procurement_compliance_flag"] = 1.0
 
         # Contractor domain features
@@ -198,7 +204,7 @@ class LiveInferenceService:
         df_row["contractor__contractor_previous_irregularities"] = contractor_delays
         df_row["contractor__past_irregularity_rate"] = min(1.0, contractor_delays * 0.25)
         df_row["contractor__contractor_delay_rate"] = min(1.0, contractor_delays * 0.25)
-        if contractor_delays >= 2 or is_single_bid:
+        if contractor_delays >= 2:
             df_row["contractor__contractor_agency_concentration"] = 0.88
             df_row["contractor__contractor_district_concentration"] = 0.85
             df_row["contractor__repeated_agency_contractor_pair"] = 1
@@ -207,12 +213,6 @@ class LiveInferenceService:
         # Payment domain features (Statutory smurfing threshold)
         if is_structuring:
             df_row["payment__statutory_smurfing_score"] = 1.0
-            df_row["payment__round_number_payment_rate"] = 0.95
-            df_row["payment__payment_concentration_max"] = 0.98
-            df_row["payment__disbursement_velocity_ratio"] = 3.2
-            df_row["payment__disbursement_lumpiness_index"] = 0.90
-            df_row["payment__payment_timing_risk_index"] = 0.88
-            df_row["payment__rapid_disbursement_flag"] = 1.0
 
         # Progress domain features
         df_row["progress__planned_duration_days"] = duration_days
@@ -225,7 +225,9 @@ class LiveInferenceService:
         # 2. Evaluate Domain 1: Financial Model
         pids, _, fin_mat = self.financial_prep.transform(df_row)
         financial_score = round(float(self.financial_model.score(fin_mat)[0]), 2)
-        if cost_dev > 0.50:
+        if not cost_verified:
+            financial_score = max(financial_score, 35.0)
+        elif cost_dev > 0.50:
             financial_score = max(financial_score, min(96.0, 50.0 + cost_dev * 40.0))
 
         # 3. Evaluate Domain 2: Geospatial Model
@@ -237,7 +239,7 @@ class LiveInferenceService:
         proc_mat = p_res[2] if isinstance(p_res, tuple) else p_res
         procurement_score = round(float(self.procurement_model.score(proc_mat)[0]), 2)
         if is_single_bid:
-            procurement_score = max(procurement_score, 78.5)
+            procurement_score = max(procurement_score, 35.0)
 
         # 5. Evaluate Domain 4: Contractor Model
         c_res = self.contractor_prep.transform(df_row)
@@ -253,24 +255,29 @@ class LiveInferenceService:
         pay_mat = pay_res[2] if isinstance(pay_res, tuple) and len(pay_res) == 3 else (pay_res if not isinstance(pay_res, tuple) else pay_res[0])
         pay_raw = -float(self.payment_model.decision_function(pay_mat)[0])
         p_span = self.payment_bounds["max"] - self.payment_bounds["min"]
-        payment_score = round(float(np.clip((pay_raw - self.payment_bounds["min"]) / p_span * 100.0, 0.0, 100.0)), 2)
+        payment_score = round(float(np.clip((pay_raw - self.payment_bounds["min"]) / max(p_span, 1e-6) * 100.0, 0.0, 100.0)), 2)
         if is_structuring:
-            payment_score = max(payment_score, 82.5)
+            payment_score = max(payment_score, 40.0)
 
         # 7. Evaluate Domain 6: Progress Model
         prog_res = self.progress_prep.transform(df_row)
         prog_mat = prog_res[2] if isinstance(prog_res, tuple) and len(prog_res) == 3 else (prog_res if not isinstance(prog_res, tuple) else prog_res[0])
         prog_raw = -float(self.progress_model.decision_function(prog_mat)[0])
         pr_span = self.progress_bounds["max"] - self.progress_bounds["min"]
-        progress_score = round(float(np.clip((prog_raw - self.progress_bounds["min"]) / pr_span * 100.0, 0.0, 100.0)), 2)
+        progress_score = round(float(np.clip((prog_raw - self.progress_bounds["min"]) / max(pr_span, 1e-6) * 100.0, 0.0, 100.0)), 2)
         if contractor_delays >= 3:
             progress_score = max(progress_score, 70.0)
 
-        # 8. Evaluate Domain 7: Graph Model
-        if is_single_bid or contractor_delays >= 2:
-            graph_score = min(95.0, max(68.0, 50.0 + contractor_delays * 8.0 + (22.0 if is_single_bid else 0.0)))
-        else:
-            graph_score = 15.0
+        # 8. Evaluate Domain 7: Graph Model (Run actual graph model on features)
+        g_res = self.graph_prep.transform(df_row)
+        g_mat = g_res[2] if isinstance(g_res, tuple) and len(g_res) == 3 else (g_res if not isinstance(g_res, tuple) else g_res[0])
+        g_raw = -float(self.graph_model.decision_function(g_mat)[0])
+        g_span = self.graph_bounds["max"] - self.graph_bounds["min"]
+        graph_score = round(float(np.clip((g_raw - self.graph_bounds["min"]) / max(g_span, 1e-6) * 100.0, 0.0, 100.0)), 2)
+        if is_single_bid:
+            graph_score = max(graph_score, 25.0)
+        if contractor_delays >= 2:
+            graph_score = max(graph_score, 35.0)
 
         domain_scores = {
             "financial_anomaly_score": financial_score,
@@ -285,22 +292,26 @@ class LiveInferenceService:
         # Dynamic Reason Traces from domain signals
         domain_reasons: Dict[str, List[str]] = {
             "financial_anomaly_score": [
-                f"Proposed fund allocation of ₹{sanctioned_amount:,.0f} exceeds technical cost estimate of ₹{estimated_cost:,.0f} by {cost_dev*100:.1f}%"
-                if cost_dev > 0.15 else f"Proposed fund allocation of ₹{sanctioned_amount:,.0f} shows deviation from category benchmark"
-            ] if financial_score >= 40.0 else [],
+                f"Technical cost estimate not provided. Sanctioned allocation ₹{sanctioned_amount:,.0f} cannot be verified against PWD Schedule of Rates benchmark."
+                if not cost_verified
+                else (
+                    f"Proposed fund allocation of ₹{sanctioned_amount:,.0f} exceeds technical cost estimate of ₹{estimated_cost:,.0f} by {cost_dev*100:.1f}%"
+                    if cost_dev > 0.15 else f"Proposed fund allocation of ₹{sanctioned_amount:,.0f} shows deviation from category benchmark"
+                )
+            ] if financial_score >= 35.0 else [],
             "geospatial_anomaly_score": [
                 f"Project site ({lat:.4f}, {lon:.4f}) indicates isolated execution footprint or local density anomaly"
             ] if geospatial_score >= 40.0 else [],
             "procurement_anomaly_score": [
-                "Non-competitive single-bid tender recorded, bypassing competitive bidding norms" if is_single_bid
+                "Non-competitive single-bid tender recorded, flagged for review under GFR guidelines" if is_single_bid
                 else f"Low bidder competition detected ({num_bidders} bidders recorded)"
-            ] if procurement_score >= 40.0 else [],
+            ] if procurement_score >= 35.0 else [],
             "contractor_anomaly_score": [
                 f"Proposed contractor has {contractor_delays} prior recorded project delays and elevated irregularity rate"
                 if contractor_delays > 0 else "Contractor-agency pairing concentration exceeds safe institutional threshold"
             ] if contractor_score >= 40.0 else [],
             "payment_anomaly_score": [
-                f"Contract amount (₹{sanctioned_amount:,.0f}) structured just below statutory ₹5 Lakh e-tender threshold (smurfing alarm)"
+                f"Contract amount (₹{sanctioned_amount:,.0f}) structured just below statutory ₹5 Lakh e-tender threshold (smurfing audit flag)"
                 if is_structuring else "Projected payment release timeline triggers structuring audit threshold"
             ] if payment_score >= 40.0 else [],
             "progress_anomaly_score": [
@@ -309,7 +320,10 @@ class LiveInferenceService:
             ] if progress_score >= 40.0 else [],
             "graph_anomaly_score": [
                 "Entity graph relationship identifies recurring exclusive agency-contractor pairing"
-                if is_single_bid or contractor_delays >= 2 else "Entity co-occurrence density exhibits concentrated network clustering"
+                if contractor_delays >= 2 else (
+                    "Single-bid award evaluated against constituency procurement network"
+                    if is_single_bid else "Entity co-occurrence density exhibits concentrated network clustering"
+                )
             ] if graph_score >= 40.0 else [],
         }
 
@@ -360,7 +374,7 @@ class LiveInferenceService:
         highest_domain = max(domain_scores.items(), key=lambda x: x[1])[0]
         typology_map = {
             "financial_anomaly_score": "COST_OVERRUN",
-            "geospatial_anomaly_score": "GHOST_WORK",
+            "geospatial_anomaly_score": "SPATIAL_OUTLIER",
             "procurement_anomaly_score": "SINGLE_BID_TENDER",
             "contractor_anomaly_score": "VENDOR_CONCENTRATION",
             "payment_anomaly_score": "PAYMENT_STRUCTURING",

@@ -17,15 +17,15 @@ def get_metrics():
         except Exception:
             pass
 
-    # Default calibrated fallback metrics if not yet trained
+    # Default calibrated fallback metrics from current leakage-free evaluation
     return ModelPerformanceMetrics(
         model_name="SETU Ensemble (XGBoost + Isolation Forest + Graph Centrality)",
-        accuracy=0.9420,
-        precision=0.9150,
-        recall=0.8870,
-        f1_score=0.9008,
-        roc_auc=0.9630,
-        confusion_matrix={"tn": 16840, "fp": 260, "fn": 350, "tp": 2550},
+        accuracy=0.9291,
+        precision=0.8290,
+        recall=0.6991,
+        f1_score=0.7585,
+        roc_auc=0.9126,
+        confusion_matrix={"tn": 3273, "fp": 92, "fn": 192, "tp": 446},
         feature_importance=[
             {"feature": "ALLOC_ZSCORE_STATE", "importance": 0.2840},
             {"feature": "DUPLICATE_COUNT", "importance": 0.2210},

@@ -350,6 +350,58 @@ def get_role_scoped_dashboard(
         for b in bottleneck_q
     ]
 
+    # Statutory Compliance summary for scoped works
+    sc_alloc_scoped = db.query(func.sum(Work.allocation_amount)).filter(
+        *filters,
+        or_(Work.is_sc_earmarked == True, Work.beneficiary_type == "SC_HABITATION")
+    ).scalar() or 0.0
+
+    st_alloc_scoped = db.query(func.sum(Work.allocation_amount)).filter(
+        *filters,
+        or_(Work.is_st_earmarked == True, Work.beneficiary_type == "ST_HABITATION")
+    ).scalar() or 0.0
+
+    sc_pct_scoped = round((sc_alloc_scoped / total_alloc * 100.0) if total_alloc > 0 else 0.0, 1)
+    st_pct_scoped = round((st_alloc_scoped / total_alloc * 100.0) if total_alloc > 0 else 0.0, 1)
+
+    completed_scoped = db.query(func.count(Work.id)).filter(
+        *filters,
+        Work.status.ilike("%completed%")
+    ).scalar() or 0
+
+    uc_submitted_scoped = db.query(func.count(Work.id)).filter(
+        *filters,
+        Work.status.ilike("%completed%"),
+        Work.uc_status.in_(["SUBMITTED", "VERIFIED"])
+    ).scalar() or 0
+
+    uc_rate_scoped = round((uc_submitted_scoped / completed_scoped * 100.0) if completed_scoped > 0 else 100.0, 1)
+
+    neg_list_violations_scoped = db.query(func.count(Work.id)).filter(
+        *filters,
+        Work.is_negative_list_violation == True
+    ).scalar() or 0
+
+    from app.ml.features.earmark_classifier import compute_earmarking_status, compute_compliance_grade
+    earmarking_status_scoped = compute_earmarking_status(sc_pct_scoped, st_pct_scoped)
+    compliance_grade_scoped = compute_compliance_grade(sc_pct_scoped, st_pct_scoped, uc_rate_scoped, neg_list_violations_scoped)
+
+    compliance_summary = {
+        "sc_allocation_amount": float(sc_alloc_scoped),
+        "st_allocation_amount": float(st_alloc_scoped),
+        "sc_allocation_pct": sc_pct_scoped,
+        "st_allocation_pct": st_pct_scoped,
+        "target_sc_pct": 15.0,
+        "target_st_pct": 7.5,
+        "target_combined_pct": 22.5,
+        "earmarking_status": earmarking_status_scoped,
+        "statutory_compliance_grade": compliance_grade_scoped,
+        "uc_compliance_rate": uc_rate_scoped,
+        "completed_works": completed_scoped,
+        "uc_submitted_works": uc_submitted_scoped,
+        "negative_list_violations_count": neg_list_violations_scoped,
+    }
+
     extra_insights = {
         "role_title": f"{role.upper()} Authority View",
         "compliance_rate": round(max(0, 100 - (flagged_works_count / max(1, total_works) * 100)), 1),
@@ -361,7 +413,8 @@ def get_role_scoped_dashboard(
         "top_agencies": top_agencies,
         "structuring_clusters": structuring_clusters,
         "agency_bottlenecks": agency_bottlenecks,
-        "highest_risk_ida": top_agencies[0]["name"] if top_agencies else "Local IDA"
+        "highest_risk_ida": top_agencies[0]["name"] if top_agencies else "Local IDA",
+        "statutory_compliance": compliance_summary,
     }
 
     return DashboardResponse(
@@ -374,5 +427,6 @@ def get_role_scoped_dashboard(
         top_flagged_works=top_flagged_works,
         recent_alerts=recent_alerts,
         monthly_trends=monthly_trends,
-        extra_insights=extra_insights
+        extra_insights=extra_insights,
+        compliance_summary=compliance_summary
     )

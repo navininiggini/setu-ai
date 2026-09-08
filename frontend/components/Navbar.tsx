@@ -61,9 +61,9 @@ export function Navbar() {
     { href: "/graph", label: "Cartel Graph", badge: "AI Flow", hotkey: "3" },
     { href: "/maps", label: "GIS Radar", badge: "28 States", hotkey: "4" },
     { href: "/alerts", label: "Audit Alerts", badge: "14 High", badgeColor: "bg-rose-500/20 text-rose-400 border-rose-500/30", hotkey: "5" },
-    { href: "/cases", label: "Case Kanban", badge: "Triage", hotkey: "6" },
-    { href: "/reports", label: "Audit Dossiers", badge: "CAG", hotkey: "7" },
-    { href: "/proposals", label: "Proposal Scorer", badge: "Live ML", badgeColor: "bg-amber-500/20 text-amber-400 border-amber-500/30", hotkey: "8" },
+    { href: "/compliance", label: "Statutory Audit", badge: "SC/ST", badgeColor: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30", hotkey: "7" },
+    { href: "/reports", label: "Audit Dossiers", badge: "CAG", hotkey: "8" },
+    { href: "/proposals", label: "Proposal Scorer", badge: "Live ML", badgeColor: "bg-amber-500/20 text-amber-400 border-amber-500/30", hotkey: "9" },
   ];
 
   // On landing page "/", completely remove navbar per user instruction

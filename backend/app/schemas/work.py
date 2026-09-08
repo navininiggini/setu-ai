@@ -39,6 +39,19 @@ class WorkBase(BaseModel):
     predicted_fraud_type: Optional[str] = None
     days_since_recommended: Optional[int] = 0
 
+    # Statutory Compliance fields
+    beneficiary_type: Optional[str] = "GENERAL"
+    is_sc_earmarked: Optional[bool] = False
+    is_st_earmarked: Optional[bool] = False
+    uc_status: Optional[str] = "PENDING"
+    uc_submitted_date: Optional[str] = None
+    uc_overdue_days: Optional[int] = 0
+    is_negative_list_violation: Optional[bool] = False
+    negative_list_reason: Optional[str] = None
+    is_trust_society_work: Optional[bool] = False
+    compliance_flags: Optional[List[str]] = []
+    compliance_score: Optional[float] = 100.0
+
 class WorkCreate(WorkBase):
     pass
 
@@ -61,6 +74,10 @@ class WorkFilterParams(BaseModel):
     search: Optional[str] = None
     sort_by: Optional[str] = "risk_score"
     sort_order: Optional[str] = "desc"
+    beneficiary_type: Optional[str] = None
+    uc_status: Optional[str] = None
+    negative_list_only: Optional[bool] = None
+    earmarked_only: Optional[bool] = None
 
 class PaginatedWorksResponse(BaseModel):
     total: int

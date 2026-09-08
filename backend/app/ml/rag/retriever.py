@@ -31,6 +31,13 @@ class RAGRetriever:
         elif "delay" in typology_lower or "progress" in typology_lower or "milestone" in typology_lower:
             rules.append(self.kb.STATUTORY_RULES["MPLADS_2023_CALAMITY"])
         
+        if "earmark" in typology_lower or "sc" in typology_lower or "st" in typology_lower or "deficit" in typology_lower:
+            rules.append(self.kb.STATUTORY_RULES["MPLADS_2023_SC_ST_MANDATE"])
+        if "uc" in typology_lower or "utilization" in typology_lower or "overdue" in typology_lower:
+            rules.append(self.kb.STATUTORY_RULES["MPLADS_2023_UC_COMPLIANCE"])
+        if "negative" in typology_lower or "prohibited" in typology_lower or "trust" in typology_lower or "society" in typology_lower:
+            rules.append(self.kb.STATUTORY_RULES["MPLADS_2023_NEGATIVE_LIST"])
+
         # Always include primary overarching guidelines
         if self.kb.STATUTORY_RULES["MPLADS_2023_ELIGIBILITY"] not in rules:
             rules.append(self.kb.STATUTORY_RULES["MPLADS_2023_ELIGIBILITY"])

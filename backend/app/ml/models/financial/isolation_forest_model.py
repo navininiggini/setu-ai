@@ -124,15 +124,25 @@ class FinancialIsolationForestModel:
             cvc = row.get("contract__contract_value_change", 0.0)
             amend_cnt = row.get("contract__contract_amendment_count", 0)
             amend_val = row.get("contract__amendment_value", 0.0)
-            if cvc > 0.20 or amend_cnt >= 2 or amend_val > 5e5:
+            if cvc > 0.20 or (amend_cnt >= 2 and cvc > 0) or amend_val > 5e5:
                 cand_reasons.append((
                     (cvc * 3.0) + (amend_cnt * 1.0),
-                    f"Contract escalation ({cvc*100:.1f}% value change with {int(amend_cnt)} amendments)"
+                    f"Contract cost escalation (+{cvc*100:.1f}% value increase with {int(amend_cnt)} amendments)"
+                ))
+            elif cvc < -0.05 and amend_cnt >= 2:
+                cand_reasons.append((
+                    abs(cvc) * 1.5,
+                    f"Contract scope reduction ({cvc*100:.1f}% cost decrease with {int(amend_cnt)} administrative amendments)"
                 ))
             elif cvc < -0.20:
                 cand_reasons.append((
                     abs(cvc) * 2.5,
                     f"Abrupt contract value contraction ({cvc*100:.1f}% reduction from original work order)"
+                ))
+            elif amend_cnt >= 2 and abs(cvc) <= 0.05:
+                cand_reasons.append((
+                    amend_cnt * 0.8,
+                    f"Multiple contract amendments ({int(amend_cnt)} administrative amendments with negligible {cvc*100:.1f}% value change)"
                 ))
 
             # 6. Payment timing / round-number anomalies

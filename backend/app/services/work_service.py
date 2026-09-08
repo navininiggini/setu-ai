@@ -28,6 +28,14 @@ def get_works_paginated(db: Session, params: WorkFilterParams) -> PaginatedWorks
         query = query.filter(Work.risk_score <= params.max_risk_score)
     if params.fraud_type:
         query = query.filter(func.lower(Work.predicted_fraud_type) == params.fraud_type.lower())
+    if params.beneficiary_type:
+        query = query.filter(func.lower(Work.beneficiary_type) == params.beneficiary_type.lower())
+    if params.uc_status:
+        query = query.filter(func.lower(Work.uc_status) == params.uc_status.lower())
+    if params.negative_list_only:
+        query = query.filter(Work.is_negative_list_violation == True)
+    if params.earmarked_only:
+        query = query.filter(or_(Work.is_sc_earmarked == True, Work.is_st_earmarked == True))
     if params.search:
         s = f"%{params.search.lower()}%"
         query = query.filter(
@@ -97,7 +105,18 @@ def get_work_detail(db: Session, work_id: str) -> Optional[Dict[str, Any]]:
         "risk_reasons": work.risk_reasons or [],
         "sub_scores": work.sub_scores or {},
         "predicted_fraud_type": work.predicted_fraud_type,
-        "days_since_recommended": work.days_since_recommended
+        "days_since_recommended": work.days_since_recommended,
+        "beneficiary_type": work.beneficiary_type,
+        "is_sc_earmarked": work.is_sc_earmarked,
+        "is_st_earmarked": work.is_st_earmarked,
+        "uc_status": work.uc_status,
+        "uc_submitted_date": work.uc_submitted_date,
+        "uc_overdue_days": work.uc_overdue_days,
+        "is_negative_list_violation": work.is_negative_list_violation,
+        "negative_list_reason": work.negative_list_reason,
+        "is_trust_society_work": work.is_trust_society_work,
+        "compliance_flags": work.compliance_flags or [],
+        "compliance_score": work.compliance_score
     }
 
     explanation = format_risk_explanation(work_dict)
@@ -115,5 +134,7 @@ def get_filter_options(db: Session) -> Dict[str, Any]:
         "categories": categories,
         "statuses": statuses,
         "fraud_types": fraud_types,
-        "risk_levels": ["Low", "Medium", "High", "Critical"]
+        "risk_levels": ["Low", "Medium", "High", "Critical"],
+        "beneficiary_types": ["GENERAL", "SC_HABITATION", "ST_HABITATION"],
+        "uc_statuses": ["PENDING", "SUBMITTED", "OVERDUE", "VERIFIED"]
     }

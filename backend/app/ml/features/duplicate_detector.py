@@ -5,6 +5,12 @@ def detect_exact_duplicates(df: pd.DataFrame) -> pd.DataFrame:
     
     # Exact match on MP_NAME, WORK, ALLOCATION_AMOUNT
     group_cols = ["MP_NAME", "WORK", "ALLOCATION_AMOUNT"]
+
+    # Disambiguate multi-village or multi-ward rollouts if location columns exist
+    for loc_col in ["VILLAGE", "WARD", "BLOCK"]:
+        if loc_col in df.columns and df[loc_col].notna().sum() > len(df) * 0.3:
+            group_cols.append(loc_col)
+            break
     
     # Calculate group count
     if "DUPLICATE_COUNT" not in df.columns or df["DUPLICATE_COUNT"].isnull().all():

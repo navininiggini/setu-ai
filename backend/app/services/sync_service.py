@@ -21,6 +21,20 @@ from app.models.mp import MP
 from app.models.user import User
 from app.models.work import Work
 from app.core.district_names import resolve_district_name, resolve_constituency_name
+from app.ml.features.earmark_classifier import (
+    classify_beneficiary_type,
+    compute_earmarking_status,
+    compute_compliance_grade,
+)
+from app.ml.features.negative_list_detector import (
+    check_negative_list,
+    is_trust_society_work,
+)
+from app.ml.features.uc_compliance_tracker import (
+    compute_uc_status_and_days,
+    compute_compliance_flags,
+    compute_work_compliance_score,
+)
 
 
 def seed_demo_users(db: Session) -> None:
@@ -86,7 +100,9 @@ def sync_fused_risk_to_database(
     db: Session,
     force: bool = False,
     data_dir: Optional[Path] = None,
-) -> Dict[str, int]:
+    generate_decisions: bool = False,
+    decision_limit: int = 500,
+) -> Dict[str, Any]:
     """Sync the 5,000 national projects from fused_risk_intelligence.csv into Works, Alerts, Cases, and Aggregates."""
     base_data_dir = data_dir or (Path(BASE_DIR) / "app" / "ml" / "data" / "processed")
     synthetic_dir = Path(BASE_DIR) / "data" / "synthetic"
@@ -151,13 +167,72 @@ def sync_fused_risk_to_database(
     mp_total_funds = merged.groupby("constituency_id")["sanctioned_amount"].sum().to_dict()
     ida_work_counts = merged.groupby("agency_id")["project_id"].count().to_dict()
 
+    # Precompute statutory compliance fields on merged DataFrame
+    print("Evaluating statutory compliance (SC/ST earmarking, UC tracking, negative list)...")
+    beneficiary_types = []
+    uc_statuses = []
+    uc_dates = []
+    uc_overdues = []
+    neg_violations = []
+    neg_reasons = []
+    trust_flags = []
+    compliance_flags_list = []
+    compliance_scores = []
+
+    for idx, row in merged.iterrows():
+        p_id = str(row.get("project_id", f"PRJ-{idx}"))
+        row_dict = row.to_dict()
+        row_dict["id"] = p_id
+
+        ben = classify_beneficiary_type(row_dict)
+        beneficiary_types.append(ben)
+
+        w_title = str(row.get("work_name", ""))
+        w_cat = str(row.get("category", ""))
+        neg = check_negative_list(w_title, w_cat)
+        neg_violations.append(bool(neg["is_violation"]))
+        neg_reasons.append(neg.get("reason"))
+
+        aid = str(row.get("agency_id", ""))
+        agency_name = str(row.get("agency_name", f"District Authority {aid}"))
+        is_trust = is_trust_society_work(agency_name, w_title)
+        trust_flags.append(is_trust)
+
+        uc_info = compute_uc_status_and_days({
+            "status": str(row.get("status", "")),
+            "days_since_recommended": int(row.get("planned_duration_days", 180) or 180),
+            "id": p_id
+        })
+        uc_statuses.append(uc_info["uc_status"])
+        uc_dates.append(uc_info.get("uc_submitted_date"))
+        uc_overdues.append(int(uc_info.get("uc_overdue_days", 0)))
+
+        amt = float(row.get("sanctioned_amount", 0.0) or 0.0)
+        c_flags = compute_compliance_flags(ben, uc_info, neg, amt)
+        compliance_flags_list.append(c_flags)
+
+        c_score = compute_work_compliance_score(uc_info, neg, ben)
+        compliance_scores.append(c_score)
+
+    merged["beneficiary_type"] = beneficiary_types
+    merged["is_sc_earmarked"] = [b == "SC_HABITATION" for b in beneficiary_types]
+    merged["is_st_earmarked"] = [b == "ST_HABITATION" for b in beneficiary_types]
+    merged["uc_status"] = uc_statuses
+    merged["uc_submitted_date"] = uc_dates
+    merged["uc_overdue_days"] = uc_overdues
+    merged["is_negative_list_violation"] = neg_violations
+    merged["negative_list_reason"] = neg_reasons
+    merged["is_trust_society_work"] = trust_flags
+    merged["compliance_flags"] = compliance_flags_list
+    merged["compliance_score"] = compliance_scores
+
     # 2. Insert Works
     print("Inserting 5,000 unified works into relational store...")
     work_objects: List[Work] = []
     alert_objects: List[Alert] = []
     case_objects: List[Case] = []
 
-    for _, row in merged.iterrows():
+    for idx, row in merged.iterrows():
         p_id = str(row["project_id"])
         risk_score = float(row["overall_risk_score"])
         risk_level = str(row["risk_level"]).capitalize()
@@ -222,6 +297,17 @@ def sync_fused_risk_to_database(
             sub_scores=sub_scores_dict,
             predicted_fraud_type=typology.lower(),
             days_since_recommended=int(row.get("planned_duration_days", 180) or 180),
+            beneficiary_type=str(row["beneficiary_type"]),
+            is_sc_earmarked=bool(row["is_sc_earmarked"]),
+            is_st_earmarked=bool(row["is_st_earmarked"]),
+            uc_status=str(row["uc_status"]),
+            uc_submitted_date=row["uc_submitted_date"],
+            uc_overdue_days=int(row["uc_overdue_days"]),
+            is_negative_list_violation=bool(row["is_negative_list_violation"]),
+            negative_list_reason=row["negative_list_reason"],
+            is_trust_society_work=bool(row["is_trust_society_work"]),
+            compliance_flags=row["compliance_flags"],
+            compliance_score=float(row["compliance_score"]),
         )
         work_objects.append(w_obj)
 
@@ -306,6 +392,27 @@ def sync_fused_risk_to_database(
         house = str(grp["mp_house"].iloc[0]) if "mp_house" in grp.columns and pd.notna(grp["mp_house"].iloc[0]) else "Lok Sabha"
         top_idas = grp["agency_id"].value_counts().head(5).to_dict()
         top_cats = grp["category"].value_counts().head(5).to_dict()
+
+        # Statutory compliance calculations for MP portfolio
+        total_alloc = float(grp["sanctioned_amount"].sum())
+        sc_alloc = float(grp[grp["beneficiary_type"] == "SC_HABITATION"]["sanctioned_amount"].sum())
+        st_alloc = float(grp[grp["beneficiary_type"] == "ST_HABITATION"]["sanctioned_amount"].sum())
+        sc_pct = round((sc_alloc / total_alloc * 100.0) if total_alloc > 0 else 0.0, 1)
+        st_pct = round((st_alloc / total_alloc * 100.0) if total_alloc > 0 else 0.0, 1)
+
+        earmark_status = compute_earmarking_status(sc_pct, st_pct)
+
+        completed_grp = grp[grp["status"].str.lower().str.contains("completed", na=False)]
+        uc_sub_count = int(completed_grp["uc_status"].isin(["SUBMITTED", "VERIFIED"]).sum())
+        uc_rate = round((uc_sub_count / len(completed_grp) * 100.0) if len(completed_grp) > 0 else 100.0, 1)
+        uc_overdue_cnt = int((grp["uc_status"] == "OVERDUE").sum())
+
+        trust_spend = float(grp[grp["is_trust_society_work"] == True]["sanctioned_amount"].sum())
+        trust_breach = trust_spend > 5000000.0
+
+        neg_count = int((grp["is_negative_list_violation"] == True).sum())
+        grade = compute_compliance_grade(sc_pct, st_pct, uc_rate, neg_count)
+
         mp_rec = MP(
             id=f"MP-{str(const_id).replace(' ', '-').lower()[:32]}",
             name=mp_name,
@@ -313,11 +420,21 @@ def sync_fused_risk_to_database(
             constituency=str(grp["constituency_name"].iloc[0]),
             house=house,
             total_works=len(grp),
-            total_allocation=float(grp["sanctioned_amount"].sum()),
+            total_allocation=total_alloc,
             avg_risk_score=round(float(grp["overall_risk_score"].mean()), 1),
             flagged_works_count=int((grp["overall_risk_score"] >= 60.0).sum()),
             top_idas=[{"name": k, "count": int(v)} for k, v in top_idas.items()],
             top_work_categories=[{"category": k, "count": int(v)} for k, v in top_cats.items()],
+            sc_allocation_amount=round(sc_alloc, 2),
+            st_allocation_amount=round(st_alloc, 2),
+            sc_allocation_pct=sc_pct,
+            st_allocation_pct=st_pct,
+            earmarking_status=earmark_status,
+            trust_society_spend=round(trust_spend, 2),
+            trust_society_ceiling_breach=trust_breach,
+            uc_compliance_rate=uc_rate,
+            uc_overdue_count=uc_overdue_cnt,
+            statutory_compliance_grade=grade,
         )
         db.add(mp_rec)
 
@@ -360,6 +477,13 @@ def sync_fused_risk_to_database(
 
         raw_mp_name = str(grp["mp_name"].iloc[0]) if "mp_name" in grp.columns and pd.notna(grp["mp_name"].iloc[0]) else f"MP ({const_name})"
         const_district = resolve_district_name(str(grp["district_name"].iloc[0]) if "district_name" in grp.columns else "", const_state)
+        
+        res_status = "GENERAL"
+        if "(SC)" in const_name.upper() or " - SC" in const_name.upper():
+            res_status = "SC_RESERVED"
+        elif "(ST)" in const_name.upper() or " - ST" in const_name.upper():
+            res_status = "ST_RESERVED"
+
         const_rec = Constituency(
             id=f"CONST-{str(const_id).replace(' ', '-').lower()[:32]}",
             name=const_name,
@@ -370,6 +494,7 @@ def sync_fused_risk_to_database(
             total_allocation=float(grp["sanctioned_amount"].sum()),
             avg_risk_score=round(float(grp["overall_risk_score"].mean()), 1),
             flagged_works_count=int((grp["overall_risk_score"] >= 60.0).sum()),
+            reservation_status=res_status,
         )
         db.add(const_rec)
 

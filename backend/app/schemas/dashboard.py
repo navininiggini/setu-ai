@@ -67,3 +67,4 @@ class DashboardResponse(BaseModel):
     recent_alerts: List[Dict[str, Any]]
     monthly_trends: List[MonthlyTrendItem]
     extra_insights: Dict[str, Any] = {}
+    compliance_summary: Optional[Dict[str, Any]] = None

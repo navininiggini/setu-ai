@@ -34,10 +34,10 @@ class RiskFusionEngine:
             "financial_anomaly_score": 0.15,
             "geospatial_anomaly_score": 0.10,
             "procurement_anomaly_score": 0.15,
-            "contractor_anomaly_score": 0.15,
+            "contractor_anomaly_score": 0.18,
             "payment_anomaly_score": 0.15,
-            "progress_anomaly_score": 0.20,
-            "graph_anomaly_score": 0.10,
+            "progress_anomaly_score": 0.12,
+            "graph_anomaly_score": 0.15,
         }
         self.data_dir = (
             Path(data_dir)
@@ -77,13 +77,17 @@ class RiskFusionEngine:
         # Balanced blend: 40% supervised calibrated probability + 35% unsupervised multi-domain signals + 25% peak domain anomaly
         fused = 0.40 * supervised_component + 0.35 * unsupervised_component + 0.25 * max_domain
 
-        # Acute overrides: Ensure projects with acute fraud/anomaly signals in any domain are not diluted away
-        if fraud_probability >= 0.70 or max_domain >= 88.0:
+        # Acute overrides: Require corroboration between high peak domain and non-trivial supervised probability
+        # Prevents a single isolated unsupervised model (e.g. rural hospital geospatial) from forcing CRITICAL when supervised fraud is ~1%
+        if fraud_probability >= 0.70 or (max_domain >= 88.0 and fraud_probability >= 0.15):
             fused = max(fused, 82.0)
-        elif fraud_probability >= 0.35 or max_domain >= 68.0:
+        elif fraud_probability >= 0.35 or (max_domain >= 68.0 and fraud_probability >= 0.08):
             fused = max(fused, 65.0)
-        elif fraud_probability >= 0.12 or max_domain >= 48.0:
+        elif fraud_probability >= 0.12 or (max_domain >= 48.0 and fraud_probability >= 0.05):
             fused = max(fused, 42.0)
+        elif max_domain >= 88.0:
+            # Single acute anomaly with low supervised probability: set awareness floor (CONDITIONAL_APPROVAL), not conviction
+            fused = max(fused, 38.0)
 
         return round(float(np.clip(fused, 0.0, 100.0)), 1)
 

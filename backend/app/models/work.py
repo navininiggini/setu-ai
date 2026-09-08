@@ -44,4 +44,25 @@ class Work(Base):
     predicted_fraud_type = Column(String(50), nullable=True)  # overpricing, duplicate, ghost_project, vendor_capture, structuring, none
     days_since_recommended = Column(Integer, default=0)
 
+    # --- Statutory Compliance Fields (MPLADS Guidelines 2023) ---
+    beneficiary_type = Column(String(30), default="GENERAL", index=True)  # GENERAL | SC_HABITATION | ST_HABITATION
+    is_sc_earmarked = Column(Boolean, default=False, index=True)
+    is_st_earmarked = Column(Boolean, default=False, index=True)
+
+    # Utilization Certificate tracking
+    uc_status = Column(String(30), default="PENDING", index=True)  # PENDING | SUBMITTED | OVERDUE | VERIFIED
+    uc_submitted_date = Column(String(50), nullable=True)
+    uc_overdue_days = Column(Integer, default=0)
+
+    # Negative list / prohibited works enforcement
+    is_negative_list_violation = Column(Boolean, default=False, index=True)
+    negative_list_reason = Column(String(255), nullable=True)
+
+    # Trust/Society ceiling tracker
+    is_trust_society_work = Column(Boolean, default=False)
+
+    # Compliance risk signals (separate from ML fraud risk)
+    compliance_flags = Column(JSON, default=list)  # List of statutory compliance violations
+    compliance_score = Column(Float, default=100.0)  # 100 = fully compliant, 0 = severe non-compliance
+
     created_at = Column(DateTime, default=datetime.utcnow)

@@ -26,17 +26,29 @@ def train_all_models(n_rows: int = 20000):
     synthetic_df.to_csv(synthetic_csv_path, index=False)
     print(f"Saved synthetic dataset to: {synthetic_csv_path}")
 
-    print("--- [SETU ML Training] Step 2: Running Feature Engineering Pipeline ---")
-    featured_df = build_feature_pipeline(synthetic_df, is_training=True)
+    print("--- [SETU ML Training] Step 2: Running Leakage-Free Data Partitioning & Feature Pipeline ---")
+    from sklearn.model_selection import GroupShuffleSplit
 
-    X = featured_df[FEATURE_COLUMNS].values
-    y = featured_df["is_fraud"].values
+    # Group by MP_NAME to prevent entity and clone leakage between train and test
+    groups = synthetic_df["MP_NAME"].values
+    gss = GroupShuffleSplit(n_splits=1, test_size=0.20, random_state=42)
+    train_idx, test_idx = next(gss.split(synthetic_df, groups=groups))
 
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.20, random_state=42, stratify=y
-    )
+    train_raw = synthetic_df.iloc[train_idx].copy().reset_index(drop=True)
+    test_raw = synthetic_df.iloc[test_idx].copy().reset_index(drop=True)
 
-    print(f"Train sample: {len(X_train)} | Test sample: {len(X_test)} | Fraud rate: {np.mean(y):.3%}")
+    print(f"Train raw records: {len(train_raw)} | Test raw records: {len(test_raw)}")
+
+    # Build features INDEPENDENTLY on train and test
+    train_featured = build_feature_pipeline(train_raw, is_training=True)
+    test_featured = build_feature_pipeline(test_raw, is_training=False)
+
+    X_train = train_featured[FEATURE_COLUMNS].values
+    y_train = train_featured["is_fraud"].values
+    X_test = test_featured[FEATURE_COLUMNS].values
+    y_test = test_featured["is_fraud"].values
+
+    print(f"Train sample: {len(X_train)} | Test sample: {len(X_test)} | Fraud rate: {np.mean(y_train):.3%}")
 
     registry = get_model_registry()
 
@@ -50,7 +62,7 @@ def train_all_models(n_rows: int = 20000):
     registry.xgb.fit(X_train, y_train, feature_names=FEATURE_COLUMNS)
 
     print("--- [SETU ML Training] Step 6: Building MP-IDA Network Graph Model ---")
-    registry.graph_model.fit_from_dataframe(synthetic_df)
+    registry.graph_model.fit_from_dataframe(train_raw)
 
     print("--- [SETU ML Training] Step 7: Evaluating on Test Set & Saving Metrics ---")
     y_test_proba = registry.xgb.predict_proba(X_test)

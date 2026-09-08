@@ -553,6 +553,31 @@ def generate_role_specific_audit_pdf(
     sample_sub_scores = (top_works[0].sub_scores or {}) if top_works else {}
     hhi = 622.5 if clean_role == "ministry" else (799.8 if clean_role == "state" else (10000.0 if clean_role == "district" else 2150.0))
 
+    # Statutory compliance telemetry
+    sc_alloc_val = base_query.filter(
+        or_(Work.is_sc_earmarked == True, Work.beneficiary_type == "SC_HABITATION")
+    ).with_entities(func.sum(Work.allocation_amount)).scalar() or 0.0
+
+    st_alloc_val = base_query.filter(
+        or_(Work.is_st_earmarked == True, Work.beneficiary_type == "ST_HABITATION")
+    ).with_entities(func.sum(Work.allocation_amount)).scalar() or 0.0
+
+    sc_pct_val = round((sc_alloc_val / total_outlay * 100.0) if total_outlay > 0 else 0.0, 1)
+    st_pct_val = round((st_alloc_val / total_outlay * 100.0) if total_outlay > 0 else 0.0, 1)
+
+    completed_works_val = base_query.filter(Work.status.ilike("%completed%")).count() or 0
+    uc_sub_val = base_query.filter(
+        Work.status.ilike("%completed%"),
+        Work.uc_status.in_(["SUBMITTED", "VERIFIED"])
+    ).count() or 0
+    uc_rate_val = round((uc_sub_val / completed_works_val * 100.0) if completed_works_val > 0 else 100.0, 1)
+
+    neg_violations_val = base_query.filter(Work.is_negative_list_violation == True).count() or 0
+
+    from app.ml.features.earmark_classifier import compute_earmarking_status, compute_compliance_grade
+    statutory_status_val = compute_earmarking_status(sc_pct_val, st_pct_val)
+    statutory_grade_val = compute_compliance_grade(sc_pct_val, st_pct_val, uc_rate_val, neg_violations_val)
+
     metrics = {
         "total_works": total_works,
         "total_outlay": total_outlay,
@@ -561,7 +586,15 @@ def generate_role_specific_audit_pdf(
         "avg_risk": avg_risk,
         "hhi": hhi,
         "syndicate_count": 4 if clean_role == "ministry" else 1,
-        "top_typology": "Artificial Contract Splitting (<Rs. 5L GFR 155)" if clean_role == "district" else "Interstate Syndicate Collusion"
+        "top_typology": "Artificial Contract Splitting (<Rs. 5L GFR 155)" if clean_role == "district" else "Interstate Syndicate Collusion",
+        "sc_allocation_amount": sc_alloc_val,
+        "st_allocation_amount": st_alloc_val,
+        "sc_allocation_pct": sc_pct_val,
+        "st_allocation_pct": st_pct_val,
+        "uc_compliance_rate": uc_rate_val,
+        "negative_list_violations_count": neg_violations_val,
+        "statutory_compliance_grade": statutory_grade_val,
+        "earmarking_status": statutory_status_val
     }
 
     # -------------------------------------------------------------
@@ -680,19 +713,24 @@ def generate_role_specific_audit_pdf(
     radar_img = Image(radar_buf, width=215, height=185)
     radar_img.hAlign = 'CENTER'
     
+    sc_tag_clr = "#059669" if sc_pct_val >= 15.0 else ("#D97706" if sc_pct_val >= 8.0 else "#DC2626")
+    st_tag_clr = "#059669" if st_pct_val >= 7.5 else ("#D97706" if st_pct_val >= 3.0 else "#DC2626")
+    grade_clr = "#059669" if statutory_grade_val in ("A", "B") else ("#D97706" if statutory_grade_val == "C" else "#DC2626")
+
     radar_side_text = [
-        Paragraph("<b>2. MULTI-SIGNAL FORENSIC EVIDENCE TRIANGULATION</b>", st['section_heading']),
-        Spacer(1, 3),
+        Paragraph("<b>2. STATUTORY COMPLIANCE & FORENSIC RADAR</b>", st['section_heading']),
+        Spacer(1, 2),
         Paragraph(
-            "Every public work is evaluated against 7 independent, non-sequential anomaly models: "
-            "<b>M1</b> Peer Cost Variance, <b>M2</b> Geospatial Clustering, <b>M3</b> Tender & GFR 155 Rules, "
-            "<b>M4</b> Contractor Monopoly Capacity, <b>M5</b> Sub-Rs. 5L Structuring, <b>M6</b> Physical Milestone Gap, and "
-            "<b>M7</b> Bipartite Entity Graph Conduits.",
+            f"<b>MPLADS Guidelines 2023 Audit Grade:</b> <font color='{grade_clr}'><b>{statutory_grade_val}</b></font> ({statutory_status_val.replace('_', ' ')}). "
+            f"Evaluated against statutory earmarking, GFR rules, and prohibited list.",
             st['body_prose']
         ),
-        Spacer(1, 4),
-        Paragraph("<b>Statutory Alert Trigger:</b> Signals exceeding the <b>60.0 Critical Floor</b> trigger mandatory administrative intervention warrants.", st['bullet_item']),
         Spacer(1, 2),
+        Paragraph(f"• <b>SC Earmarking:</b> <font color='{sc_tag_clr}'><b>{sc_pct_val:.1f}%</b></font> (Mandate: ≥15.0% • ₹{sc_alloc_val/1e7:.2f} Cr)", st['bullet_item']),
+        Paragraph(f"• <b>ST Earmarking:</b> <font color='{st_tag_clr}'><b>{st_pct_val:.1f}%</b></font> (Mandate: ≥7.5% • ₹{st_alloc_val/1e7:.2f} Cr)", st['bullet_item']),
+        Paragraph(f"• <b>UC Submission Compliance:</b> <b>{uc_rate_val:.1f}%</b> within statutory 30-day window", st['bullet_item']),
+        Paragraph(f"• <b>Prohibited Works (Annexure-III):</b> <b>{neg_violations_val}</b> flagged negative list works", st['bullet_item']),
+        Spacer(1, 1),
         Paragraph("<b>Evidentiary Confidence:</b> Grounded in SHA-256 verified e-SAKSHI master logs with zero PII exposure.", st['bullet_item']),
     ]
     

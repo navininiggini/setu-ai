@@ -30,6 +30,8 @@ import {
   X,
   Sliders,
   Zap,
+  Scale,
+  ShieldCheck,
 } from "lucide-react";
 
 export default function WorksExplorerPage() {
@@ -50,6 +52,12 @@ export default function WorksExplorerPage() {
   const [sortBy, setSortBy] = useState("risk_score");
   const [sortOrder, setSortOrder] = useState("desc");
   const [activePreset, setActivePreset] = useState<string | null>(null);
+
+  // Statutory Compliance Filter States
+  const [beneficiaryType, setBeneficiaryType] = useState<string>("");
+  const [ucStatus, setUcStatus] = useState<string>("");
+  const [negativeListOnly, setNegativeListOnly] = useState<boolean>(false);
+  const [showComplianceView, setShowComplianceView] = useState<boolean>(false);
 
   // Filter options from API
   const [options, setOptions] = useState<{
@@ -84,6 +92,9 @@ export default function WorksExplorerPage() {
           fraud_type: fraudType || undefined,
           sort_by: sortBy,
           sort_order: sortOrder,
+          beneficiary_type: beneficiaryType || undefined,
+          uc_status: ucStatus || undefined,
+          negative_list_only: negativeListOnly || undefined,
         });
         setWorks(res.items);
         setTotal(res.total);
@@ -95,7 +106,7 @@ export default function WorksExplorerPage() {
       }
     }
     loadWorks();
-  }, [page, search, state, riskLevel, fraudType, sortBy, sortOrder, viewMode, category]);
+  }, [page, search, state, riskLevel, fraudType, sortBy, sortOrder, viewMode, category, beneficiaryType, ucStatus, negativeListOnly]);
 
   // Handle Preset Clicks
   const applyPreset = (presetKey: string) => {
@@ -105,6 +116,10 @@ export default function WorksExplorerPage() {
       setActivePreset(null);
       setRiskLevel("");
       setFraudType("");
+      setBeneficiaryType("");
+      setUcStatus("");
+      setNegativeListOnly(false);
+      setShowComplianceView(false);
       setViewMode("table");
       return;
     }
@@ -114,39 +129,103 @@ export default function WorksExplorerPage() {
       case "critical":
         setRiskLevel("Critical");
         setFraudType("");
+        setBeneficiaryType("");
+        setUcStatus("");
+        setNegativeListOnly(false);
+        setShowComplianceView(false);
         setViewMode("table");
         break;
       case "duplicate":
         setFraudType("duplicate");
         setRiskLevel("");
+        setBeneficiaryType("");
+        setUcStatus("");
+        setNegativeListOnly(false);
+        setShowComplianceView(false);
         setViewMode("duplicate_groups");
         break;
       case "cost_overrun":
       case "overpricing":
         setFraudType("cost_overrun");
         setRiskLevel("");
+        setBeneficiaryType("");
+        setUcStatus("");
+        setNegativeListOnly(false);
+        setShowComplianceView(false);
         setViewMode("table");
         break;
       case "single_bid":
         setFraudType("single_bid_tender");
         setRiskLevel("");
+        setBeneficiaryType("");
+        setUcStatus("");
+        setNegativeListOnly(false);
+        setShowComplianceView(false);
         setViewMode("table");
         break;
       case "structuring":
         setFraudType("payment_structuring");
         setRiskLevel("");
+        setBeneficiaryType("");
+        setUcStatus("");
+        setNegativeListOnly(false);
+        setShowComplianceView(false);
         setViewMode("table");
         break;
       case "vendor_concentration":
       case "vendor_capture":
         setFraudType("vendor_concentration");
         setRiskLevel("");
+        setBeneficiaryType("");
+        setUcStatus("");
+        setNegativeListOnly(false);
+        setShowComplianceView(false);
         setViewMode("table");
         break;
       case "delayed_work":
       case "ghost_project":
         setFraudType("delayed_work");
         setRiskLevel("");
+        setBeneficiaryType("");
+        setUcStatus("");
+        setNegativeListOnly(false);
+        setShowComplianceView(false);
+        setViewMode("table");
+        break;
+      case "sc_earmarked":
+        setBeneficiaryType("SC_HABITATION");
+        setUcStatus("");
+        setNegativeListOnly(false);
+        setRiskLevel("");
+        setFraudType("");
+        setShowComplianceView(true);
+        setViewMode("table");
+        break;
+      case "st_earmarked":
+        setBeneficiaryType("ST_HABITATION");
+        setUcStatus("");
+        setNegativeListOnly(false);
+        setRiskLevel("");
+        setFraudType("");
+        setShowComplianceView(true);
+        setViewMode("table");
+        break;
+      case "uc_overdue":
+        setUcStatus("OVERDUE");
+        setBeneficiaryType("");
+        setNegativeListOnly(false);
+        setRiskLevel("");
+        setFraudType("");
+        setShowComplianceView(true);
+        setViewMode("table");
+        break;
+      case "negative_list":
+        setNegativeListOnly(true);
+        setBeneficiaryType("");
+        setUcStatus("");
+        setRiskLevel("");
+        setFraudType("");
+        setShowComplianceView(true);
         setViewMode("table");
         break;
     }
@@ -158,6 +237,10 @@ export default function WorksExplorerPage() {
     setCategory("");
     setRiskLevel("");
     setFraudType("");
+    setBeneficiaryType("");
+    setUcStatus("");
+    setNegativeListOnly(false);
+    setShowComplianceView(false);
     setSortBy("risk_score");
     setSortOrder("desc");
     setActivePreset(null);
@@ -166,7 +249,7 @@ export default function WorksExplorerPage() {
   };
 
   const hasActiveFilters = Boolean(
-    search || state || riskLevel || fraudType || sortBy !== "risk_score" || sortOrder !== "desc" || activePreset
+    search || state || riskLevel || fraudType || beneficiaryType || ucStatus || negativeListOnly || sortBy !== "risk_score" || sortOrder !== "desc" || activePreset
   );
 
   // Group works by duplicate cluster key (MP + Work Title + Amount)
@@ -223,18 +306,38 @@ export default function WorksExplorerPage() {
           {/* View Mode Toggle */}
           <div className="flex items-center rounded-xl border border-[#D9D2C5] bg-[#F0ECE1] p-1 text-xs">
             <button
-              onClick={() => setViewMode("table")}
+              onClick={() => {
+                setViewMode("table");
+                setShowComplianceView(false);
+              }}
               className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-bold transition-all ${
-                viewMode === "table"
+                viewMode === "table" && !showComplianceView
                   ? "bg-[#6E4529] text-[#F5EBE1] shadow-xs"
                   : "text-stone-700 hover:bg-white hover:text-stone-900"
               }`}
             >
               <Table className="h-3.5 w-3.5" />
-              <span>Table View</span>
+              <span>Forensic Risk View</span>
             </button>
             <button
-              onClick={() => setViewMode("duplicate_groups")}
+              onClick={() => {
+                setViewMode("table");
+                setShowComplianceView(true);
+              }}
+              className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-bold transition-all ${
+                viewMode === "table" && showComplianceView
+                  ? "bg-[#0B132B] text-amber-300 shadow-xs"
+                  : "text-stone-700 hover:bg-white hover:text-stone-900"
+              }`}
+            >
+              <Scale className="h-3.5 w-3.5 text-amber-500" />
+              <span>Statutory Compliance View</span>
+            </button>
+            <button
+              onClick={() => {
+                setViewMode("duplicate_groups");
+                setShowComplianceView(false);
+              }}
               className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-bold transition-all ${
                 viewMode === "duplicate_groups"
                   ? "bg-[#6E4529] text-[#F5EBE1] shadow-xs"
@@ -384,6 +487,59 @@ export default function WorksExplorerPage() {
           >
             <Clock className="h-3.5 w-3.5 text-stone-600" />
             <span>⏳ Delayed / Stalled Work</span>
+          </button>
+
+          {/* Statutory Compliance Presets */}
+          <button
+            type="button"
+            onClick={() => applyPreset("sc_earmarked")}
+            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all cursor-pointer ${
+              activePreset === "sc_earmarked"
+                ? "bg-emerald-900 text-white shadow-xs ring-2 ring-emerald-500"
+                : "border border-emerald-300 bg-emerald-50 text-emerald-800 hover:bg-emerald-100"
+            }`}
+          >
+            <Scale className="h-3.5 w-3.5 text-emerald-600" />
+            <span>🎯 SC Earmarked (≥15%)</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => applyPreset("st_earmarked")}
+            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all cursor-pointer ${
+              activePreset === "st_earmarked"
+                ? "bg-emerald-900 text-white shadow-xs ring-2 ring-emerald-500"
+                : "border border-emerald-300 bg-emerald-50 text-emerald-800 hover:bg-emerald-100"
+            }`}
+          >
+            <Scale className="h-3.5 w-3.5 text-emerald-600" />
+            <span>🌲 ST Earmarked (≥7.5%)</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => applyPreset("uc_overdue")}
+            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all cursor-pointer ${
+              activePreset === "uc_overdue"
+                ? "bg-rose-900 text-white shadow-xs ring-2 ring-rose-500"
+                : "border border-rose-300 bg-rose-50 text-rose-800 hover:bg-rose-100"
+            }`}
+          >
+            <Clock className="h-3.5 w-3.5 text-rose-600" />
+            <span>⚠️ UC Overdue (&gt;30d)</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => applyPreset("negative_list")}
+            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all cursor-pointer ${
+              activePreset === "negative_list"
+                ? "bg-rose-900 text-white shadow-xs ring-2 ring-rose-500"
+                : "border border-rose-300 bg-rose-50 text-rose-800 hover:bg-rose-100"
+            }`}
+          >
+            <ShieldAlert className="h-3.5 w-3.5 text-rose-600" />
+            <span>🚫 Prohibited List (Annex-III)</span>
           </button>
         </div>
       </div>
@@ -571,6 +727,45 @@ export default function WorksExplorerPage() {
               </span>
             )}
 
+            {beneficiaryType && (
+              <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 border border-emerald-300 px-2 py-0.5 text-[11px] font-mono text-emerald-900 font-bold">
+                Earmark: {beneficiaryType === "SC_HABITATION" ? "SC Habitation (≥15%)" : beneficiaryType === "ST_HABITATION" ? "ST Habitation (≥7.5%)" : beneficiaryType}
+                <button
+                  type="button"
+                  onClick={() => setBeneficiaryType("")}
+                  className="hover:text-red-700"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              </span>
+            )}
+
+            {ucStatus && (
+              <span className="inline-flex items-center gap-1 rounded-md bg-rose-50 border border-rose-300 px-2 py-0.5 text-[11px] font-mono text-rose-900 font-bold">
+                UC: {ucStatus}
+                <button
+                  type="button"
+                  onClick={() => setUcStatus("")}
+                  className="hover:text-red-700"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              </span>
+            )}
+
+            {negativeListOnly && (
+              <span className="inline-flex items-center gap-1 rounded-md bg-rose-100 border border-rose-300 px-2 py-0.5 text-[11px] font-mono text-rose-900 font-bold">
+                Annex-III Prohibited Only
+                <button
+                  type="button"
+                  onClick={() => setNegativeListOnly(false)}
+                  className="hover:text-red-700"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              </span>
+            )}
+
             {!hasActiveFilters && (
               <span className="text-[11px] text-stone-400 font-mono italic">
                 Showing all nationwide public works (No filter applied)
@@ -585,6 +780,90 @@ export default function WorksExplorerPage() {
             </strong>
           </div>
         </div>
+
+        {/* Dedicated Statutory Filter Row (Shown when Statutory Compliance View or presets are active) */}
+        {showComplianceView && (
+          <div className="mt-3 pt-3 border-t border-[#E5DFD3] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 bg-stone-50/60 p-3 rounded-xl">
+            <div>
+              <label className="block text-[10px] font-mono font-bold text-stone-600 uppercase mb-1">
+                Beneficiary Earmark (Para 2.5)
+              </label>
+              <select
+                value={beneficiaryType}
+                onChange={(e) => {
+                  setBeneficiaryType(e.target.value);
+                  setActivePreset(null);
+                  setPage(1);
+                }}
+                className="w-full rounded-xl border border-emerald-300 bg-white px-3 py-1.5 text-xs text-stone-800 font-medium focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600 cursor-pointer transition-all"
+              >
+                <option value="">All Beneficiary Habitations</option>
+                <option value="SC_HABITATION">🎯 SC Habitation (≥15% Mandate)</option>
+                <option value="ST_HABITATION">🌲 ST Habitation (≥7.5% Mandate)</option>
+                <option value="GENERAL">General Habitation</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-[10px] font-mono font-bold text-stone-600 uppercase mb-1">
+                UC Compliance (GFR Rule 238)
+              </label>
+              <select
+                value={ucStatus}
+                onChange={(e) => {
+                  setUcStatus(e.target.value);
+                  setActivePreset(null);
+                  setPage(1);
+                }}
+                className="w-full rounded-xl border border-rose-300 bg-white px-3 py-1.5 text-xs text-stone-800 font-medium focus:border-rose-600 focus:outline-none focus:ring-1 focus:ring-rose-600 cursor-pointer transition-all"
+              >
+                <option value="">All Utilization Statuses</option>
+                <option value="OVERDUE">⚠️ Overdue (&gt;30 Days Late)</option>
+                <option value="SUBMITTED">✓ Submitted / Compliant</option>
+                <option value="PENDING">⏳ In Progress / Pending</option>
+              </select>
+            </div>
+
+            <div className="flex flex-col justify-end">
+              <button
+                type="button"
+                onClick={() => {
+                  setNegativeListOnly(!negativeListOnly);
+                  setActivePreset(null);
+                  setPage(1);
+                }}
+                className={`w-full flex items-center justify-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-bold transition-all cursor-pointer ${
+                  negativeListOnly
+                    ? "bg-rose-900 border-rose-900 text-white shadow-xs ring-2 ring-rose-500"
+                    : "border-rose-300 bg-white text-rose-800 hover:bg-rose-50"
+                }`}
+              >
+                <ShieldAlert className="h-3.5 w-3.5 text-rose-600" />
+                <span>Prohibited List (Annex-III)</span>
+              </button>
+            </div>
+
+            <div>
+              <label className="block text-[10px] font-mono font-bold text-stone-600 uppercase mb-1">
+                Statutory Score Sort
+              </label>
+              <select
+                value={`${sortBy}-${sortOrder}`}
+                onChange={(e) => {
+                  const [by, ord] = e.target.value.split("-");
+                  setSortBy(by);
+                  setSortOrder(ord);
+                }}
+                className="w-full rounded-xl border border-[#D9D2C5] bg-white px-3 py-1.5 text-xs text-stone-800 font-medium focus:border-[#6E4529] focus:outline-none focus:ring-1 focus:ring-[#6E4529] cursor-pointer transition-all"
+              >
+                <option value="compliance_score-asc">Score: Non-Compliant First</option>
+                <option value="compliance_score-desc">Score: Compliant First</option>
+                <option value="uc_overdue_days-desc">UC Overdue: Longest Delay</option>
+                <option value="allocation_amount-desc">Amount: Highest First</option>
+              </select>
+            </div>
+          </div>
+        )}
       </MagicCard>
 
       {/* VIEW 1: GROUPED DUPLICATE CLUSTERS VIEW */}
@@ -705,10 +984,21 @@ export default function WorksExplorerPage() {
                   <th className="py-3.5 pl-4">Work ID</th>
                   <th className="py-3.5">Work Recommendation</th>
                   <th className="py-3.5">MP & Jurisdiction</th>
-                  <th className="py-3.5">Agency (IDA)</th>
-                  <th className="py-3.5 text-right">Amount (INR)</th>
-                  <th className="py-3.5 text-center">Status</th>
-                  <th className="py-3.5 text-center">Risk Score</th>
+                  {showComplianceView ? (
+                    <>
+                      <th className="py-3.5 text-center">Beneficiary Earmark</th>
+                      <th className="py-3.5 text-right">Amount (INR)</th>
+                      <th className="py-3.5 text-center">UC Status (Rule 238)</th>
+                      <th className="py-3.5 text-center">Statutory Compliance</th>
+                    </>
+                  ) : (
+                    <>
+                      <th className="py-3.5">Agency (IDA)</th>
+                      <th className="py-3.5 text-right">Amount (INR)</th>
+                      <th className="py-3.5 text-center">Status</th>
+                      <th className="py-3.5 text-center">Risk Score</th>
+                    </>
+                  )}
                   <th className="py-3.5 pr-4 text-center">Audit Actions</th>
                 </tr>
               </thead>
@@ -743,15 +1033,25 @@ export default function WorksExplorerPage() {
                       <td className="py-3.5 max-w-sm">
                         <div className="flex items-center gap-1.5 flex-wrap">
                           <p className="font-semibold text-[#1C1917] line-clamp-1">{w.work}</p>
-                          <span className="rounded bg-[#FAF7F2] border border-[#D9D2C5] px-1.5 py-0.5 text-[10px] font-mono font-bold text-[#6E4529]">
-                            {formatTypologyLabel(w.primary_typology || w.predicted_fraud_type)}
-                          </span>
+                          {showComplianceView && w.is_negative_list_violation ? (
+                            <span className="rounded bg-rose-600 px-1.5 py-0.5 text-[10px] font-mono font-bold text-white">
+                              PROHIBITED (ANNEX-III)
+                            </span>
+                          ) : (
+                            <span className="rounded bg-[#FAF7F2] border border-[#D9D2C5] px-1.5 py-0.5 text-[10px] font-mono font-bold text-[#6E4529]">
+                              {formatTypologyLabel(w.primary_typology || w.predicted_fraud_type)}
+                            </span>
+                          )}
                         </div>
-                        {(w.synthesized_reasons?.[0] || w.risk_reasons?.[0]) && (
+                        {showComplianceView && w.negative_list_reason ? (
+                          <p className="text-[11px] text-rose-700 line-clamp-1 mt-0.5 font-sans font-medium">
+                            • Prohibited Violation: {w.negative_list_reason}
+                          </p>
+                        ) : (w.synthesized_reasons?.[0] || w.risk_reasons?.[0]) ? (
                           <p className="text-[11px] text-red-700 line-clamp-1 mt-0.5 font-sans">
                             • {w.synthesized_reasons?.[0] || w.risk_reasons?.[0]}
                           </p>
-                        )}
+                        ) : null}
                       </td>
                       <td className="py-3.5 text-stone-600">
                         <p className="font-bold text-[#1C1917]">{w.mp_name}</p>
@@ -759,23 +1059,93 @@ export default function WorksExplorerPage() {
                           {w.constituency}, {w.state}
                         </p>
                       </td>
-                      <td className="py-3.5 text-stone-600 max-w-[140px] truncate">{w.ida}</td>
-                      <td className="py-3.5 text-right font-mono font-bold text-[#1C1917] whitespace-nowrap">
-                        ₹{w.allocation_amount.toLocaleString()}
-                      </td>
-                      <td className="py-3.5 text-center whitespace-nowrap">
-                        <span className="rounded-md border border-[#E5DFD3] bg-[#FAF7F2] px-2 py-0.5 text-[10px] font-mono font-medium text-stone-700">
-                          {w.status}
-                        </span>
-                      </td>
-                      <td className="py-3.5 text-center whitespace-nowrap">
-                        <div className="flex flex-col items-center gap-1">
-                          <RiskBadge score={w.overall_risk_score ?? w.risk_score} level={w.risk_level} size="sm" />
-                          {w.investigation_priority && (
-                            <PriorityBadge priority={w.investigation_priority} size="sm" />
-                          )}
-                        </div>
-                      </td>
+                      {showComplianceView ? (
+                        <>
+                          <td className="py-3.5 text-center whitespace-nowrap">
+                            {w.beneficiary_type === "SC_HABITATION" || w.is_sc_earmarked ? (
+                              <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 border border-emerald-300 px-2 py-0.5 text-[11px] font-mono font-bold text-emerald-800">
+                                🎯 SC Habitation
+                              </span>
+                            ) : w.beneficiary_type === "ST_HABITATION" || w.is_st_earmarked ? (
+                              <span className="inline-flex items-center gap-1 rounded-md bg-teal-50 border border-teal-300 px-2 py-0.5 text-[11px] font-mono font-bold text-teal-800">
+                                🌲 ST Habitation
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center rounded-md bg-stone-100 border border-stone-200 px-2 py-0.5 text-[11px] font-mono text-stone-600">
+                                General
+                              </span>
+                            )}
+                          </td>
+                          <td className="py-3.5 text-right font-mono font-bold text-[#1C1917] whitespace-nowrap">
+                            ₹{w.allocation_amount.toLocaleString()}
+                          </td>
+                          <td className="py-3.5 text-center whitespace-nowrap">
+                            {w.uc_status === "OVERDUE" ? (
+                              <div className="flex flex-col items-center">
+                                <span className="inline-flex items-center gap-1 rounded-md bg-rose-100 border border-rose-300 px-2 py-0.5 text-[10px] font-mono font-bold text-rose-900">
+                                  ⚠️ OVERDUE
+                                </span>
+                                <span className="text-[10px] text-rose-700 font-mono mt-0.5">
+                                  {w.uc_overdue_days ?? 30}+ days late
+                                </span>
+                              </div>
+                            ) : w.uc_status === "SUBMITTED" ? (
+                              <span className="inline-flex items-center gap-1 rounded-md bg-emerald-100 border border-emerald-300 px-2 py-0.5 text-[10px] font-mono font-bold text-emerald-900">
+                                ✓ SUBMITTED
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center rounded-md bg-amber-50 border border-amber-200 px-2 py-0.5 text-[10px] font-mono text-amber-800">
+                                ⏳ PENDING
+                              </span>
+                            )}
+                          </td>
+                          <td className="py-3.5 text-center whitespace-nowrap">
+                            <div className="flex flex-col items-center gap-1">
+                              <span className={`font-mono text-xs font-bold ${
+                                (w.compliance_score ?? 100) >= 80 
+                                  ? 'text-emerald-700' 
+                                  : (w.compliance_score ?? 100) >= 60 
+                                  ? 'text-amber-700' 
+                                  : 'text-rose-700'
+                              }`}>
+                                {Math.round(w.compliance_score ?? 100)} / 100
+                              </span>
+                              <div className="flex items-center gap-1 flex-wrap justify-center">
+                                {w.is_negative_list_violation && (
+                                  <span className="rounded bg-rose-600 text-white px-1.5 py-0.2 text-[9px] font-mono font-bold">
+                                    Prohibited
+                                  </span>
+                                )}
+                                {w.is_trust_society_work && (
+                                  <span className="rounded bg-indigo-100 text-indigo-800 border border-indigo-200 px-1.5 py-0.2 text-[9px] font-mono font-semibold">
+                                    Trust/Society
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </td>
+                        </>
+                      ) : (
+                        <>
+                          <td className="py-3.5 text-stone-600 max-w-[140px] truncate">{w.ida}</td>
+                          <td className="py-3.5 text-right font-mono font-bold text-[#1C1917] whitespace-nowrap">
+                            ₹{w.allocation_amount.toLocaleString()}
+                          </td>
+                          <td className="py-3.5 text-center whitespace-nowrap">
+                            <span className="rounded-md border border-[#E5DFD3] bg-[#FAF7F2] px-2 py-0.5 text-[10px] font-mono font-medium text-stone-700">
+                              {w.status}
+                            </span>
+                          </td>
+                          <td className="py-3.5 text-center whitespace-nowrap">
+                            <div className="flex flex-col items-center gap-1">
+                              <RiskBadge score={w.overall_risk_score ?? w.risk_score} level={w.risk_level} size="sm" />
+                              {w.investigation_priority && (
+                                <PriorityBadge priority={w.investigation_priority} size="sm" />
+                              )}
+                            </div>
+                          </td>
+                        </>
+                      )}
                       <td className="py-3.5 pr-4 text-center whitespace-nowrap">
                         <Link
                           href={`/works/${w.id}`}

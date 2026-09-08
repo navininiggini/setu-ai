@@ -27,6 +27,10 @@ def list_works(
     search: Optional[str] = None,
     sort_by: Optional[str] = "risk_score",
     sort_order: Optional[str] = "desc",
+    beneficiary_type: Optional[str] = None,
+    uc_status: Optional[str] = None,
+    negative_list_only: Optional[bool] = None,
+    earmarked_only: Optional[bool] = None,
     db: Session = Depends(get_db)
 ):
     params = WorkFilterParams(
@@ -44,7 +48,11 @@ def list_works(
         fraud_type=fraud_type,
         search=search,
         sort_by=sort_by or "risk_score",
-        sort_order=sort_order or "desc"
+        sort_order=sort_order or "desc",
+        beneficiary_type=beneficiary_type,
+        uc_status=uc_status,
+        negative_list_only=negative_list_only,
+        earmarked_only=earmarked_only,
     )
     return get_works_paginated(db=db, params=params)
 

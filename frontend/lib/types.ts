@@ -128,6 +128,18 @@ export interface WorkItem {
   primary_reason?: string;
   secondary_reason?: string;
   tertiary_reason?: string;
+  // Statutory Compliance fields
+  beneficiary_type?: string;
+  is_sc_earmarked?: boolean;
+  is_st_earmarked?: boolean;
+  uc_status?: string;
+  uc_submitted_date?: string;
+  uc_overdue_days?: number;
+  is_negative_list_violation?: boolean;
+  negative_list_reason?: string;
+  is_trust_society_work?: boolean;
+  compliance_flags?: string[];
+  compliance_score?: number;
 }
 
 export interface RadarSignal {

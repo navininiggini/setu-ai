@@ -82,6 +82,36 @@ class RAGKnowledgeBase:
                 "constituency boundaries, exempt from routine pre-sanction milestone pacing."
             ),
             "mitigation_factor": "Work executed under notified disaster relief is exempt from standard peer delivery delays."
+        },
+        "MPLADS_2023_SC_ST_MANDATE": {
+            "title": "MPLADS Guidelines 2023 - Mandatory SC/ST Habitation Earmarking (Para 2.5)",
+            "threshold": "15.0% SC, 7.5% ST (Combined 22.5% minimum)",
+            "statutory_mandate": (
+                "Every MP must recommend works costing at least 15% of annual MPLADS entitlement (Rs. 75 Lakhs) "
+                "for areas inhabited by Scheduled Castes and at least 7.5% (Rs. 37.5 Lakhs) for Scheduled Tribes. "
+                "Shortfalls require explicit State Nodal Department and MoSPI compliance reporting."
+            ),
+            "violation_indicator": "Annual MP portfolio shortfall in SC earmarking (<15.0%) or ST earmarking (<7.5%)."
+        },
+        "MPLADS_2023_UC_COMPLIANCE": {
+            "title": "MPLADS Guidelines 2023 - Utilization Certificate (UC) Mandate (Para 4.6 & GFR Rule 238)",
+            "threshold": "30 days post-completion",
+            "statutory_mandate": (
+                "Implementing Agencies must furnish Utilization Certificates (UCs) within 30 days of physical work completion. "
+                "District Authority must submit annual consolidated UC (Annexure-VIII) to MoSPI. "
+                "Failure to furnish UCs legally blocks subsequent tranche releases."
+            ),
+            "violation_indicator": "Work marked completed with no UC furnished beyond statutory 30-day window."
+        },
+        "MPLADS_2023_NEGATIVE_LIST": {
+            "title": "MPLADS Guidelines 2023 - Prohibited Negative Works List (Annexure-III & Para 3.14)",
+            "threshold": "Strict Prohibition / Rs. 50L Trust Ceiling",
+            "statutory_mandate": (
+                "MPLADS funds cannot be utilized for places of worship, memorials/statues, private/commercial assets, "
+                "cash assistance, temporary structures, or land acquisition. Works for registered Societies/Trusts "
+                "are subject to a strict statutory ceiling of Rs. 50.0 Lakhs per MP per financial year."
+            ),
+            "violation_indicator": "Work matches prohibited categories or Trust/Society expenditure exceeds Rs. 50L ceiling."
         }
     }
 

@@ -15,3 +15,8 @@ class Constituency(Base):
     flagged_works_count = Column(Integer, default=0)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
+
+    # Statutory reservation & demographics (Census / Delimitation Commission)
+    reservation_status = Column(String(20), default="GENERAL", index=True)  # GENERAL | SC_RESERVED | ST_RESERVED
+    sc_population_pct = Column(Float, nullable=True)
+    st_population_pct = Column(Float, nullable=True)

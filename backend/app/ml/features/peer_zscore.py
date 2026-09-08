@@ -9,13 +9,25 @@ def compute_peer_zscores(df: pd.DataFrame) -> pd.DataFrame:
     """
     df = df.copy()
 
-    # State z-score
+    # State + Work Type joint peer z-score (prevents comparing hospitals with hand pumps)
     if "ALLOC_ZSCORE_STATE" not in df.columns or df["ALLOC_ZSCORE_STATE"].isnull().any():
         if "STATE_MEAN_ALLOC" not in df.columns or df["STATE_MEAN_ALLOC"].isnull().any():
+            has_work_type = "WORK_TYPE" in df.columns and df["WORK_TYPE"].notna().sum() > 0
+            group_keys = ["STATE", "WORK_TYPE"] if has_work_type else ["STATE"]
+            
+            group_mean = df.groupby(group_keys)["ALLOCATION_AMOUNT"].transform("mean")
+            group_std = df.groupby(group_keys)["ALLOCATION_AMOUNT"].transform("std").replace(0, np.nan)
+            
+            # Robust fallback for singleton groups or zero variance: fall back to STATE-level std/mean
             state_mean = df.groupby("STATE")["ALLOCATION_AMOUNT"].transform("mean")
             state_std = df.groupby("STATE")["ALLOCATION_AMOUNT"].transform("std").replace(0, np.nan).fillna(1.0)
-            df["STATE_MEAN_ALLOC"] = state_mean
-            df["STATE_STD_ALLOC"] = state_std
+            
+            group_mean = group_mean.fillna(state_mean)
+            group_std = group_std.fillna(state_std).fillna(1.0)
+            
+            df["STATE_MEAN_ALLOC"] = group_mean
+            df["STATE_STD_ALLOC"] = group_std
+            
         df["ALLOC_ZSCORE_STATE"] = (df["ALLOCATION_AMOUNT"] - df["STATE_MEAN_ALLOC"]) / df["STATE_STD_ALLOC"]
         df["ALLOC_ZSCORE_STATE"] = pd.to_numeric(df["ALLOC_ZSCORE_STATE"], errors="coerce").fillna(0.0).clip(lower=-3.0, upper=10.0)
 
