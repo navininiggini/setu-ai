@@ -1,0 +1,9 @@
+{
+  "language": {
+    "flow": "Left-to-right or hierarchical top-to-bottom pipeline",
+    "connectors": "1.5px solid hairline lines with crisp chevron markers",
+    "nodes": "Rectangular framed cards with distinct title and formula areas",
+    "radar_charts": "Minimal polygon overlays with clean labeled axes (Financial, Geospatial, Procurement, etc.)",
+    "network_graphs": "Clean node-link bipartite layouts: Agencies (rectangles) connecting to Works (circles) to Vendors (diamonds)"
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "checkpoint": "CHECKPOINT 1 — Human Selection of Narrative Direction",
+  "timestamp": "2026-09-26T01:28:00+05:30",
+  "options": [
+    {
+      "id": "STRATEGY-A",
+      "title": "The Pre-Sanction Sovereign Gatekeeper",
+      "subtitle": "Administrative & Operational Authority Direction",
+      "thesis": "Public audit intervention must shift from an 18-month post-mortem CAG autopsy to a sub-200ms pre-sanction decision-support gate that shields the District Magistrate before financial sanctions are signed.",
+      "tone": "Authoritative, administrative, practical, governance-first",
+      "headline_style": "Active administrative declarations (e.g. 'Shift Public Audit from 18-Month Autopsy to 200-Millisecond Pre-Sanction Triage')",
+      "information_density": "Medium-High, structured operational flows, decision gates, and role clarity",
+      "story_arc": "Administrative Pressure on DMs -> The Pre-Sanction Triage Gate -> 8 Parallel Evidence Models -> Zero-Disruption Feasibility -> Tangible District & National Recovery -> Statutory & Regulatory Backing",
+      "slide_sequence": [
+        {"slide": 1, "headline": "SETU: Pre-Sanction Sovereign Gatekeeper for MPLADS Public Outlay"},
+        {"slide": 2, "headline": "Post-Mortem Audits Arrive 18 Months Too Late: The Pre-Sanction Gatekeeping Paradigm"},
+        {"slide": 3, "headline": "Sub-200ms Decision Pipeline: 8 Parallel Domain Models & Risk Fusion v2.0"},
+        {"slide": 4, "headline": "Zero-Friction Drop-in to e-SAKSHI: Commodity CPU Feasibility & Human-in-the-Loop Safeguards"},
+        {"slide": 5, "headline": "Protecting 589 District Magistrates: Quantified Capital Preservation Across 4 Governance Tiers"},
+        {"slide": 6, "headline": "Statutory Authority: Grounded in MoSPI 2023 Guidelines, CVC Directives & Open Architecture"}
+      ],
+      "strength": "Directly addresses the exact operational pain point of the primary sanctioning authority (the District Collector), making the solution instantly credible and adoptable by MoSPI.",
+      "risk": "Requires deliberate emphasis on ML rigor to ensure technical evaluators appreciate the advanced mathematical foundations."
+    },
+    {
+      "id": "STRATEGY-B",
+      "title": "The Mathematical Forensic Triangulation",
+      "subtitle": "Algorithmic & Technical Superiority Direction",
+      "thesis": "Heuristic thresholds and single black-box classifiers fail against sophisticated procurement syndicates. SETU achieves definitive fraud interception by orthogonally fusing 7 independent econometric, spatial, and network algorithms with an explainable XGBoost classifier.",
+      "tone": "Rigorous, analytical, mathematical, cutting-edge AI",
+      "headline_style": "Technical and forensic precision (e.g. 'When Single-Model Audits Fail, Orthogonal Evidence Triangulation Eliminates False Positives')",
+      "information_density": "High, formulas, model architectures, Benford distributions, bipartite graph schemas, and latency benchmarks",
+      "story_arc": "The Failure of Single-Signal Heuristics -> Orthogonal Triangulation Architecture -> Mathematical Pipeline (HDBSCAN, Benford, NetworkX, Fusion v2.0) -> Lightweight CPU Optimization (159-210ms) -> Objective Multi-Tier Detection -> Peer-Reviewed Foundations (Nature MI, ACM KDD)",
+      "slide_sequence": [
+        {"slide": 1, "headline": "SETU: Multi-Signal Forensic AI Triangulation for Public Infrastructure Expenditure"},
+        {"slide": 2, "headline": "Cartels Exploit Isolated Rules: Orthogonal Multi-Domain Triangulation"},
+        {"slide": 3, "headline": "The 8-Model Engine: Mathematical Formulations, Network Graphs & Risk Fusion Formula"},
+        {"slide": 4, "headline": "Sub-200ms CPU Inference: Algorithmic Calibration, District Median Baselines & Zero GPU Lock-in"},
+        {"slide": 5, "headline": "Empirical Detection Yield: Breaking Monopolistic Cartels (HHI > 2500) and Sub-5L Smurfing"},
+        {"slide": 6, "headline": "Scientific Grounding: Tree SHAP Explainability, Graph Anomaly Research & Reproducible Repository"}
+      ],
+      "strength": "Overwhelming technical depth and algorithmic defensibility that sets the project far apart from standard hackathon wrappers.",
+      "risk": "Requires careful layout and typography to prevent visual overwhelm for non-technical jury members."
+    },
+    {
+      "id": "STRATEGY-C",
+      "title": "The Four-Tier Sovereign Command Center",
+      "subtitle": "Hierarchical Stakeholder & Institutional Governance Direction",
+      "thesis": "Public scheme leakages persist because information is trapped in bureaucratic silos between Delhi, state capitals, district offices, and constituencies. SETU unifies all 4 tiers into one closed-loop governance system.",
+      "tone": "Strategic, institutional, systemic, executive",
+      "headline_style": "Systemic and mission-driven (e.g. 'From Fractured Paper Audits to Unified Sovereign Oversight Across 589 Districts')",
+      "information_density": "Medium, visual hierarchy maps, national choropleths, treemaps, and workflow swimlanes",
+      "story_arc": "The Four Disconnected Silos -> The Scoped Sovereign Architecture -> The Intelligence Engine Beneath the Hood -> Seamless Bureaucratic Integration -> Stakeholder Value & Real-World Pilot Cases -> Statutory Alignment",
+      "slide_sequence": [
+        {"slide": 1, "headline": "SETU: Sovereign Four-Tier Intelligence Architecture for MPLADS Governance"},
+        {"slide": 2, "headline": "Breaking Administrative Silos: Tailored Decision Support for Ministry, State, DM & MP"},
+        {"slide": 3, "headline": "Under the Hood: Real-Time Ingestion, 8 Evidence Streams & Calibrated Risk Triage"},
+        {"slide": 4, "headline": "Drop-in Operational Feasibility: Integrated with e-SAKSHI with Zero Workflow Disruption"},
+        {"slide": 5, "headline": "Empowering Every Tier: Macro Surveillance, Monopoly Prevention & Rapid Civic Delivery"},
+        {"slide": 6, "headline": "National Governance Blueprint: CVC Protocols, PAC Dossiers & Open Sovereign Codebase"}
+      ],
+      "strength": "Exceptional alignment with government evaluators and senior civil servants who prioritize institutional workflow and jurisdictional hierarchy.",
+      "risk": "Must ensure the ML models are clearly spotlighted so it doesn't look like purely a dashboard project."
+    },
+    {
+      "id": "STRATEGY-D",
+      "title": "The Fiscal Leakage Interceptor",
+      "subtitle": "Evidence-First, Capital Preservation & ROI Direction",
+      "thesis": "MPLADS loses hundreds of crores annually to subtle tender splitting and localized contractor cartels. SETU provides empirical, mathematically undeniable proof of fraud, demonstrated through live audit pilots that intercept waste before disbursement.",
+      "tone": "Investigative, evidence-driven, urgent, high-ROI",
+      "headline_style": "Hard-hitting empirical evidence statements (e.g. 'Intercepting Rs 4.92 Lakh Tender Smurfing Before Treasury Disbursement: Field-Proven Forensic Evidence')",
+      "information_density": "High, case studies, rupees saved, HHI indices, delta distributions, and quantitative comparison matrices",
+      "story_arc": "The Rs 5,000 Cr Exposure (Smurfing, Cartels, Dwell Sinks) -> The Evidence-Based Interception Solution -> Forensic Analytics (Benford, HHI, Overcommitment) -> Economic Viability & Infinite ROI -> Real Pilot Case Studies (Satna Rs 1.84 Cr, Mirzapur Rs 9.31 Cr) -> CVC & CAG Legal Backing",
+      "slide_sequence": [
+        {"slide": 1, "headline": "SETU: Pre-Disbursal Capital Preservation & Cartel Interception Platform"},
+        {"slide": 2, "headline": "Unmasking Covert Leakages: Artificial Tender Slicing and Single-Bid Collusion"},
+        {"slide": 3, "headline": "The Forensic Audit Engine: Econometric Indices, Smurfing Radar & Tree SHAP Evidence"},
+        {"slide": 4, "headline": "Infinite ROI: Zero Recurring Software Licenses with Immediate Multi-Crore Fiscal Recovery"},
+        {"slide": 5, "headline": "Proven in the Field: Intercepting Rs 1.84 Cr in Satna & Exposing Rs 9.31 Cr Cross-Border Cartels"},
+        {"slide": 6, "headline": "Legal Audit Dossiers: Enforcing GFR 155, CVC Directives & Evidence Admissibility"}
+      ],
+      "strength": "Irrefutable evidence and ROI arguments that make the solution feel essential, urgent, and immediately cost-justified.",
+      "risk": "Must maintain professional, constructive institutional language rather than sounding accusatory."
+    },
+    {
+      "id": "STRATEGY-E",
+      "title": "The Full-Lifecycle Sovereign Trust Ecosystem",
+      "subtitle": "Frontier Roadmap & SETU 2.0 Horizon Direction",
+      "thesis": "Pre-sanction gatekeeping is the critical first line of defense, but guaranteed infrastructure delivery requires closed-loop verification across the entire lifecycle—fusing today's 8-model AI engine with satellite Earth observation (ISRO Bhuvan), Indic-LLM document parsing, and blockchain smart escrow.",
+      "tone": "Visionary, transformative, comprehensive, technologically ambitious",
+      "headline_style": "Transformative and horizon-expanding (e.g. 'From Pre-Sanction Gatekeeping to Satellite Physical Verification: The Sovereign Public Trust Ecosystem')",
+      "information_density": "High, lifecycle diagrams, satellite verification workflows, Indic-LLM architecture, and 4-phase timeline matrices",
+      "story_arc": "The Complete Public Works Failure (Sanction to Ghost Project) -> The Dual-Stage Trust Architecture (Pre-Sanction AI + Post-Sanction Physical Reality) -> 8 Parallel Models + Satellite Change Detection -> High Feasibility with Phased Roadmap -> Multi-Dimensional National Impact -> Sovereign Research & Open Standards",
+      "slide_sequence": [
+        {"slide": 1, "headline": "SETU: AI-Powered Full-Lifecycle Sovereign Trust Platform for Public Infrastructure"},
+        {"slide": 2, "headline": "Beyond Paper Sanctions: The Integrated Pre-Sanction Gate & Satellite Verification Ecosystem"},
+        {"slide": 3, "headline": "Dual-Stage Intelligence: 8 Parallel Inference Models + ISRO Bhuvan Optical Change Detection"},
+        {"slide": 4, "headline": "Practical Phased Rollout: Current Working Prototype (Phase 1) to Sovereign Blockchain Escrow (Phase 4)"},
+        {"slide": 5, "headline": "Eliminating Ghost Works: Protecting Public Funds from Tender Slicing to Physical Pavement"},
+        {"slide": 6, "headline": "Sovereign Innovation Architecture: Grounded in Statutory Directives, AI Research & Open Science"}
+      ],
+      "strength": "Demonstrates extraordinary hackathon vision, technical superiority, and an unassailable future roadmap that leaves competitors far behind.",
+      "risk": "Must clearly establish that Phase 1 (8 models, sub-200ms engine, live portal) is already fully implemented and working today."
+    }
+  ]
+}

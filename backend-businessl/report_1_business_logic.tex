@@ -1,0 +1,513 @@
+\documentclass[11pt,a4paper]{article}
+
+% --- Essential Packages ---
+\usepackage[top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsfonts,mathtools,bm}
+\usepackage{booktabs,tabularx,longtable,array,multirow}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{microtype}
+\usepackage{hyperref}
+
+% --- Robust Unicode & Symbol Handling (pdflatex & xelatex/lualatex compatible) ---
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[utf8]{inputenc}
+  \usepackage[T1]{fontenc}
+  \usepackage{lmodern}
+  \usepackage{textcomp}
+  \usepackage{newunicodechar}
+  \DeclareRobustCommand{\INR}{\textbf{Rs.\,}}
+  \newunicodechar{₹}{\textbf{Rs.\,}}
+  \newunicodechar{·}{\ensuremath{\cdot}}
+  \newunicodechar{×}{\ensuremath{\times}}
+  \newunicodechar{σ}{\ensuremath{\sigma}}
+  \newunicodechar{–}{--}
+  \newunicodechar{—}{---}
+  \newunicodechar{←}{\ensuremath{\leftarrow}}
+  \newunicodechar{→}{\ensuremath{\rightarrow}}
+  \newunicodechar{↓}{\ensuremath{\downarrow}}
+  \newunicodechar{−}{\ensuremath{-}}
+  \newunicodechar{≥}{\ensuremath{\ge}}
+  \newunicodechar{≤}{\ensuremath{\le}}
+  \newunicodechar{┌}{\textsf{+}}
+  \newunicodechar{┐}{\textsf{+}}
+  \newunicodechar{└}{\textsf{+}}
+  \newunicodechar{┘}{\textsf{+}}
+  \newunicodechar{─}{\textsf{-}}
+  \newunicodechar{│}{\textsf{|}}
+  \newunicodechar{├}{\textsf{+}}
+  \newunicodechar{┬}{\textsf{+}}
+  \newunicodechar{►}{\ensuremath{\blacktriangleright}}
+  \newunicodechar{◄}{\ensuremath{\blacktriangleleft}}
+  \newunicodechar{ï}{\"{i}}
+\else
+  \usepackage{fontspec}
+  \DeclareRobustCommand{\INR}{₹}
+\fi
+
+% --- Code Listing Configuration ---
+\definecolor{codegreen}{rgb}{0,0.55,0.2}
+\definecolor{codegray}{rgb}{0.45,0.45,0.45}
+\definecolor{codepurple}{rgb}{0.55,0,0.75}
+\definecolor{codeblue}{rgb}{0.05,0.2,0.65}
+\definecolor{backcolour}{rgb}{0.97,0.97,0.99}
+
+\lstset{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen}\itshape,
+    keywordstyle=\color{codeblue}\bfseries,
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=6pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    frame=single,
+    rulecolor=\color{gray!30},
+    literate=
+      {┌}{{+}}1 {┐}{{+}}1 {└}{{+}}1 {┘}{{+}}1 {─}{{-}}1 {│}{{|}}1
+      {├}{{+}}1 {┬}{{+}}1 {►}{{>}}1 {◄}{{<}}1 {↓}{{v}}1 {→}{{->}}2
+      {←}{{<-}}2 {₹}{{Rs.}}2 {·}{{.}}1 {×}{{x}}1 {–}{{-}}1 {—}{{--}}1
+      {≥}{{>=}}1 {≤}{{<=}}1
+}
+
+% --- Custom Column Types ---
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% --- Hyperref Setup ---
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!70!black,
+    citecolor=blue!70!black,
+    filecolor=magenta,      
+    urlcolor=blue!70!black,
+}
+
+% --- Header & Footer ---
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\small\textit{Smart Evidence-based Triangulation for Uncovering Anomalies in MPLADS}}
+\lhead{\small\textit{SETU --- Deep Technical Architecture}}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% --- Title Metadata ---
+\title{\Large\textbf{SETU --- Report 1: Business Logic \& System Purpose}\\[0.4em]\large\textit{Smart Evidence-based Triangulation for Uncovering Anomalies in MPLADS}}
+\author{\textbf{SETU AI Core Team}\\Smart India Hackathon 2026 --- Ministry of Statistics and Programme Implementation (MoSPI)}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\vspace{1.5em}
+\hrule
+\vspace{1.5em}
+
+\clearpage
+\section*{REPORT 1 --- BUSINESS LOGIC \& SYSTEM PURPOSE}
+\addcontentsline{toc}{section}{REPORT 1 --- BUSINESS LOGIC \& SYSTEM PURPOSE}
+
+\section{What This Report Teaches}
+
+This report explains \textbf{why SETU exists}, \textbf{what real-world problem it solves}, \textbf{what the system actually does when given input}, \textbf{the core entities defined mathematically}, \textbf{how the business objective translates into a mathematical objective}, and the \textbf{complete end-to-end system architecture}. No ML internals yet --- purely business logic and architecture.
+
+\vspace{1em}\hrule\vspace{1em}
+
+\section{Topic 1 --- The Real-World Problem}
+
+\subsection{Business Meaning}
+
+India's \textbf{Member of Parliament Local Area Development Scheme (MPLADS)} allocates \INR{}5 crore per year to every Member of Parliament to fund local infrastructure --- handpumps, anganwadis, rural roads, community halls, school buildings, sanitation works. Each MP recommends works to District Magistrates (DMs) who sanction, tender, and disburse funds to Implementing District Agencies (IDAs) and contractors.
+
+\textbf{The monitoring crisis:}
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt, topsep=3pt]
+\item Thousands of concurrent active works across hundreds of districts
+\item Hundreds of MPs, thousands of contractors, 1,238 unique IDAs
+\item Manual audit by District Magistrates is impossible at this scale
+\item By the time a ghost project or overpricing fraud is noticed, funds are already released and irrecoverable
+\end{itemize}
+
+\textbf{Frauds that occur in practice (each is a distinct anomaly typology):}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l Y}
+\toprule
+\textbf{Fraud Type} & \textbf{What Happens} \\
+\midrule
+\texttt{GHOST\_PROJECT} & Money fully disbursed; no physical work ever done \\
+\texttt{COST\_OVERRUN} & Project bill-of-quantities inflated 3× peer median; contractor pockets difference \\
+\texttt{BID\_RIGGING} & Contractor cartel submits identical/near-identical bids to ensure predetermined winner \\
+\texttt{PAYMENT\_STRUCTURING} & Large \INR{}15L+ work split into sub-\INR{}5L fragments to bypass GFR Rule 161 open-tender mandate \\
+\texttt{VENDOR\_CAPTURE} & One MP routes 70\%+ of constituency MPLADS funds to a single politically-connected IDA \\
+\texttt{ABANDONED\_WORK} & Financial disbursement is 80\% complete but physical ground progress is near zero \\
+\texttt{ROUND\_TRIPPING\_VENDOR} & Same contractor wins consecutive works across multiple MPs in a coordinated arrangement \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+\textbf{The decision that must be made, weekly:}
+\begin{tcolorbox}[colback=blue!4!white,colframe=blue!60!black,arc=1.5mm,boxrule=0.7pt,left=8pt,right=8pt,top=6pt,bottom=6pt]
+\textit{"Of the 5,000+ currently active MPLADS works, which should the District Magistrate's field inspection team physically visit THIS week?"}\\
+\end{tcolorbox}
+
+\textbf{Investigator bandwidth constraint:} A DM's office can realistically field-inspect ~20–30 projects per month. Without intelligent prioritization, they inspect randomly --- not by statistical risk signal.
+
+\textbf{Information available:} Sanction records, disbursement installment transactions, physical progress reports, GPS geotags, Measurement Book (MB) entries, contractor registration records, Utilization Certificates (UCs), tender documentation.
+
+\textbf{Information NOT available at inference time:}
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt, topsep=3pt]
+\item Ground-truth fraud labels (only present for the synthetic evaluation benchmark)
+\item Real-time GPS verification of physical assets
+\item Inter-state contractor ownership linkages
+\end{itemize}
+
+\vspace{1em}\hrule\vspace{1em}
+
+\section{Topic 2 --- What the System Actually Does}
+
+\subsection{One-Sentence Summary}
+
+\begin{tcolorbox}[colback=blue!4!white,colframe=blue!60!black,arc=1.5mm,boxrule=0.7pt,left=8pt,right=8pt,top=6pt,bottom=6pt]
+\textbf{"SETU takes every MPLADS project, runs it through 7 independent anomaly detectors and 1 supervised model, triangulates all signals into a risk score (0–100), tells investigators WHY a project is suspicious in plain English, and assigns a triage priority (IMMEDIATE / PRIORITY / ROUTINE)."}\\
+\end{tcolorbox}
+
+\subsection{Complete Business Logic --- Step by Step}
+
+\textbf{Step 1 --- Data Ingestion \& Validation}
+12 relational CSV datasets (5,000 projects, 13,866 payment records, etc.) are loaded. Every FK relationship (16 total) is checked for integrity. Zero orphan records tolerated.
+
+\textbf{Step 2 --- Aggregation (The Many-to-One Problem)}
+Raw payment installment rows (13,866 $\rightarrow$ 29 features per project) and progress inspection records are collapsed into one row per project. ML models require exactly one feature vector per project.
+
+\textbf{Step 3 --- Feature Join}
+All 12 tables are left-joined on \texttt{project\_id} $\rightarrow$ \texttt{project\_master\_features.csv}: 5,000 rows × 239 columns. Identity strings stripped. Labels permanently quarantined.
+
+\textbf{Step 4 --- Feature Audit \& Registry}
+239 columns classified into NUMERICAL, CATEGORICAL, TEMPORAL, IDENTIFIER, EXCLUDE. A controlled feature registry tells each model which columns it may legally use.
+
+\textbf{Step 5 --- 7 Independent Domain Models (Isolation Forest per domain)}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l l l Y}
+\toprule
+\textbf{Model} & \textbf{Domain} & \textbf{Algorithm} & \textbf{Primary Signal} \\
+\midrule
+M1 & Financial & Isolation Forest + Peer MAD & Cost overpricing, disbursement velocity \\
+M2 & Geospatial & Spatial DBSCAN / LOF & Geographic clustering anomalies \\
+M3 & Procurement & Isolation Forest & Tender rigging, single-bid anomalies \\
+M4 & Contractor/Agency & Entity aggregation & Vendor capture, capacity strain \\
+M5 & Payment & Sequential anomaly & Smurfing, structuring near statutory caps \\
+M6 & Progress & Trajectory slope & Ghost projects, physical-financial gap \\
+M7 & Graph & PageRank + Degree Centrality & MP-IDA collusive networks \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+Models are \textbf{not allowed to see each other's outputs during training} --- this guarantees independent evidence signals.
+
+\textbf{Step 6 --- Supervised Calibrated Predictor (Model 8, XGBoost)}
+Takes all 7 domain scores + context $\rightarrow$ \texttt{fraud\_probability} (0.0–1.0) + \texttt{predicted\_typology}. SHAP attributions explain each prediction.
+
+\textbf{Step 7 --- Risk Fusion Engine}
+Triangulates all 8 signals $\rightarrow$ \texttt{overall\_risk\_score} (0–100), \texttt{risk\_level}, \texttt{investigation\_priority}, \texttt{synthesized\_reasons[1..5]}.
+
+\textbf{Step 8 --- RAG Hard Negative Resolution}
+Cross-references flagged works against statutory knowledge: flood moratoriums, Election Commission MCC blackouts, Schedule of Rates benchmarks, statutory public agency designations. Scores calibrated downward for legitimate outliers.
+
+\textbf{Step 9 --- API Serving + Frontend Dashboard}
+FastAPI exposes 12 REST endpoints. Next.js dashboard provides ranked risk queue, 7-domain radar charts, network graph, full SHAP evidence dossiers.
+
+\vspace{1em}\hrule\vspace{1em}
+
+\section{Topic 3 --- Core Entities (Mathematical Definitions)}
+
+\subsection{Entity Hierarchy}
+
+\begin{tcolorbox}[colback=gray!5!white,colframe=gray!60!black,arc=1mm,boxrule=0.6pt,left=6pt,right=6pt,top=6pt,bottom=6pt]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,breaklines=true,columns=flexible]
+MP (Recommends)
+    │
+    └─► Project  ◄── Constituency (Jurisdiction)
+             │
+             ├── Financials (1:1)
+             ├── Payments   (1:N)  ──► PaymentAggregation (1:1 after aggregation)
+             ├── Progress   (1:N)  ──► ProgressAggregation (1:1 after aggregation)
+             ├── Procurement (1:1)
+             ├── Contract   (1:1)
+             ├── Documents  (1:1)
+             ├── Contractor  (N:1, 400 unique)
+             ├── Agency/IDA  (N:1, 1,238 unique)
+             └── District    (N:1, 619 unique)
+\end{lstlisting}
+\end{tcolorbox}
+
+
+\subsection{Mathematical Definitions}
+
+\textbf{Project Feature Vector:}
+
+\[ P_i = [p_1, p_2, \ldots, p_{239}] \in \mathbb{R}^{239} \]
+
+After feature audit: 142 numerical, 19 categorical (one-hot), 15 temporal (elapsed-day intervals), 56 EXCLUDED.
+
+\textbf{Domain Anomaly Score:}
+\[ s_k(P_i) \in [0.0, 100.0], \quad k \in \{1, 2, 3, 4, 5, 6, 7\} \]
+
+\textbf{Supervised Fraud Probability:}
+\[ \hat{p}_\text{fraud}(P_i) \in [0.0, 1.0] \]
+
+\textbf{Overall SETU Risk Score:}
+\[ R(P_i) \in [0.0, 100.0] \]
+
+\textbf{Risk Tier:}
+\[ T(P_i) \in \{\text{CRITICAL}, \text{HIGH}, \text{MEDIUM}, \text{LOW}\} \]
+
+\textbf{Investigation Priority:}
+\[ \Pi(P_i) \in \{\text{IMMEDIATE}, \text{PRIORITY}, \text{ROUTINE}\} \]
+
+\textbf{Reason Trace Vector:}
+\[ \mathbf{r}(P_i) = [r_1, r_2, r_3, r_4, r_5] \]
+
+Each $r_j$ is a ranked human-readable audit string.
+
+\vspace{1em}\hrule\vspace{1em}
+
+\section{Topic 4 --- Business Objective $\rightarrow$ Mathematical Objective}
+
+\subsection{Why Accuracy Is the Wrong Metric}
+
+Dataset has ~20\% fraud prevalence. A naïve "all normal" model achieves 80\% accuracy but is completely useless operationally. SETU instead optimizes \textbf{fraud concentration in the investigation queue}.
+
+\subsection{Formal Mathematical Objective}
+
+\[ \text{Maximize} \quad \text{Enrichment@}k = \frac{\text{FraudRate}(\text{Top-}k\% \text{ by } R(P_i))}{\text{BaseFraudRate}_\text{population}} \]
+
+Subject to:
+\[ \text{FalsePositiveRate}(\text{is\_hard\_negative}, \text{Top-}k\%) \leq \varepsilon \]
+
+\subsection{The Risk Fusion Formula (from \texttt{risk\_fusion\_engine.py} L78)}
+
+\[ R(P_i) = 0.40 \cdot (\hat{p}_\text{fraud} \times 100) + 0.35 \cdot \bar{s}_\text{weighted} + 0.25 \cdot \max_{k=1}^{7}(s_k) \]
+
+Where:
+\[ \bar{s}_\text{weighted} = \frac{\sum_{k=1}^{7} w_k \cdot s_k}{\sum_{k=1}^{7} w_k} \]
+
+\textbf{Domain weights $w_k$:}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l l Y}
+\toprule
+\textbf{Domain} & \textbf{Weight} & \textbf{Rationale} \\
+\midrule
+Contractor/Agency & 0.18 & Vendor capture is most systemic fraud vector \\
+Financial & 0.15 & Direct disbursement overpricing \\
+Procurement & 0.15 & Tender rigging at source \\
+Payment & 0.15 & Structuring and disbursement manipulation \\
+Graph Network & 0.15 & Collusive entity relationships \\
+Progress & 0.12 & Ghost/abandoned project indicator \\
+Geospatial & 0.10 & Geographic clustering \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+\textbf{Acute override rules (corroboration gates):}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l Y}
+\toprule
+\textbf{Condition} & \textbf{Override} \\
+\midrule
+$\hat{p}_\text{fraud} \geq 0.70$ & $R(P_i) \geq 82.0$ $\rightarrow$ CRITICAL guaranteed \\
+$\max_k(s_k) \geq 88.0$ AND $\hat{p} \geq 0.15$ & $R(P_i) \geq 82.0$ $\rightarrow$ CRITICAL guaranteed \\
+$\hat{p} \geq 0.35$ OR ($\max_k \geq 68.0$ AND $\hat{p} \geq 0.08$) & $R \geq 65.0$ $\rightarrow$ HIGH guaranteed \\
+$\hat{p} \geq 0.12$ OR ($\max_k \geq 48.0$ AND $\hat{p} \geq 0.05$) & $R \geq 42.0$ $\rightarrow$ MEDIUM guaranteed \\
+$\max_k \geq 88.0$ alone (no supervised corroboration) & $R \geq 38.0$ $\rightarrow$ awareness floor only \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+\textbf{Risk Tier Boundaries:}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l l l Y}
+\toprule
+\textbf{Score} & \textbf{Tier} & \textbf{Priority} & \textbf{Action} \\
+\midrule
+$R \geq 80$ or $\hat{p} \geq 0.70$ & CRITICAL & IMMEDIATE & Administrative freeze + joint inspection \\
+$60 \leq R < 80$ or $\hat{p} \geq 0.35$ & HIGH & PRIORITY & District Magistrate desk audit \\
+$40 \leq R < 60$ or $\hat{p} \geq 0.12$ & MEDIUM & ROUTINE & Flagged documentation requirements \\
+$R < 40$ & LOW & ROUTINE & Standard monitoring \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+\textbf{Measured enrichment (Financial Model alone --- Stage 2B):}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l l l Y}
+\toprule
+\textbf{Subset} & \textbf{Projects} & \textbf{Fraud Rate} & \textbf{Enrichment} \\
+\midrule
+Top 1\% & 50 & 86.0\% & \textbf{4.28×} \\
+Top 5\% & 250 & 68.8\% & \textbf{3.42×} \\
+Top 10\% & 500 & 64.8\% & \textbf{3.22×} \\
+Population baseline & 5,000 & 20.1\% & 1.00× \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+\vspace{1em}\hrule\vspace{1em}
+
+\section{Topic 5 --- End-to-End System Overview}
+
+\begin{tcolorbox}[colback=gray!5!white,colframe=gray!60!black,arc=1mm,boxrule=0.6pt,left=6pt,right=6pt,top=6pt,bottom=6pt]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,breaklines=true,columns=flexible]
+┌─────────────────────────────────────────────────────────────────────┐
+│                           REAL WORLD                                │
+│   MPs recommend → DMs sanction → IDAs/Contractors execute          │
+│   Payments flow → Progress inspections → Documents accumulated      │
+└───────────────────────────────┬─────────────────────────────────────┘
+                                ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│         DATA LAYER — 12 Relational Tables (Synthetic CSVs)          │
+│  01_projects(5K) · 02_financials(5K) · 03_payments(13,866)         │
+│  04_progress(5K) · 05_procurement(5K) · 06_contracts(5K)           │
+│  07_contractors(400) · 08_agencies(1,238) · 09_geography(619)      │
+│  10_constituencies(913) · 11_documents(5K) · 12_labels[QUARANTINED]│
+└───────────────────────────────┬─────────────────────────────────────┘
+                                ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│  STAGE 1 — AGGREGATION & JOIN (aggregators.py · feature_builder.py) │
+│  13,866 payment rows  →  29 project-level payment features          │
+│  progress rows        →  26 project-level progress features         │
+│  All 12 tables joined →  project_master_features.csv (5,000 × 239) │
+│  Labels quarantined   →  project_labels.csv (NEVER model input)     │
+└───────────────────────────────┬─────────────────────────────────────┘
+                                ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│  STAGE 2A — FEATURE AUDIT (audit_features.py)                       │
+│  239 columns: 142 NUMERICAL · 19 CATEGORICAL · 15 TEMPORAL          │
+│               7 IDENTIFIER · 56 EXCLUDE                             │
+│  → FEATURE_REGISTRY.md (authoritative model selectors)              │
+└───────────────────────────────┬─────────────────────────────────────┘
+                                ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│  STAGES 2B–2H — 7 INDEPENDENT DOMAIN MODELS                        │
+│  M1 Financial    → financial_anomaly_score    [DONE   - Stage 2B]   │
+│  M2 Geospatial   → geospatial_anomaly_score   [PLANNED - Stage 2C]  │
+│  M3 Procurement  → procurement_anomaly_score  [PLANNED - Stage 2D]  │
+│  M4 Contractor   → contractor_anomaly_score   [PLANNED - Stage 2E]  │
+│  M5 Payment      → payment_anomaly_score      [PLANNED - Stage 2F]  │
+│  M6 Progress     → progress_anomaly_score     [PLANNED - Stage 2G]  │
+│  M7 Graph        → graph_anomaly_score        [PLANNED - Stage 2H]  │
+└───────────────────────────────┬─────────────────────────────────────┘
+                                ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│  STAGE 3 — SUPERVISED PREDICTOR (XGBoost + CalibratedClassifierCV)  │
+│  Input: 7 domain scores + context features                          │
+│  Output: fraud_probability (0–1) + predicted_typology               │
+│          Tree SHAP attributions per sample                          │
+└───────────────────────────────┬─────────────────────────────────────┘
+                                ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│  STAGE 4 — RISK FUSION ENGINE (risk_fusion_engine.py)               │
+│  Formula: 40% supervised + 35% weighted unsupervised + 25% peak     │
+│  Acute override rules (corroboration gates)                         │
+│  Output: overall_risk_score · risk_level · investigation_priority   │
+│          synthesized_reasons[1..5] · primary_typology               │
+└───────────────────────────────┬─────────────────────────────────────┘
+                                ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│  RAG LAYER — HARD NEGATIVE RESOLUTION                               │
+│  (retriever.py · hard_negative_evaluator.py · knowledge_base.py)    │
+│  Checks: flood/calamity zone · MCC election blackout                │
+│          statutory public agency · SoR benchmark match              │
+│  Calibrates: HARD_NEGATIVE_MITIGATED → score × 0.55                │
+│              MIXED_EXPOSURE           → score × 0.80                │
+│  Attaches: GFR rule citations (GFR 149/154/155/161/173)             │
+└───────────────────────────────┬─────────────────────────────────────┘
+                                ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│  FastAPI SERVING LAYER — 12 API Routers                             │
+│  /risk-intelligence/projects  → paginated ranked triage list        │
+│  /risk-intelligence/projects/{id} → full 8-model evidence dossier   │
+│  /risk-intelligence/fuse → live interactive fusion simulator        │
+│  /risk-intelligence/score-proposal → real-time proposal scoring     │
+│  /cases · /alerts · /reports · /compliance · /geo · /graph          │
+└───────────────────────────────┬─────────────────────────────────────┘
+                                ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│  Next.js FRONTEND DASHBOARD                                         │
+│  Role-scoped views: DM · MP office · MoSPI auditor                  │
+│  7-domain radar chart · Ranked risk queue (CRITICAL → LOW)          │
+│  MP-IDA-Contractor bipartite network graph · SHAP attributions       │
+└─────────────────────────────────────────────────────────────────────┘
+\end{lstlisting}
+\end{tcolorbox}
+
+
+\vspace{1em}\hrule\vspace{1em}
+
+\section{Important Equations --- Report 1 Summary}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l l Y}
+\toprule
+\textbf{Equation} & \textbf{Source} & \textbf{Lines} \\
+\midrule
+$R(P_i) = 0.40 \cdot \hat{p} \cdot 100 + 0.35 \cdot \bar{s} + 0.25 \cdot \max_k(s_k)$ & \texttt{risk\_fusion\_engine.py} & L78 \\
+$\text{Enrichment@k} = \frac{\text{FraudRate}@k}{\text{BaseFraudRate}}$ & \texttt{evaluator.py} & L58 \\
+$T = \text{CRITICAL if } R \geq 80 \text{ or } \hat{p} \geq 0.70$ & \texttt{risk\_fusion\_engine.py} & L94–103 \\
+$s_k \in [0.0, 100.0]$ for all domain models & All model pipeline files & — \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+\vspace{1em}\hrule\vspace{1em}
+
+\section{Key Takeaways --- Report 1}
+
+\begin{enumerate}[leftmargin=1.5em, itemsep=2pt, topsep=3pt]
+\item \textbf{SETU is a triage tool.} It ranks 5,000 projects by investigation priority. It does not prosecute.
+\item \textbf{Multi-evidence triangulation} is the core principle. A single domain flag without supervised corroboration only reaches an awareness floor (≥38), not CRITICAL.
+\item \textbf{Hard negatives are a first-class design concern.} A remote single-bid handpump in a flood-prone district is statistically suspicious but operationally legitimate. SETU explicitly handles this.
+\item \textbf{The evaluation metric is enrichment, not accuracy.} Goal: when an investigator examines the top 5\% of flagged projects, >68\% should be genuine fraud scenarios.
+\item \textbf{System is at Stage 2B.} Financial Model is fully validated (31/31 tests passing). Models 2–8 have templates but await implementation.
+\end{enumerate}
+
+\vspace{1em}\hrule\vspace{1em}
+
+\end{document}

@@ -1,0 +1,89 @@
+{
+  "architecture_type": "8-Model Parallel Inference & Multi-Signal Risk Fusion Engine (v2.0)",
+  "stack": {
+    "backend": "FastAPI (Python 3.11), Uvicorn, SQLAlchemy ORM, Pydantic V2",
+    "database": "SQLite (dev) / PostgreSQL (prod), setu_mplads.db (5,000+ real works)",
+    "frontend": "Next.js 14 App Router, TypeScript, Tailwind CSS, Lucide Icons, Leaflet GIS",
+    "machine_learning": "Scikit-Learn, PyTorch, XGBoost, NetworkX, SHAP, HDBSCAN, Benford Analysis"
+  },
+  "parallel_domain_models": [
+    {
+      "id": "M1",
+      "domain": "Financial",
+      "technique": "Isolation Forest & Cost Deviation z-score",
+      "detects": "Cost inflation above district medians & unnatural lump-sum disbursements"
+    },
+    {
+      "id": "M2",
+      "domain": "Geospatial",
+      "technique": "HDBSCAN Spatial Density Clustering",
+      "detects": "Suspicious geographic over-clustering & isolated ghost works"
+    },
+    {
+      "id": "M3",
+      "domain": "Procurement",
+      "technique": "Benford First-Digit Distribution & Single-Bidder Chi-Square",
+      "detects": "Procurement manipulation, cartel bidding, and artificial invoice numbers"
+    },
+    {
+      "id": "M4",
+      "domain": "Contractor",
+      "technique": "Capacity-Overcommitment Index & Historic Stall Rate",
+      "detects": "Overleveraged contractors holding works exceeding certified capital"
+    },
+    {
+      "id": "M5",
+      "domain": "Payment",
+      "technique": "Sub-threshold Smurfing Delta (Delta in [-10k, -1k] from 5L)",
+      "detects": "Splitting tenders into Rs 4.90L - 4.98L to evade mandatory open e-tendering (GFR 155)"
+    },
+    {
+      "id": "M6",
+      "domain": "Progress",
+      "technique": "Schedule Performance Index (SPI) & Physical vs Financial Gap",
+      "detects": "100% funds released while physical milestone progress sits at 0%"
+    },
+    {
+      "id": "M7",
+      "domain": "Entity Graph",
+      "technique": "Bipartite NetworkX Graph & PageRank Hub-Authority",
+      "detects": "Inter-state proxy agencies, cartel rings, and agency-vendor monopolies (HHI > 2500)"
+    },
+    {
+      "id": "M8",
+      "domain": "Supervised Classifier",
+      "technique": "Calibrated XGBoost Classifier with Tree SHAP",
+      "detects": "Global fraud probability calibrated across verified empirical historical labels"
+    }
+  ],
+  "fusion_engine_v2": {
+    "formula": "Fused Score = 0.40 * P(Fraud) + 0.35 * Mean(M1..M7) + 0.25 * Max(M1..M7)",
+    "acute_override_floors": [
+      {
+        "condition": "P(Fraud) >= 0.70 or (Max >= 88.0 and P(Fraud) >= 0.15)",
+        "floor": 82.0,
+        "tier": "CRITICAL"
+      },
+      {
+        "condition": "P(Fraud) >= 0.35 or (Max >= 68.0 and P(Fraud) >= 0.08)",
+        "floor": 65.0,
+        "tier": "HIGH"
+      },
+      {
+        "condition": "P(Fraud) >= 0.12 or (Max >= 48.0 and P(Fraud) >= 0.05)",
+        "floor": 42.0,
+        "tier": "MEDIUM"
+      },
+      {
+        "condition": "Max >= 88.0 and P(Fraud) < 0.15",
+        "floor": 38.0,
+        "tier": "CONDITIONAL_APPROVAL"
+      }
+    ],
+    "latency_benchmark": "159ms - 210ms on single commodity CPU core"
+  },
+  "explainability": {
+    "xai_engine": "Tree SHAP (Lundberg et al., Nature Machine Intelligence 2020)",
+    "statutory_mapping": "Maps numerical feature weights directly to GFR 2017 Rule 155, CVC Circular 03/03/16, and MoSPI Rule 14.2"
+  }
+}

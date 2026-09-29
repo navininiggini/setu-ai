@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Research and References | Slide 6</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background-color: #0b1120;
+      font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .slide-viewport {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .slide-canvas {
+      width: 1920px;
+      height: 1080px;
+      background: #FFFFFF;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 24px 50px 0 50px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Top Slide Header matching pg6-ref1.png */
+    .slide-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      height: 75px;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 10;
+    }
+    .header-team-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #0f274a;
+      border-radius: 50px;
+      padding: 8px 24px;
+      background: #F8FAFC;
+      box-shadow: 0 2px 8px rgba(15, 35, 65, 0.08);
+    }
+    .team-badge-text {
+      font-size: 17px;
+      font-weight: 800;
+      color: #0f274a;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .slide-main-title {
+      font-size: 38px;
+      font-weight: 900;
+      color: #051329;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+    .header-logos {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .nav-logo-sih {
+      height: 60px;
+      width: auto;
+      object-fit: contain;
+    }
+    .nav-logo-ssn {
+      height: 52px;
+      width: auto;
+      object-fit: contain;
+    }
+    .nav-logo-sathyabama {
+      height: 56px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .slide-canvas::before {
+      display: none !important;
+    }
+
+    /* Large Outer Container matching pg6-ref1.png */
+    .references-box-container {
+      flex: 1;
+      border: 2px solid #2563EB;
+      border-radius: 6px;
+      background: #FFFFFF;
+      padding: 38px 46px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.06);
+      margin-bottom: 24px;
+    }
+
+    .ref-section {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .ref-heading {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 23px;
+      font-weight: 900;
+      color: #05152e;
+      letter-spacing: -0.01em;
+    }
+    .ref-diamond {
+      font-size: 21px;
+      color: #0f172a;
+    }
+
+    .ref-item {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-left: 32px;
+      font-size: 18.5px;
+      line-height: 1.55;
+      color: #1e293b;
+    }
+    .ref-item strong {
+      font-weight: 800;
+      color: #08172d;
+    }
+    .ref-item-bullet {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-top: 4px;
+    }
+    .bullet-symbol {
+      font-size: 22px;
+      line-height: 1;
+      color: #0f172a;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+    .ref-link {
+      color: #0044cc;
+      text-decoration: underline;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Bottom Full-Width Blue Footer matching pg6-ref1.png */
+    .slide6-blue-footer {
+      height: 48px;
+      background: #0284c7;
+      margin: 0 -50px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 50px;
+      color: #FFFFFF;
+      font-size: 14.5px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+    .footer-page-num {
+      font-size: 17px;
+      font-weight: 900;
+    }
+  </style>
+</head>
+<body data-page="6">
+  <div class="slide-viewport">
+    <main class="slide-canvas" id="slide-6">
+
+      <!-- Slide Header matching pg6-ref1.png -->
+      <header class="slide-header">
+        <div class="header-team-badge">
+          <span class="team-badge-text">APOCALYPSE // Team P84</span>
+        </div>
+        <h1 class="slide-main-title">RESEARCH AND REFERENCES</h1>
+        <div class="header-logos">
+          <img src="assets/logos/sih-logo.png" onerror="this.src='../assets/logos/sih-logo.png'" alt="SIH 2026" class="nav-logo-sih">
+        </div>
+      </header>
+
+      <!-- Main Bordered Container matching pg6-ref1.png -->
+      <div class="references-box-container">
+
+        <!-- Section 1: Statutory & Regulatory Framework -->
+        <div class="ref-section">
+          <div class="ref-heading">
+            <span class="ref-diamond">&#10070;</span>
+            <span>Statutory Guidelines &amp; Public Procurement Framework</span>
+          </div>
+          <div class="ref-item">
+            <p>
+              <strong>MoSPI MPLADS Scheme Implementation Guidelines (2023 &amp; Revisions):</strong> Statutory policy foundation for <strong>Rule 14.2</strong> mandatory e-tendering for works exceeding &#8377;5.00 Lakhs, explicit prohibition of artificial contract splitting, and statutory District Authority pre-sanction diligence obligations.
+            </p>
+            <div class="ref-item-bullet">
+              <span class="bullet-symbol">&#8226;</span>
+              <p>
+                <strong>Central Vigilance Commission (CVC) &amp; GFR 155 Directives:</strong> Guidelines on public procurement integrity, anti-cartel vigilance, and transparent rate benchmarking to detect single-bid tender anomalies. <a class="ref-link">[Click here for MoSPI Guidelines &amp; CVC Directives]</a>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Machine Learning & Forensic Analytics -->
+        <div class="ref-section">
+          <div class="ref-heading">
+            <span class="ref-diamond">&#10070;</span>
+            <span>Peer-Reviewed Machine Learning &amp; Forensic Analytics</span>
+          </div>
+          <div class="ref-item">
+            <p>
+              <strong>Explainable AI for Tree Ensembles (Nature Machine Intelligence):</strong> Lundberg, S. M., et al., <em>"From Local Explanations to Global Understanding with Explainable AI for Trees"</em>. Provides foundational mathematics for <strong>Tree SHAP</strong> local feature attributions, non-linear anomaly scoring, and legally defensible reason traces.
+            </p>
+            <div class="ref-item-bullet">
+              <span class="bullet-symbol">&#8226;</span>
+              <p>
+                <strong>Graph-Based Anomaly Detection (ACM KDD):</strong> Akoglu, L., Chandy, R., &amp; Faloutsos, C., <em>"Graph-based Anomaly Detection and Fraud Detection: Problems, Algorithms, and Resources"</em>. Algorithmic basis for NetworkX bipartite entity graphs, repeat agency-contractor collusion rings, and PageRank centrality scoring.
+              </p>
+            </div>
+            <div class="ref-item-bullet">
+              <span class="bullet-symbol">&#8226;</span>
+              <p>
+                <strong>Forensic Accounting &amp; Numerical Auditing (John Wiley &amp; Sons):</strong> Nigrini, M. J., <em>"Benford's Law: Applications for Forensic Accounting, Auditing, and Fraud Detection"</em>. Applied for first-digit frequency distribution analysis to detect manipulated contractor bills and milestone invoices.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3: Open-Source Working Prototype -->
+        <div class="ref-section">
+          <div class="ref-heading">
+            <span class="ref-diamond">&#10070;</span>
+            <span>Working Prototype &amp; Open-Source Verification</span>
+          </div>
+          <div class="ref-item">
+            <div class="ref-item-bullet">
+              <span class="bullet-symbol">&#8226;</span>
+              <p>
+                <strong>SETU Full-Stack Working Prototype Codebase:</strong> Production-ready sovereign pre-sanction decision gatekeeper and 8-model forensic monitor, tested on 5,000+ authentic Indian works across 589 districts with 91 passing test suites. <a class="ref-link" href="https://github.com/Barath-j593/sih-2026" target="_blank">[Click here for Live Repository: https://github.com/Barath-j593/sih-2026]</a>
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Blue Full-Width Footer matching pg6-ref1.png -->
+      <footer class="slide6-blue-footer">
+        <span>@SIH Idea submission- Template</span>
+        <span class="footer-page-num">6</span>
+      </footer>
+
+    </main>
+  </div>
+
+  <script src="js/navigation.js"></script>
+</body>
+</html>

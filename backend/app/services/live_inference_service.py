@@ -8,9 +8,19 @@ MoSPI SETU MPLADS Anomaly Detection Platform.
 
 from datetime import datetime, timezone
 import json
+import os
+import pathlib
 from pathlib import Path
+import sys
 import time
 from typing import Any, Dict, List, Optional
+
+# Cross-platform compatibility for unpickling models serialized across OS environments (Windows <-> Linux/macOS)
+if os.name != "nt":
+    pathlib.WindowsPath = pathlib.PosixPath
+else:
+    pathlib.PosixPath = pathlib.WindowsPath
+
 import joblib
 import numpy as np
 import pandas as pd

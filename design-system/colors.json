@@ -1,0 +1,15 @@
+{
+  "primary_sih_navy": "#0F2B5C",
+  "secondary_navy_dark": "#0A1D3F",
+  "accent_saffron_orange": "#FF6B00",
+  "accent_vibrant_blue": "#2563EB",
+  "canvas_background": "#FFFFFF",
+  "card_background": "#F8FAFC",
+  "card_border": "#CBD5E1",
+  "text_primary": "#0F172A",
+  "text_secondary": "#475569",
+  "text_white": "#FFFFFF",
+  "status_green": "#16A34A",
+  "status_red": "#DC2626",
+  "status_amber": "#D97706"
+}

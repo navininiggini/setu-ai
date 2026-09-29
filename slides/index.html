@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SETU — Smart India Hackathon 2026 Official Presentation</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #090e17;
+    color: #F8FAFC;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    overflow-x: hidden;
+  }
+  header {
+    width: 100%;
+    max-width: 1500px;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #1E293B;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .brand-badge {
+    background: #FF6600;
+    color: #FFFFFF;
+    font-weight: 900;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+  }
+  .brand-title {
+    font-size: 17px;
+    font-weight: 800;
+    color: #FFFFFF;
+  }
+  .page-nav-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .nav-btn {
+    background: #1E293B;
+    border: 1px solid #334155;
+    color: #F8FAFC;
+    padding: 7px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .nav-btn:hover {
+    background: #2563EB;
+    border-color: #3B82F6;
+  }
+  .page-counter {
+    font-size: 14px;
+    font-weight: 800;
+    color: #94A3B8;
+    padding: 0 10px;
+    min-width: 280px;
+    text-align: center;
+  }
+
+  /* Presentation Frame */
+  .deck-container {
+    width: 100%;
+    max-width: 1500px;
+    padding: 16px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    justify-content: center;
+  }
+  .page-wrapper {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: 78vh;
+    border: 2px solid #334155;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+    background: #FFFFFF;
+    position: relative;
+  }
+  iframe {
+    width: 1920px;
+    height: 1080px;
+    border: none;
+    transform-origin: top left;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  /* Thumbnails bar */
+  .thumbnails-bar {
+    width: 100%;
+    max-width: 1500px;
+    padding: 12px 24px;
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    border-top: 1px solid #1E293B;
+  }
+  .thumb-item {
+    flex: 1;
+    min-width: 130px;
+    background: #151e2e;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    padding: 8px 10px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+  }
+  .thumb-item:hover, .thumb-item.active {
+    border-color: #3B82F6;
+    background: #1e293b;
+  }
+  .thumb-title {
+    font-size: 11px;
+    font-weight: 800;
+    color: #CBD5E1;
+    margin-top: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .thumb-num {
+    font-size: 10px;
+    color: #94A3B8;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <span class="brand-badge">SIH 2026</span>
+      <div class="brand-title">SETU: Smart Evidence-based Triangulation for Uncovering Anomalies in MPLADS</div>
+    </div>
+    <div class="page-nav-controls">
+      <button class="nav-btn" onclick="prevSlide()">◀ Previous</button>
+      <span class="page-counter" id="slideIndicator">Slide 1 of 6 — Title Slide</span>
+      <button class="nav-btn" onclick="nextSlide()">Next ▶</button>
+      <button class="nav-btn" onclick="toggleFullscreen()" style="margin-left: 8px;">⛶ Fullscreen</button>
+    </div>
+  </header>
+
+  <div class="deck-container">
+    <div class="page-wrapper" id="frameWrapper">
+      <iframe id="slideFrame" src="page-01.html"></iframe>
+    </div>
+  </div>
+
+  <div class="thumbnails-bar">
+    <div class="thumb-item active" onclick="loadSlide(1)">
+      <div class="thumb-num">SLIDE 1</div>
+      <div class="thumb-title">Title Slide</div>
+    </div>
+    <div class="thumb-item" onclick="loadSlide(2)">
+      <div class="thumb-num">SLIDE 2</div>
+      <div class="thumb-title">Proposed Solution</div>
+    </div>
+    <div class="thumb-item" onclick="loadSlide(3)">
+      <div class="thumb-num">SLIDE 3</div>
+      <div class="thumb-title">Technical Approach</div>
+    </div>
+    <div class="thumb-item" onclick="loadSlide(4)">
+      <div class="thumb-num">SLIDE 4</div>
+      <div class="thumb-title">Feasibility &amp; Viability</div>
+    </div>
+    <div class="thumb-item" onclick="loadSlide(5)">
+      <div class="thumb-num">SLIDE 5</div>
+      <div class="thumb-title">Impacts &amp; Benefits</div>
+    </div>
+    <div class="thumb-item" onclick="loadSlide(6)">
+      <div class="thumb-num">SLIDE 6</div>
+      <div class="thumb-title">Research &amp; References</div>
+    </div>
+  </div>
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 6;
+    const slideTitles = [
+      "Title Slide",
+      "Proposed Solution - SETU",
+      "Technical Approach",
+      "Feasibility and Viability",
+      "Impacts and Benefits",
+      "Research and References"
+    ];
+
+    function resizeFrame() {
+      const wrapper = document.getElementById('frameWrapper');
+      const iframe = document.getElementById('slideFrame');
+      if (!wrapper || !iframe) return;
+      const width = wrapper.clientWidth;
+      const scale = width / 1920;
+      iframe.style.transform = `scale(${scale})`;
+    }
+
+    window.addEventListener('resize', resizeFrame);
+
+    function loadSlide(index) {
+      if (index < 1 || index > totalSlides) return;
+      currentSlide = index;
+      const numStr = currentSlide < 10 ? '0' + currentSlide : currentSlide;
+      
+      const frame = document.getElementById('slideFrame');
+      const currentSrc = frame.src;
+      if (currentSrc.includes('page-')) {
+        frame.src = `page-${numStr}.html`;
+      } else {
+        frame.src = `page-${numStr}.html`;
+      }
+
+      document.getElementById('slideIndicator').innerText = `Slide ${currentSlide} of ${totalSlides} — ${slideTitles[currentSlide - 1]}`;
+      
+      const thumbs = document.querySelectorAll('.thumb-item');
+      thumbs.forEach((t, i) => {
+        if (i === currentSlide - 1) t.classList.add('active');
+        else t.classList.remove('active');
+      });
+      setTimeout(resizeFrame, 50);
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) loadSlide(currentSlide - 1);
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) loadSlide(currentSlide + 1);
+    }
+
+    function toggleFullscreen() {
+      const frame = document.getElementById('slideFrame');
+      if (frame.requestFullscreen) {
+        frame.requestFullscreen();
+      } else if (frame.webkitRequestFullscreen) {
+        frame.webkitRequestFullscreen();
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'Space') nextSlide();
+      if (e.key === 'ArrowLeft') prevSlide();
+    });
+
+    resizeFrame();
+  </script>
+</body>
+</html>

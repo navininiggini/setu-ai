@@ -1,0 +1,8 @@
+{
+  "treatment": {
+    "frame": "Strict rectangular geometry, 0px border radius, 1px hairline border",
+    "style": "Natural, high-contrast, authentic documentary photography or direct system UI screenshots",
+    "drop_shadow": "None or subtle 4px 12px rgba(0,0,0,0.06), avoiding heavy blurry glows",
+    "captions": "Mono 11px uppercase label beneath or inside top-left corner"
+  }
+}

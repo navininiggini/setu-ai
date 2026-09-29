@@ -1,0 +1,6 @@
+{
+  "pattern_id": "PATTERN-003",
+  "slide_title": "TECHNICAL APPROACH",
+  "sih_mandate": "Two mandatory sections: 1. Technologies Used (AI/ML, Backend, Frontend, GIS), 2. Methodology & Implementation Pipeline (Flowchart)",
+  "layout": "Top Tech Stack 4-card ribbon; Bottom sequential horizontal/vertical inference pipeline flowchart"
+}

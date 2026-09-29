@@ -1,0 +1,14 @@
+{
+  "project_name": "SETU",
+  "full_title": "Smart Evidence-based Triangulation for Uncovering Anomalies in MPLADS",
+  "hackathon": "Smart India Hackathon 2026",
+  "problem_statement_id": "SIH26102 / PS-36502",
+  "problem_statement_title": "AI/ML-Powered Early Detection of Anomalies, Fund Leakages, and Collusion Rings in MPLADS Project Lifecycles",
+  "ministry": "Ministry of Statistics and Programme Implementation (MoSPI)",
+  "theme": "Smart Governance / Public Transparency / AI & ML",
+  "category": "Software",
+  "team_id": "P84",
+  "team_name": "Innovexa",
+  "repository": "https://github.com/Barath-j593/sih-2026",
+  "core_thesis": "Shift public audit intervention from an 18-month post-mortem CAG report to a sub-200ms pre-sanction decision-support gate, triangulating 8 independent forensic models across financial, spatial, procurement, and network dimensions."
+}

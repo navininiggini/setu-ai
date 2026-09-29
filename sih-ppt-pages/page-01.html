@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SETU — Smart India Hackathon 2026 | Slide 1</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background-color: #0b1120;
+      font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .slide-viewport {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .slide-canvas {
+      width: 1920px;
+      height: 1080px;
+      background: #FFFFFF;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 40px 80px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+    }
+    .slide-canvas::before {
+      display: none !important;
+    }
+    .bg-hero-art {
+      display: none !important;
+    }
+    .slide1-title {
+      font-size: 58px;
+      font-weight: 900;
+      color: #102d5a;
+      text-align: center;
+      margin-top: 24px;
+      margin-bottom: 56px;
+      letter-spacing: -0.01em;
+      position: relative;
+      z-index: 2;
+    }
+    .slide1-layout {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex: 1;
+      position: relative;
+      z-index: 2;
+    }
+    .slide1-content {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 34px;
+      max-width: 980px;
+    }
+    .slide1-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+    }
+    .slide1-bullet {
+      font-size: 38px;
+      line-height: 1;
+      color: #102d5a;
+    }
+    .slide1-text {
+      font-size: 27px;
+      line-height: 1.45;
+      color: #10223e;
+    }
+    .slide1-text strong {
+      font-weight: 900;
+      color: #08172d;
+    }
+    .slide1-right-logos {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 46px;
+      padding-right: 50px;
+    }
+    .slide1-logo {
+      object-fit: contain;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.18));
+    }
+  </style>
+</head>
+<body data-page="1">
+  <div class="slide-viewport">
+    <main class="slide-canvas" id="slide-1">
+
+      <h1 class="slide1-title">Smart India Hackathon — 2026</h1>
+
+      <div class="slide1-layout">
+        <ul class="slide1-content">
+          <li class="slide1-item">
+            <span class="slide1-bullet">&#8226;</span>
+            <span class="slide1-text"><strong>Team Name - </strong>APOCALYPSE (Team P84)</span>
+          </li>
+          <li class="slide1-item">
+            <span class="slide1-bullet">&#8226;</span>
+            <span class="slide1-text"><strong>Domain - </strong>Artificial Intelligence &amp; Machine Learning / Smart Governance</span>
+          </li>
+          <li class="slide1-item">
+            <span class="slide1-bullet">&#8226;</span>
+            <span class="slide1-text"><strong>Problem Statement - </strong>AI/ML-Powered Early Detection of Anomalies, Fund Leakages, and Collusion Rings in MPLADS (PS-36502)</span>
+          </li>
+          <li class="slide1-item">
+            <span class="slide1-bullet">&#8226;</span>
+            <span class="slide1-text"><strong>Institution - </strong>Sri Sivasubramaniya Nadar College of Engineering, Kalavakkam (SSNCE)</span>
+          </li>
+          <li class="slide1-item">
+            <span class="slide1-bullet">&#8226;</span>
+            <span class="slide1-text"><strong>Working Prototype - </strong>SETU Sovereign Pre-Sanction Decision Gatekeeper &amp; 8-Model Forensic Monitor</span>
+          </li>
+        </ul>
+
+        <div class="slide1-right-logos">
+          <img src="assets/logos/sih-logo.png" onerror="this.src='../assets/logos/sih-logo.png'" alt="SIH Logo" class="slide1-logo" style="height: 180px;">
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/navigation.js"></script>
+  <script src="../js/navigation.js"></script>
+</body>
+</html>

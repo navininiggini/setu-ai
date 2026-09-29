@@ -1,0 +1,50 @@
+{
+  "tiers": [
+    {
+      "tier_id": "TIER-01",
+      "role": "District Magistrate (DM) / District Collector / Deputy Commissioner",
+      "statutory_mandate": "Primary sanctioning authority holding direct legal and personal liability for all MPLADS disbursements under MoSPI Guidelines Section 3.1.",
+      "current_pain_points": [
+        "Overwhelmed by hundreds of technical sanction files during district planning meetings",
+        "High political pressure to clear recommendations rapidly from local MPs without time for manual background scrutiny",
+        "Personal liability if post-sanction CAG audits uncover duplicate sanctions or ghost works 2 years later"
+      ],
+      "what_they_actually_care_about": "An instant (<200ms) statutory shield before signing: An objective, non-partisan algorithmic green-light or red-flag that justifies rejections without personal political friction.",
+      "setu_intervention": "Pre-Sanction Gatekeeper (`/proposals`): Enter proposal details -> Instant clearance tier (Clearance, Audit, Reject) + Tree SHAP citation of exact guideline violated (e.g. GFR 155 smurfing)."
+    },
+    {
+      "tier_id": "TIER-02",
+      "role": "Ministry of Statistics & Programme Implementation (MoSPI) / Central Government",
+      "statutory_mandate": "Macro-fiscal monitoring, national scheme equity, answering Parliamentary PAC questions, and safeguarding the annual Rs 5,000+ Crore national outlay.",
+      "current_pain_points": [
+        "Total blindspot on inter-state syndicate cartels operating across state boundaries",
+        "Complete reliance on periodic post-mortem audit reports that arrive 18 to 24 months after funds are spent",
+        "Massive unspent balances and stalled funds trapped in district administrative bottlenecks"
+      ],
+      "what_they_actually_care_about": "Macro surveillance, systemic leak prevention, and automated PAC-ready compliance dossiers.",
+      "setu_intervention": "National Macro GIS Dashboard: Live Herfindahl-Hirschman Index (HHI = 622.5), Zonal Capital Flow Conduits (Eastern 48.6%, Northern 32.1%), and automated cross-border cartel alerts."
+    },
+    {
+      "tier_id": "TIER-03",
+      "role": "State Nodal Department (Planning & Development)",
+      "statutory_mandate": "Inter-district resource distribution, vendor concentration monitoring, and administrative throughput across state implementing agencies.",
+      "current_pain_points": [
+        "A few dominant executing agencies capture >40% of state contracts, creating severe physical completion bottlenecks",
+        "Disparate district performance where favored districts absorb funds while backward districts lag"
+      ],
+      "what_they_actually_care_about": "Balanced vendor participation, elimination of local agency monopolies, and unblocking stalled projects.",
+      "setu_intervention": "Statewide Treemap Visualizer: Instant detection of oligopolies (CR3 > 35%, CR5 > 60%) and statutory dwell-sink tracking (>45 days approval delay)."
+    },
+    {
+      "tier_id": "TIER-04",
+      "role": "Members of Parliament (Lok Sabha & Rajya Sabha) & Citizens",
+      "statutory_mandate": "Constituency development, civic infrastructure delivery, and democratic transparency.",
+      "current_pain_points": [
+        "MPs blamed for stalled or abandoned works caused by corrupt contractors and slow district bureaucracy",
+        "Citizens suffer from ghost infrastructure (drinking water borewells or community halls paid for but never built)"
+      ],
+      "what_they_actually_care_about": "Verifiable on-ground completion of public assets and protection of their reputation.",
+      "setu_intervention": "Constituency Ledger & Transparent Verification: Public visibility into project milestones and algorithmic assurance that contractor funds yield physical assets."
+    }
+  ]
+}

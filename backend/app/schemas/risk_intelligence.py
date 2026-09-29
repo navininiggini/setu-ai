@@ -4,7 +4,7 @@ MoSPI SETU MPLADS Anomaly Detection Platform.
 """
 
 from typing import Any, Dict, List, Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 
 class LiveFusionRequest(BaseModel):
@@ -53,6 +53,83 @@ class RawProposalScoringRequest(BaseModel):
     contractor_past_delays: Optional[int] = Field(default=0, ge=0, description="Prior delayed projects by contractor")
     latitude: Optional[float] = Field(default=26.1542, description="Project location latitude")
     longitude: Optional[float] = Field(default=85.8918, description="Project location longitude")
+
+    @model_validator(mode="before")
+    @classmethod
+    def sanitize_inputs(cls, values: Any) -> Any:
+        if isinstance(values, dict):
+            cleaned = dict(values)
+            # Coerce empty strings to None for optional/numeric attributes
+            for k, v in list(cleaned.items()):
+                if v == "":
+                    cleaned[k] = None
+
+            # String field fallbacks
+            if not cleaned.get("work_name"):
+                cleaned["work_name"] = "Proposed Infrastructure Project"
+            if not cleaned.get("category"):
+                cleaned["category"] = "Public Infrastructure"
+            if not cleaned.get("state"):
+                cleaned["state"] = "Bihar"
+            if not cleaned.get("constituency"):
+                cleaned["constituency"] = "Darbhanga"
+
+            # Numeric sanitization & clamping
+            if cleaned.get("sanctioned_amount") is None:
+                cleaned["sanctioned_amount"] = 2500000.0
+            else:
+                try:
+                    cleaned["sanctioned_amount"] = max(0.0, float(cleaned["sanctioned_amount"]))
+                except (ValueError, TypeError):
+                    cleaned["sanctioned_amount"] = 2500000.0
+
+            if cleaned.get("estimated_cost") is not None:
+                try:
+                    cleaned["estimated_cost"] = max(0.0, float(cleaned["estimated_cost"]))
+                except (ValueError, TypeError):
+                    cleaned["estimated_cost"] = None
+
+            if cleaned.get("tender_amount") is not None:
+                try:
+                    cleaned["tender_amount"] = max(0.0, float(cleaned["tender_amount"]))
+                except (ValueError, TypeError):
+                    cleaned["tender_amount"] = None
+
+            if cleaned.get("planned_duration_days") is None:
+                cleaned["planned_duration_days"] = 180
+            else:
+                try:
+                    val = int(cleaned["planned_duration_days"])
+                    cleaned["planned_duration_days"] = max(1, min(3650, val))
+                except (ValueError, TypeError):
+                    cleaned["planned_duration_days"] = 180
+
+            if cleaned.get("num_bidders") is not None:
+                try:
+                    cleaned["num_bidders"] = max(1, int(cleaned["num_bidders"]))
+                except (ValueError, TypeError):
+                    cleaned["num_bidders"] = 3
+
+            if cleaned.get("contractor_past_delays") is not None:
+                try:
+                    cleaned["contractor_past_delays"] = max(0, int(cleaned["contractor_past_delays"]))
+                except (ValueError, TypeError):
+                    cleaned["contractor_past_delays"] = 0
+
+            if cleaned.get("latitude") is not None:
+                try:
+                    cleaned["latitude"] = float(cleaned["latitude"])
+                except (ValueError, TypeError):
+                    cleaned["latitude"] = 26.1542
+
+            if cleaned.get("longitude") is not None:
+                try:
+                    cleaned["longitude"] = float(cleaned["longitude"])
+                except (ValueError, TypeError):
+                    cleaned["longitude"] = 85.8918
+
+            return cleaned
+        return values
 
 
 class RawProposalScoringResponse(BaseModel):

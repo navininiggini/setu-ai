@@ -1,0 +1,17 @@
+{
+  "scale": {
+    "xxs": "4px",
+    "xs": "8px",
+    "sm": "12px",
+    "md": "16px",
+    "lg": "24px",
+    "xl": "32px",
+    "xxl": "48px",
+    "section": "64px"
+  },
+  "card_padding": {
+    "compact": "16px 20px",
+    "standard": "24px 28px",
+    "spacious": "32px 36px"
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "architecture_meta": {
+    "designer": "ROLE 10 \u2014 INFORMATION DESIGNER",
+    "narrative": "Strategy D: The Fiscal Leakage Interceptor",
+    "format": "Official SIH 2026 Presentation Standard",
+    "canvas_size": "1920x1080 (16:9)"
+  },
+  "slides": [
+    {
+      "slide": 1,
+      "title": "TITLE SLIDE",
+      "primary_focus": "Platform acronym & Idea Title (SETU) + High-impact fiscal protection value statement",
+      "secondary_focus": "Official SIH submission metadata (PS ID: SIH26102, MoSPI, Team P84)",
+      "supporting_elements": "Live working prototype status badges (5,000+ works, 589 districts, <200ms CPU latency)",
+      "visual_representation": "Asymmetric hero split: Left structured metadata container, Right official SIH badge & prototype proof card",
+      "removed_elements": "Generic hackathon introductory greetings and buzzword paragraphs"
+    },
+    {
+      "slide": 2,
+      "title": "PROPOSED SOLUTION",
+      "primary_focus": "The 4 statutory quadrants matching SIH evaluation pointers (Overview, Explanation, Problem Addressed, Innovation)",
+      "secondary_focus": "The core mathematical mechanism (Risk Fusion Engine v2.0 & Tree SHAP explainability)",
+      "supporting_elements": "Statutory override chips (GFR 155, Rule 14.2) and sub-200ms latency badge",
+      "visual_representation": "Balanced 2x2 card quadrant with distinct color-coded accent top borders (Navy, Saffron, Green, Blue)",
+      "removed_elements": "Vague claims; replaced with exact formulas and concrete empirical capabilities"
+    },
+    {
+      "slide": 3,
+      "title": "TECHNICAL APPROACH",
+      "primary_focus": "The End-to-End Implementation Flowchart (Ingestion -> 7 Domain Models + XGBoost -> Risk Fusion v2.0 -> Tree SHAP Triage)",
+      "secondary_focus": "Categorized Tech Stack ribbon across AI/ML, Backend, Frontend/GIS, and Standards",
+      "supporting_elements": "Mathematical formula callout box for the Risk Fusion equation and acute override triggers",
+      "visual_representation": "Top 4-column tech ribbon + Bottom comprehensive horizontal/vertical inference pipeline flowchart",
+      "removed_elements": "Dense code snippets; replaced with clean architectural blocks and directional pipeline arrows"
+    },
+    {
+      "slide": 4,
+      "title": "FEASIBILITY AND VIABILITY",
+      "primary_focus": "Tripartite Feasibility (Technical, Operational, Economic) showing plug-and-play e-SAKSHI integration & zero hardware cost",
+      "secondary_focus": "Direct pairing of Real-World Challenges against Algorithmic Mitigation Strategies",
+      "supporting_elements": "Human-in-the-loop override callout and district-median normalization safeguard",
+      "visual_representation": "Two-column split: Left 3 Feasibility Cards; Right Paired Risk vs Algorithmic Mitigation Container",
+      "removed_elements": "Theoretical speculation; replaced with concrete benchmarked CPU latencies (159-210ms)"
+    },
+    {
+      "slide": 5,
+      "title": "IMPACT AND BENEFITS",
+      "primary_focus": "Quantified Benefits Table detailing Economic, Administrative, Social, and Governance yield with real pilot numbers",
+      "secondary_focus": "4-Tier Stakeholder Impact ribbon (District Magistrates, MoSPI Central Ministry, State Nodal, Citizens)",
+      "supporting_elements": "Empirical case study callout: Rs 1.84 Cr safeguarded in Satna audit pilot and 18-month audit cycle compressed to <200ms",
+      "visual_representation": "Top 4-card Stakeholder Ribbon + Bottom Structured 4-Row Comparative Benefits Matrix Table",
+      "removed_elements": "Abstract benefits; replaced with concrete rupees, months, and statutory protections"
+    },
+    {
+      "slide": 6,
+      "title": "RESEARCH AND REFERENCES",
+      "primary_focus": "Statutory Guidelines & Policy Foundation (MoSPI 2023 Rule 14.2, CVC Directives, GFR 155)",
+      "secondary_focus": "Peer-Reviewed Machine Learning Citations (Nature MI Tree SHAP, ACM KDD Graph AI, Benford)",
+      "supporting_elements": "Official Open-Source GitHub Repository card with verification status and reproducible test suites",
+      "visual_representation": "Two-column split: Left Statutory & Vigilance Directives; Right Peer-Reviewed Literature + Live Codebase Card",
+      "removed_elements": "Generic Wikipedia links; replaced with formal citations and statutory legal rules"
+    }
+  ]
+}

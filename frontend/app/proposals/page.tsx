@@ -7,7 +7,6 @@ import {
   ShieldAlert,
   CheckCircle2,
   AlertTriangle,
-  Send,
   Zap,
   RotateCcw,
   Sliders,
@@ -19,26 +18,42 @@ import {
   Building2,
   ArrowLeft,
   Check,
-  Info
+  Info,
+  Copy,
+  Code2,
+  ChevronDown,
+  ChevronUp,
+  Download,
+  ShieldCheck,
+  MapPin,
+  Flame,
+  AlertOctagon,
+  Printer
 } from "lucide-react";
 import { scoreRawProposal } from "../../lib/api";
 import { RawProposalScoringRequest, RawProposalScoringResponse } from "../../lib/types";
-import { formatTypologyLabel, normalizeRiskLevel, normalizePriority } from "../../lib/typologies";
+import { formatTypologyLabel } from "../../lib/typologies";
 import { RiskBadge, PriorityBadge } from "../../components/ui/RiskBadge";
 import { MagicCard } from "../../components/ui/MagicCard";
 import { SpecularButton } from "../../components/ui/SpecularButton";
-import { STATE_DISTRICTS, getDistrictsForState, formatDistrictName } from "../../lib/districts";
+import { STATE_DISTRICTS, getDistrictsForState } from "../../lib/districts";
 
-const SAMPLE_PRESETS: Array<{
+interface PresetScenario {
+  id: string;
   name: string;
   badge: string;
   badgeColor: string;
+  description: string;
   data: RawProposalScoringRequest;
-}> = [
+}
+
+const SAMPLE_PRESETS: PresetScenario[] = [
   {
+    id: "preset-compliant",
     name: "Compliant Community Center",
-    badge: "Routine",
+    badge: "Routine Clearance",
     badgeColor: "bg-emerald-100 text-emerald-800 border-emerald-300",
+    description: "Standard competitive tender with verified PWD estimates and clean contractor record.",
     data: {
       work_name: "Construction of Multi-Purpose Community Hall",
       category: "Public Infrastructure",
@@ -49,6 +64,7 @@ const SAMPLE_PRESETS: Array<{
       contractor_name: "Apex Infrastructure Ltd",
       sanctioned_amount: 2500000,
       estimated_cost: 2450000,
+      tender_amount: 2450000,
       planned_duration_days: 180,
       work_type: "Civil Infrastructure",
       num_bidders: 4,
@@ -59,9 +75,11 @@ const SAMPLE_PRESETS: Array<{
     },
   },
   {
+    id: "preset-structuring",
     name: "Threshold Structuring (₹4.92 Lakhs)",
-    badge: "Structuring Flag",
+    badge: "Smurfing Flag",
     badgeColor: "bg-purple-100 text-purple-800 border-purple-300",
+    description: "Sanction structured just below ₹5L statutory e-procurement threshold to bypass tender oversight.",
     data: {
       work_name: "Paver Block Pavement at Ward-04",
       category: "Roads & Bridges",
@@ -72,6 +90,7 @@ const SAMPLE_PRESETS: Array<{
       contractor_name: "Chandra Civil Works",
       sanctioned_amount: 492000,
       estimated_cost: 490000,
+      tender_amount: 492000,
       planned_duration_days: 90,
       work_type: "Paver Road",
       num_bidders: 2,
@@ -82,9 +101,11 @@ const SAMPLE_PRESETS: Array<{
     },
   },
   {
+    id: "preset-cartel",
     name: "Single-Bid Cartel Procurement",
-    badge: "Procurement Flag",
+    badge: "Procurement Evasion",
     badgeColor: "bg-amber-100 text-amber-800 border-amber-300",
+    description: "Sole bidder award with 2 prior recorded delays; triggers GFR anti-collusion review.",
     data: {
       work_name: "Solar High-Mast Lighting Tower Installation",
       category: "Electricity & Lighting",
@@ -95,6 +116,7 @@ const SAMPLE_PRESETS: Array<{
       contractor_name: "Surya Urja Consortium",
       sanctioned_amount: 3850000,
       estimated_cost: 3100000,
+      tender_amount: 3850000,
       planned_duration_days: 120,
       work_type: "Solar Installation",
       num_bidders: 1,
@@ -105,9 +127,11 @@ const SAMPLE_PRESETS: Array<{
     },
   },
   {
-    name: "High Cost Escalation + Delay Risk",
-    badge: "Cost Escalation",
+    id: "preset-escalation",
+    name: "High Cost Escalation + Repeat Delays",
+    badge: "Multi-Signal Flag",
     badgeColor: "bg-rose-100 text-rose-800 border-rose-300",
+    description: "102% cost inflation over technical estimate with 4 contractor project delays.",
     data: {
       work_name: "RCC Bridge across Irrigation Canal at Belaur",
       category: "Roads & Bridges",
@@ -118,6 +142,7 @@ const SAMPLE_PRESETS: Array<{
       contractor_name: "Mithila Construction Pvt Ltd",
       sanctioned_amount: 8500000,
       estimated_cost: 4200000,
+      tender_amount: 8500000,
       planned_duration_days: 360,
       work_type: "Bridge Work",
       num_bidders: 2,
@@ -127,25 +152,82 @@ const SAMPLE_PRESETS: Array<{
       longitude: 85.92,
     },
   },
+  {
+    id: "preset-geo-anomaly",
+    name: "Remote Geo-Anomaly Borewell",
+    badge: "Spatial Outlier",
+    badgeColor: "bg-sky-100 text-sky-800 border-sky-300",
+    description: "Isolated desert installation coordinates with extreme density outlier characteristics.",
+    data: {
+      work_name: "Deep Tube Well with Solar Submersible Pump",
+      category: "Drinking Water",
+      state: "Rajasthan",
+      constituency: "Barmer",
+      district: "Barmer",
+      ida: "Public Health Engineering Department",
+      contractor_name: "Thar Desert Aqua Works",
+      sanctioned_amount: 1800000,
+      estimated_cost: 1750000,
+      tender_amount: 1800000,
+      planned_duration_days: 60,
+      work_type: "Water Supply",
+      num_bidders: 3,
+      is_single_bid: false,
+      contractor_past_delays: 0,
+      latitude: 25.7532,
+      longitude: 71.3966,
+    },
+  },
+  {
+    id: "preset-unverified",
+    name: "Unverified High-Value Sanction",
+    badge: "Unverified PWD Benchmark",
+    badgeColor: "bg-orange-100 text-orange-800 border-orange-300",
+    description: "Large ₹4.80 Cr sanction submitted without technical estimate or Schedule of Rates verification.",
+    data: {
+      work_name: "District Stadium Sports Complex Phase II",
+      category: "Public Infrastructure",
+      state: "Tamil Nadu",
+      constituency: "Madurai",
+      district: "Madurai",
+      ida: "Sports Development Authority",
+      contractor_name: "Southern Infra Consortium",
+      sanctioned_amount: 48000000,
+      estimated_cost: 0,
+      tender_amount: 48000000,
+      planned_duration_days: 720,
+      work_type: "Civil Construction",
+      num_bidders: 2,
+      is_single_bid: false,
+      contractor_past_delays: 1,
+      latitude: 9.9252,
+      longitude: 78.1198,
+    },
+  },
 ];
 
 export default function ProposalsPage() {
   const [formData, setFormData] = useState<RawProposalScoringRequest>(SAMPLE_PRESETS[0].data);
+  const [activePresetId, setActivePresetId] = useState<string>(SAMPLE_PRESETS[0].id);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<RawProposalScoringResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [showJsonInspector, setShowJsonInspector] = useState(false);
+  const [copiedJson, setCopiedJson] = useState(false);
+  const [copiedId, setCopiedId] = useState(false);
 
   const availableDistricts = useMemo(() => {
     return getDistrictsForState(formData.state || "Bihar");
   }, [formData.state]);
 
-  const handlePresetSelect = (preset: typeof SAMPLE_PRESETS[0]) => {
+  const handlePresetSelect = (preset: PresetScenario) => {
     setFormData({ ...preset.data });
-    setResult(null);
+    setActivePresetId(preset.id);
     setError(null);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setActivePresetId(""); // Mark as custom if user edits
     const { name, value, type } = e.target;
     if (type === "checkbox") {
       const checked = (e.target as HTMLInputElement).checked;
@@ -157,19 +239,61 @@ export default function ProposalsPage() {
     }
   };
 
+  const handleReset = () => {
+    setFormData({ ...SAMPLE_PRESETS[0].data });
+    setActivePresetId(SAMPLE_PRESETS[0].id);
+    setResult(null);
+    setError(null);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
+
+    // Sanitize and ensure numerical values are safely typed for backend
+    const sanitizedPayload: RawProposalScoringRequest = {
+      work_name: formData.work_name || "Proposed Infrastructure Project",
+      category: formData.category || "Public Infrastructure",
+      state: formData.state || "Bihar",
+      constituency: formData.constituency || "Darbhanga",
+      district: formData.district || formData.constituency || "Darbhanga",
+      ida: formData.ida || "District Planning Authority",
+      contractor_name: formData.contractor_name || "Apex Infrastructure Ltd",
+      sanctioned_amount: formData.sanctioned_amount ? Number(formData.sanctioned_amount) : 2500000,
+      estimated_cost: formData.estimated_cost !== undefined && formData.estimated_cost !== ("" as any) ? Number(formData.estimated_cost) : undefined,
+      tender_amount: formData.tender_amount !== undefined && formData.tender_amount !== ("" as any) ? Number(formData.tender_amount) : undefined,
+      planned_duration_days: formData.planned_duration_days ? Number(formData.planned_duration_days) : 180,
+      work_type: formData.work_type || "Civil Infrastructure",
+      num_bidders: formData.num_bidders ? Number(formData.num_bidders) : 3,
+      is_single_bid: Boolean(formData.is_single_bid),
+      contractor_past_delays: formData.contractor_past_delays !== undefined && formData.contractor_past_delays !== ("" as any) ? Number(formData.contractor_past_delays) : 0,
+      latitude: formData.latitude !== undefined && formData.latitude !== ("" as any) ? Number(formData.latitude) : 26.1542,
+      longitude: formData.longitude !== undefined && formData.longitude !== ("" as any) ? Number(formData.longitude) : 85.8918,
+    };
+
     try {
-      const res = await scoreRawProposal(formData);
+      const res = await scoreRawProposal(sanitizedPayload);
       setResult(res);
     } catch (err: any) {
-      console.error(err);
-      setError(err.message || "Proposal evaluation failed");
+      console.error("Proposal scoring failed:", err);
+      setError(err.message || "Proposal evaluation failed. Check backend connection.");
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleCopyJson = () => {
+    if (!result) return;
+    navigator.clipboard.writeText(JSON.stringify(result, null, 2));
+    setCopiedJson(true);
+    setTimeout(() => setCopiedJson(false), 2000);
+  };
+
+  const handleCopyId = (id: string) => {
+    navigator.clipboard.writeText(id);
+    setCopiedId(true);
+    setTimeout(() => setCopiedId(false), 2000);
   };
 
   return (
@@ -181,7 +305,8 @@ export default function ProposalsPage() {
             <span className="rounded-md bg-[#6E4529] px-2.5 py-0.5 text-[10px] font-mono font-bold uppercase tracking-wider text-[#F5EBE1]">
               Pre-Sanction AI Gate • Feed Project Plan
             </span>
-            <span className="text-xs text-stone-500 font-mono">
+            <span className="text-xs text-stone-500 font-mono flex items-center gap-1">
+              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
               8-Model ML Inference Active (&lt; 200ms)
             </span>
           </div>
@@ -189,14 +314,14 @@ export default function ProposalsPage() {
             Feed Project Plan & Live Risk Scorer
           </h1>
           <p className="mt-1 text-xs sm:text-sm text-stone-600 max-w-3xl">
-            Input proposed developmental project parameters to simulate real-time forensic risk scoring, domain anomaly triangulation (Models 1–7), and calibrated fraud probabilities (Model 8) before administrative or financial approval.
+            Simulate real-time forensic risk scoring on new or proposed MPLADS developmental plans. Evaluates across Models 1–7 (Unsupervised Domain Isolation Forests) and Model 8 (Calibrated XGBoost Supervised Fraud Classifier) before financial sanction.
           </p>
         </div>
 
         <div className="flex items-center gap-2">
           <Link
             href="/dashboard"
-            className="inline-flex items-center gap-1.5 rounded-xl border border-[#D9D2C5] bg-[#FFFDF9] px-3.5 py-2 text-xs font-bold text-[#6E4529] hover:bg-white transition-all shadow-xs"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-[#D9D2C5] bg-[#FFFDF9] px-3.5 py-2 text-xs font-bold text-[#6E4529] hover:bg-white transition-all shadow-2xs"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             <span>Command Center</span>
@@ -204,33 +329,54 @@ export default function ProposalsPage() {
         </div>
       </div>
 
-      {/* Preset Pickers */}
+      {/* Quick Test Scenario Presets */}
       <div className="space-y-2">
-        <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#8C5D3B] flex items-center gap-1.5">
-          <Sparkles className="h-3.5 w-3.5" />
-          Quick Test Scenario Presets:
-        </span>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
-          {SAMPLE_PRESETS.map((p) => (
-            <button
-              key={p.name}
-              type="button"
-              onClick={() => handlePresetSelect(p)}
-              className="text-left rounded-xl border border-[#E5DFD3] bg-[#FFFDF9] hover:border-[#6E4529] hover:bg-[#FAF7F2] p-3 shadow-2xs transition-all cursor-pointer group"
-            >
-              <div className="flex items-center justify-between gap-1 mb-1">
-                <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded border ${p.badgeColor}`}>
-                  {p.badge}
-                </span>
-              </div>
-              <p className="text-xs font-bold text-[#1C1917] group-hover:text-[#6E4529] transition-colors">
-                {p.name}
-              </p>
-              <p className="text-[11px] text-stone-500 font-mono mt-0.5">
-                ₹{p.data.sanctioned_amount.toLocaleString()} • {p.data.constituency}
-              </p>
-            </button>
-          ))}
+        <div className="flex items-center justify-between">
+          <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#8C5D3B] flex items-center gap-1.5">
+            <Sparkles className="h-3.5 w-3.5 text-amber-600" />
+            Quick Test Scenario Presets (Click to Load &amp; Score):
+          </span>
+          <span className="text-[11px] font-mono text-stone-500">
+            Select a curated edge case or enter custom parameters below
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+          {SAMPLE_PRESETS.map((p) => {
+            const isSelected = activePresetId === p.id;
+            return (
+              <button
+                key={p.id}
+                type="button"
+                onClick={() => handlePresetSelect(p)}
+                className={`text-left rounded-xl border p-3 shadow-2xs transition-all cursor-pointer group relative ${
+                  isSelected
+                    ? "border-[#6E4529] bg-[#FAF3E9] ring-1 ring-[#6E4529]"
+                    : "border-[#E5DFD3] bg-[#FFFDF9] hover:border-[#6E4529] hover:bg-[#FAF7F2]"
+                }`}
+              >
+                <div className="flex items-center justify-between gap-1 mb-1">
+                  <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded border ${p.badgeColor}`}>
+                    {p.badge}
+                  </span>
+                  {isSelected && (
+                    <span className="text-[10px] font-mono font-bold text-[#6E4529] flex items-center gap-0.5 bg-amber-100/80 px-1.5 py-0.5 rounded">
+                      <Check className="h-3 w-3" /> Active
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs font-bold text-[#1C1917] group-hover:text-[#6E4529] transition-colors leading-tight">
+                  {p.name}
+                </p>
+                <p className="text-[11px] text-stone-500 font-mono mt-0.5">
+                  ₹{p.data.sanctioned_amount.toLocaleString("en-IN")} • {p.data.constituency}
+                </p>
+                <p className="text-[10px] text-stone-600 mt-1 line-clamp-1">
+                  {p.description}
+                </p>
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -240,23 +386,24 @@ export default function ProposalsPage() {
           glowColor="245, 158, 11"
           enableBorderGlow={true}
           enableTilt={false}
-          className="lg:col-span-7 rounded-xl border border-[#E5DFD3] bg-[#FFFDF9] p-5 shadow-xs space-y-4"
+          className="lg:col-span-6 rounded-xl border border-[#E5DFD3] bg-[#FFFDF9] p-5 shadow-xs space-y-4"
         >
           <div className="flex items-center justify-between border-b border-[#E5DFD3] pb-3">
             <div>
-              <h3 className="text-base font-editorial font-bold text-[#1C1917]">
-                Proposal Parameters & Metadata
+              <h3 className="text-base font-editorial font-bold text-[#1C1917] flex items-center gap-2">
+                <Sliders className="h-4 w-4 text-[#6E4529]" />
+                Proposal Parameters &amp; Attributes
               </h3>
               <p className="text-xs text-stone-500 font-sans">
-                Enter details of the proposed project for multi-model inference
+                Supports any custom values, boundary tests, or preset configurations
               </p>
             </div>
             <button
               type="button"
-              onClick={() => handlePresetSelect(SAMPLE_PRESETS[0])}
-              className="text-xs font-mono text-stone-500 hover:text-stone-800 flex items-center gap-1 cursor-pointer"
+              onClick={handleReset}
+              className="text-xs font-mono text-stone-500 hover:text-stone-800 flex items-center gap-1 cursor-pointer bg-stone-100 hover:bg-stone-200 px-2 py-1 rounded transition-colors"
             >
-              <RotateCcw className="h-3 w-3" /> Reset
+              <RotateCcw className="h-3 w-3" /> Reset Default
             </button>
           </div>
 
@@ -271,6 +418,7 @@ export default function ProposalsPage() {
                 required
                 value={formData.work_name}
                 onChange={handleInputChange}
+                placeholder="e.g. Construction of Community Center"
                 className="w-full rounded-lg border border-[#D9D2C5] bg-[#FAF7F2] px-3 py-2 text-xs text-[#1C1917] focus:border-[#6E4529] focus:outline-none focus:ring-1 focus:ring-[#6E4529] font-sans"
               />
             </div>
@@ -292,6 +440,8 @@ export default function ProposalsPage() {
                   <option value="Education">Education</option>
                   <option value="Health & Sanitation">Health & Sanitation</option>
                   <option value="Electricity & Lighting">Electricity & Lighting</option>
+                  <option value="Irrigation">Irrigation</option>
+                  <option value="Community Infrastructure">Community Infrastructure</option>
                 </select>
               </div>
 
@@ -303,9 +453,10 @@ export default function ProposalsPage() {
                   type="number"
                   name="sanctioned_amount"
                   required
-                  min={1000}
-                  value={formData.sanctioned_amount}
+                  min={0}
+                  value={formData.sanctioned_amount !== undefined ? formData.sanctioned_amount : ""}
                   onChange={handleInputChange}
+                  placeholder="₹ 2,500,000"
                   className="w-full rounded-lg border border-[#D9D2C5] bg-[#FAF7F2] px-3 py-2 text-xs text-[#1C1917] font-mono font-bold focus:border-[#6E4529] focus:outline-none"
                 />
               </div>
@@ -333,7 +484,7 @@ export default function ProposalsPage() {
                       }));
                     }
                   }}
-                  placeholder="e.g. Bihar, Tamil Nadu"
+                  placeholder="e.g. Bihar"
                   className="w-full rounded-lg border border-[#D9D2C5] bg-[#FAF7F2] px-3 py-2 text-xs text-[#1C1917]"
                 />
                 <datalist id="state-datalist">
@@ -357,7 +508,7 @@ export default function ProposalsPage() {
                     handleInputChange(e);
                     setFormData((prev) => ({ ...prev, constituency: e.target.value }));
                   }}
-                  placeholder="e.g. Darbhanga, Salem"
+                  placeholder="e.g. Darbhanga"
                   className="w-full rounded-lg border border-[#D9D2C5] bg-[#FAF7F2] px-3 py-2 text-xs text-[#1C1917]"
                 />
                 <datalist id="district-datalist">
@@ -393,6 +544,7 @@ export default function ProposalsPage() {
                   name="ida"
                   value={formData.ida || ""}
                   onChange={handleInputChange}
+                  placeholder="e.g. District Planning Authority"
                   className="w-full rounded-lg border border-[#D9D2C5] bg-[#FAF7F2] px-3 py-2 text-xs text-[#1C1917]"
                 />
               </div>
@@ -406,6 +558,7 @@ export default function ProposalsPage() {
                   name="contractor_name"
                   value={formData.contractor_name || ""}
                   onChange={handleInputChange}
+                  placeholder="e.g. Apex Infrastructure Ltd"
                   className="w-full rounded-lg border border-[#D9D2C5] bg-[#FAF7F2] px-3 py-2 text-xs text-[#1C1917]"
                 />
               </div>
@@ -414,13 +567,30 @@ export default function ProposalsPage() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
                 <label className="block text-xs font-bold text-stone-700 font-mono uppercase mb-1">
-                  Estimated Cost (INR)
+                  Technical Cost Estimate
                 </label>
                 <input
                   type="number"
                   name="estimated_cost"
-                  value={formData.estimated_cost || ""}
+                  min={0}
+                  value={formData.estimated_cost !== undefined ? formData.estimated_cost : ""}
                   onChange={handleInputChange}
+                  placeholder="Leave blank for unverified"
+                  className="w-full rounded-lg border border-[#D9D2C5] bg-[#FAF7F2] px-3 py-2 text-xs text-[#1C1917] font-mono"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-stone-700 font-mono uppercase mb-1">
+                  Tender Contract Value
+                </label>
+                <input
+                  type="number"
+                  name="tender_amount"
+                  min={0}
+                  value={formData.tender_amount !== undefined ? formData.tender_amount : ""}
+                  onChange={handleInputChange}
+                  placeholder="Tender amount"
                   className="w-full rounded-lg border border-[#D9D2C5] bg-[#FAF7F2] px-3 py-2 text-xs text-[#1C1917] font-mono"
                 />
               </div>
@@ -432,21 +602,9 @@ export default function ProposalsPage() {
                 <input
                   type="number"
                   name="planned_duration_days"
-                  value={formData.planned_duration_days || 180}
-                  onChange={handleInputChange}
-                  className="w-full rounded-lg border border-[#D9D2C5] bg-[#FAF7F2] px-3 py-2 text-xs text-[#1C1917] font-mono"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-stone-700 font-mono uppercase mb-1">
-                  Number of Bidders
-                </label>
-                <input
-                  type="number"
-                  name="num_bidders"
                   min={1}
-                  value={formData.num_bidders || 3}
+                  max={3650}
+                  value={formData.planned_duration_days !== undefined ? formData.planned_duration_days : 180}
                   onChange={handleInputChange}
                   className="w-full rounded-lg border border-[#D9D2C5] bg-[#FAF7F2] px-3 py-2 text-xs text-[#1C1917] font-mono"
                 />
@@ -454,16 +612,19 @@ export default function ProposalsPage() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 items-center pt-1">
-              <label className="flex items-center gap-2 text-xs font-bold text-stone-800 cursor-pointer">
+              <div>
+                <label className="block text-[11px] font-bold text-stone-700 font-mono uppercase mb-1">
+                  Number of Bidders
+                </label>
                 <input
-                  type="checkbox"
-                  name="is_single_bid"
-                  checked={formData.is_single_bid || false}
+                  type="number"
+                  name="num_bidders"
+                  min={1}
+                  value={formData.num_bidders !== undefined ? formData.num_bidders : 3}
                   onChange={handleInputChange}
-                  className="h-4 w-4 rounded border-stone-300 text-[#6E4529] focus:ring-[#6E4529]"
+                  className="w-full rounded-lg border border-[#D9D2C5] bg-[#FAF7F2] px-3 py-1.5 text-xs text-[#1C1917] font-mono"
                 />
-                <span>Single-Bid Tender Only</span>
-              </label>
+              </div>
 
               <div>
                 <label className="block text-[11px] font-bold text-stone-700 font-mono uppercase mb-1">
@@ -473,45 +634,59 @@ export default function ProposalsPage() {
                   type="number"
                   name="contractor_past_delays"
                   min={0}
-                  value={formData.contractor_past_delays || 0}
+                  value={formData.contractor_past_delays !== undefined ? formData.contractor_past_delays : 0}
                   onChange={handleInputChange}
                   className="w-full rounded-lg border border-[#D9D2C5] bg-[#FAF7F2] px-3 py-1.5 text-xs text-[#1C1917] font-mono"
                 />
               </div>
 
-              <div className="flex gap-2">
-                <div className="flex-1">
-                  <label className="block text-[10px] font-bold text-stone-500 font-mono uppercase mb-0.5">
-                    Lat
-                  </label>
+              <div className="pt-4">
+                <label className="flex items-center gap-2 text-xs font-bold text-stone-800 cursor-pointer">
                   <input
-                    type="number"
-                    step="0.0001"
-                    name="latitude"
-                    value={formData.latitude || 26.1542}
+                    type="checkbox"
+                    name="is_single_bid"
+                    checked={formData.is_single_bid || false}
                     onChange={handleInputChange}
-                    className="w-full rounded-lg border border-[#D9D2C5] bg-[#FAF7F2] px-2 py-1 text-xs text-[#1C1917] font-mono"
+                    className="h-4 w-4 rounded border-stone-300 text-[#6E4529] focus:ring-[#6E4529]"
                   />
-                </div>
-                <div className="flex-1">
-                  <label className="block text-[10px] font-bold text-stone-500 font-mono uppercase mb-0.5">
-                    Lng
-                  </label>
-                  <input
-                    type="number"
-                    step="0.0001"
-                    name="longitude"
-                    value={formData.longitude || 85.8918}
-                    onChange={handleInputChange}
-                    className="w-full rounded-lg border border-[#D9D2C5] bg-[#FAF7F2] px-2 py-1 text-xs text-[#1C1917] font-mono"
-                  />
-                </div>
+                  <span>Single-Bid Tender Only</span>
+                </label>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 pt-1">
+              <div>
+                <label className="block text-[10px] font-bold text-stone-500 font-mono uppercase mb-0.5">
+                  Latitude
+                </label>
+                <input
+                  type="number"
+                  step="0.0001"
+                  name="latitude"
+                  value={formData.latitude !== undefined ? formData.latitude : 26.1542}
+                  onChange={handleInputChange}
+                  className="w-full rounded-lg border border-[#D9D2C5] bg-[#FAF7F2] px-2 py-1 text-xs text-[#1C1917] font-mono"
+                />
+              </div>
+              <div>
+                <label className="block text-[10px] font-bold text-stone-500 font-mono uppercase mb-0.5">
+                  Longitude
+                </label>
+                <input
+                  type="number"
+                  step="0.0001"
+                  name="longitude"
+                  value={formData.longitude !== undefined ? formData.longitude : 85.8918}
+                  onChange={handleInputChange}
+                  className="w-full rounded-lg border border-[#D9D2C5] bg-[#FAF7F2] px-2 py-1 text-xs text-[#1C1917] font-mono"
+                />
               </div>
             </div>
 
             <div className="pt-3 border-t border-[#E5DFD3] flex items-center justify-between">
-              <span className="text-[11px] text-stone-500 font-mono">
-                Evaluates across Models 1–8 in backend memory
+              <span className="text-[11px] text-stone-500 font-mono flex items-center gap-1">
+                <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
+                Live in-memory scoring active
               </span>
               <SpecularButton
                 type="submit"
@@ -520,171 +695,305 @@ export default function ProposalsPage() {
                 size="md"
               >
                 <Zap className="h-4 w-4" />
-                <span>{loading ? "Running 8-Model Inference..." : "Evaluate Proposal Now"}</span>
+                <span>{loading ? "Evaluating Across 8 Models..." : "Evaluate Proposal Now"}</span>
               </SpecularButton>
             </div>
           </form>
         </MagicCard>
 
         {/* Live Evaluation Results Panel */}
-        <div className="lg:col-span-5 space-y-4">
+        <div className="lg:col-span-6 space-y-4">
           {error && (
-            <div className="rounded-xl border border-rose-300 bg-rose-50 p-4 text-xs text-rose-800 space-y-1">
+            <div className="rounded-xl border border-rose-300 bg-rose-50 p-4 text-xs text-rose-800 space-y-1.5 shadow-xs">
               <div className="flex items-center gap-1.5 font-bold">
-                <AlertTriangle className="h-4 w-4 text-rose-600" />
-                <span>Inference Error</span>
+                <AlertTriangle className="h-4 w-4 text-rose-600 shrink-0" />
+                <span>Inference Communication Error</span>
               </div>
-              <p>{error}</p>
+              <p className="font-mono text-[11px]">{error}</p>
+              <p className="text-[10px] text-stone-600 mt-1">
+                Ensure the FastAPI backend is running on <code>http://127.0.0.1:8001</code>.
+              </p>
             </div>
           )}
 
           {result ? (
-            <MagicCard
-              glowColor={result.overall_risk_score >= 60 ? "239, 68, 68" : "245, 158, 11"}
-              enableBorderGlow={true}
-              enableTilt={false}
-              className="rounded-xl border border-[#E5DFD3] bg-[#FFFDF9] p-5 shadow-xs space-y-4"
-            >
-              {/* Result Header */}
-              <div className="border-b border-[#E5DFD3] pb-3 space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-mono font-bold text-stone-500 uppercase">
-                    Evaluation Dossier #{result.proposal_id}
-                  </span>
-                  {result.inference_time_ms !== undefined && (
-                    <span className="text-[10px] font-mono font-bold text-emerald-800 bg-emerald-50 border border-emerald-300 px-2 py-0.5 rounded">
-                      ⚡ {result.inference_time_ms.toFixed(1)} ms
-                    </span>
-                  )}
-                </div>
-
-                {/* Recommendation Banner */}
-                <div
-                  className={`rounded-lg p-3 border flex items-center gap-2.5 ${
-                    result.approval_recommendation === "AUTOMATIC_CLEARANCE"
-                      ? "bg-emerald-50 border-emerald-300 text-emerald-900"
-                      : result.approval_recommendation === "CRITICAL_INTERVENTION_REQUIRED"
-                      ? "bg-rose-50 border-rose-300 text-rose-950"
-                      : "bg-amber-50 border-amber-300 text-amber-950"
-                  }`}
-                >
-                  {result.approval_recommendation === "AUTOMATIC_CLEARANCE" ? (
-                    <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0" />
-                  ) : (
-                    <AlertTriangle className="h-5 w-5 text-rose-600 shrink-0" />
-                  )}
-                  <div>
-                    <h4 className="text-xs font-bold uppercase tracking-wider font-mono">
-                      {result.approval_recommendation.replace(/_/g, " ")}
-                    </h4>
-                    <p className="text-[11px] font-sans leading-tight mt-0.5">
-                      {result.approval_recommendation === "AUTOMATIC_CLEARANCE"
-                        ? "Low anomaly profile. Recommended for statutory administrative sanction."
-                        : result.approval_recommendation === "CRITICAL_INTERVENTION_REQUIRED"
-                        ? "Critical multi-signal indicators. Hold release pending vigilance audit."
-                        : "Elevated risk signals detected. Secondary technical review advised."}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* SETU Risk Scores Row */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-                <div className="rounded-lg border border-[#E5DFD3] bg-[#FAF7F2] p-2.5">
-                  <span className="text-[10px] text-stone-500 font-mono block">Overall Risk</span>
-                  <span className="text-xl font-black font-mono text-[#6E4529] block">
-                    {result.overall_risk_score.toFixed(1)}
-                  </span>
-                </div>
-
-                <div className="rounded-lg border border-[#E5DFD3] bg-[#FAF7F2] p-2.5">
-                  <span className="text-[10px] text-stone-500 font-mono block">Risk Tier</span>
-                  <div className="mt-1">
-                    <RiskBadge score={result.overall_risk_score} level={result.risk_level} size="sm" />
-                  </div>
-                </div>
-
-                <div className="rounded-lg border border-[#E5DFD3] bg-[#FAF7F2] p-2.5">
-                  <span className="text-[10px] text-stone-500 font-mono block">Priority</span>
-                  <div className="mt-1">
-                    <PriorityBadge priority={result.investigation_priority} size="sm" />
-                  </div>
-                </div>
-
-                <div className="rounded-lg border border-[#E5DFD3] bg-[#FAF7F2] p-2.5">
-                  <span className="text-[10px] text-stone-500 font-mono block">Fraud Prob</span>
-                  <span className="text-xl font-black font-mono text-rose-700 block">
-                    {(result.fraud_probability * 100).toFixed(1)}%
-                  </span>
-                </div>
-              </div>
-
-              {/* Typology Badge */}
-              <div className="flex items-center justify-between text-xs py-1 border-y border-[#E5DFD3]">
-                <span className="text-stone-600 font-medium">Predicted Typology:</span>
-                <span className="rounded bg-[#FAF7F2] border border-[#D9D2C5] px-2 py-0.5 font-mono font-bold text-[#6E4529]">
-                  {formatTypologyLabel(result.primary_typology)}
-                </span>
-              </div>
-
-              {/* 7 Domain Anomaly Breakdown */}
-              <div className="space-y-2">
-                <span className="text-xs font-bold text-stone-700 uppercase font-mono tracking-wider block">
-                  7-Model Domain Breakdown (0–100)
-                </span>
-                <div className="space-y-1.5 text-xs">
-                  {[
-                    { name: "Financial (M1)", score: result.sub_scores?.financial || 0, color: "#ef4444" },
-                    { name: "Geospatial (M2)", score: result.sub_scores?.geospatial || 0, color: "#0ea5e9" },
-                    { name: "Procurement (M3)", score: result.sub_scores?.procurement || 0, color: "#f59e0b" },
-                    { name: "Contractor (M4)", score: result.sub_scores?.contractor || 0, color: "#6366f1" },
-                    { name: "Payment (M5)", score: result.sub_scores?.payment || 0, color: "#8b5cf6" },
-                    { name: "Progress (M6)", score: result.sub_scores?.progress || 0, color: "#f97316" },
-                    { name: "Graph Network (M7)", score: result.sub_scores?.graph || 0, color: "#10b981" },
-                  ].map((d) => (
-                    <div key={d.name} className="flex items-center justify-between gap-3">
-                      <span className="text-[11px] text-stone-600 w-28 truncate">{d.name}</span>
-                      <div className="flex-1 h-2 rounded-full bg-stone-200 overflow-hidden">
-                        <div
-                          className="h-full rounded-full transition-all duration-500"
-                          style={{
-                            width: `${Math.min(100, Math.max(3, d.score))}%`,
-                            backgroundColor: d.color,
-                          }}
-                        />
-                      </div>
-                      <span className="font-mono text-[11px] font-bold text-[#1C1917] w-8 text-right font-tabular">
-                        {d.score.toFixed(0)}
+            <div className="space-y-4">
+              <MagicCard
+                glowColor={
+                  result.overall_risk_score >= 60
+                    ? "239, 68, 68"
+                    : result.overall_risk_score >= 40
+                    ? "245, 158, 11"
+                    : "16, 185, 129"
+                }
+                enableBorderGlow={true}
+                enableTilt={false}
+                className="rounded-xl border border-[#E5DFD3] bg-[#FFFDF9] p-5 shadow-xs space-y-4"
+              >
+                {/* Result Header & Actions */}
+                <div className="border-b border-[#E5DFD3] pb-3 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[11px] font-mono font-bold text-stone-600 uppercase">
+                        Proposal #{result.proposal_id}
                       </span>
+                      <button
+                        type="button"
+                        onClick={() => handleCopyId(result.proposal_id)}
+                        className="text-[10px] text-stone-400 hover:text-stone-700 flex items-center gap-0.5"
+                        title="Copy proposal ID"
+                      >
+                        {copiedId ? <Check className="h-3 w-3 text-emerald-600" /> : <Copy className="h-3 w-3" />}
+                      </button>
                     </div>
-                  ))}
-                </div>
-              </div>
 
-              {/* Synthesized Reason Traces */}
-              <div className="space-y-1.5 pt-1">
-                <span className="text-xs font-bold text-stone-700 uppercase font-mono tracking-wider block">
-                  Synthesized Evidence Traces
-                </span>
-                <ul className="space-y-1 text-xs text-stone-800">
-                  {result.synthesized_reasons?.map((r, i) => (
-                    <li key={i} className="flex items-start gap-1.5 bg-[#FAF7F2] p-2 rounded border border-[#E5DFD3] text-[11px]">
-                      <span className="text-[#6E4529] font-bold font-mono">•</span>
-                      <span>{r}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </MagicCard>
+                    <div className="flex items-center gap-2">
+                      {result.inference_time_ms !== undefined && (
+                        <span className="text-[10px] font-mono font-bold text-emerald-800 bg-emerald-50 border border-emerald-300 px-2 py-0.5 rounded flex items-center gap-1">
+                          <Zap className="h-3 w-3 text-emerald-600" />
+                          {result.inference_time_ms.toFixed(1)} ms
+                        </span>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => window.print()}
+                        className="text-stone-400 hover:text-stone-700 p-1 rounded"
+                        title="Print / Save Dossier"
+                      >
+                        <Printer className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Recommendation Banner */}
+                  <div
+                    className={`rounded-lg p-3.5 border flex items-start gap-3 transition-all ${
+                      result.approval_recommendation === "AUTOMATIC_CLEARANCE"
+                        ? "bg-emerald-50/90 border-emerald-300 text-emerald-950"
+                        : result.approval_recommendation === "CONDITIONAL_APPROVAL"
+                        ? "bg-amber-50/90 border-amber-300 text-amber-950"
+                        : result.approval_recommendation === "MANDATORY_TECHNICAL_AUDIT"
+                        ? "bg-orange-50/90 border-orange-300 text-orange-950"
+                        : "bg-rose-50/90 border-rose-300 text-rose-950"
+                    }`}
+                  >
+                    {result.approval_recommendation === "AUTOMATIC_CLEARANCE" ? (
+                      <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0 mt-0.5" />
+                    ) : result.approval_recommendation === "CONDITIONAL_APPROVAL" ? (
+                      <Info className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
+                    ) : result.approval_recommendation === "MANDATORY_TECHNICAL_AUDIT" ? (
+                      <AlertTriangle className="h-5 w-5 text-orange-600 shrink-0 mt-0.5" />
+                    ) : (
+                      <ShieldAlert className="h-5 w-5 text-rose-600 shrink-0 mt-0.5" />
+                    )}
+                    <div>
+                      <h4 className="text-xs font-bold uppercase tracking-wider font-mono">
+                        {result.approval_recommendation.replace(/_/g, " ")}
+                      </h4>
+                      <p className="text-[11px] font-sans leading-relaxed mt-1">
+                        {result.approval_recommendation === "AUTOMATIC_CLEARANCE"
+                          ? "Low anomaly profile across all 7 domain filters. Proposal cleared for statutory administrative approval and normal fund sanction."
+                          : result.approval_recommendation === "CONDITIONAL_APPROVAL"
+                          ? "Moderate risk signals observed. Administrative sanction conditional upon milestone-based tranche releases and enhanced monitoring."
+                          : result.approval_recommendation === "MANDATORY_TECHNICAL_AUDIT"
+                          ? "Elevated multi-domain risk indicators detected. Mandatory pre-sanction site verification and Schedule of Rates audit required before funds are disbursed."
+                          : "Critical multi-signal anomaly profile and elevated fraud probability. Fund release halted immediately pending institutional vigilance inquiry."}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Structured KPI Metric Cards */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                  <div className="rounded-lg border border-[#E5DFD3] bg-[#FAF7F2] p-2.5">
+                    <span className="text-[10px] text-stone-500 font-mono block">Overall Risk</span>
+                    <span className={`text-xl font-black font-mono block ${
+                      result.overall_risk_score >= 60 ? "text-rose-700" : result.overall_risk_score >= 40 ? "text-amber-700" : "text-emerald-700"
+                    }`}>
+                      {result.overall_risk_score.toFixed(1)}
+                    </span>
+                  </div>
+
+                  <div className="rounded-lg border border-[#E5DFD3] bg-[#FAF7F2] p-2.5">
+                    <span className="text-[10px] text-stone-500 font-mono block">Risk Tier</span>
+                    <div className="mt-1">
+                      <RiskBadge score={result.overall_risk_score} level={result.risk_level} size="sm" />
+                    </div>
+                  </div>
+
+                  <div className="rounded-lg border border-[#E5DFD3] bg-[#FAF7F2] p-2.5">
+                    <span className="text-[10px] text-stone-500 font-mono block">Priority</span>
+                    <div className="mt-1">
+                      <PriorityBadge priority={result.investigation_priority} size="sm" />
+                    </div>
+                  </div>
+
+                  <div className="rounded-lg border border-[#E5DFD3] bg-[#FAF7F2] p-2.5">
+                    <span className="text-[10px] text-stone-500 font-mono block">ML Fraud Prob</span>
+                    <span className="text-xl font-black font-mono text-rose-700 block">
+                      {(result.fraud_probability * 100).toFixed(1)}%
+                    </span>
+                  </div>
+                </div>
+
+                {/* Typology Badge */}
+                <div className="flex items-center justify-between text-xs py-1.5 px-2.5 rounded-lg bg-[#FAF7F2] border border-[#E5DFD3]">
+                  <span className="text-stone-600 font-medium text-[11px] font-mono">Predicted Anomaly Archetype:</span>
+                  <span className="rounded bg-white border border-[#D9D2C5] px-2.5 py-0.5 font-mono font-bold text-xs text-[#6E4529]">
+                    {formatTypologyLabel(result.primary_typology)}
+                  </span>
+                </div>
+
+                {/* 8 Domain Anomaly Breakdown */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-stone-700 uppercase font-mono tracking-wider">
+                      8-Model Domain Anomaly Breakdown (0–100)
+                    </span>
+                    <span className="text-[10px] font-mono text-stone-500">
+                      Lower is Safer
+                    </span>
+                  </div>
+
+                  <div className="space-y-2 text-xs">
+                    {[
+                      { code: "M1", name: "Financial Anomaly", score: result.sub_scores?.financial || 0 },
+                      { code: "M2", name: "Geospatial Anomaly", score: result.sub_scores?.geospatial || 0 },
+                      { code: "M3", name: "Procurement Anomaly", score: result.sub_scores?.procurement || 0 },
+                      { code: "M4", name: "Contractor Anomaly", score: result.sub_scores?.contractor || 0 },
+                      { code: "M5", name: "Payment Anomaly", score: result.sub_scores?.payment || 0 },
+                      { code: "M6", name: "Progress Anomaly", score: result.sub_scores?.progress || 0 },
+                      { code: "M7", name: "Graph Network", score: result.sub_scores?.graph || 0 },
+                      { code: "M8", name: "Supervised ML Fraud", score: result.sub_scores?.ml_fraud_probability || 0 },
+                    ].map((d) => {
+                      const isHigh = d.score >= 60;
+                      const isMedium = d.score >= 35 && d.score < 60;
+                      const barColor = isHigh ? "#ef4444" : isMedium ? "#f59e0b" : "#10b981";
+                      const statusText = isHigh ? "High" : isMedium ? "Suspicious" : "Normal";
+                      const statusClass = isHigh
+                        ? "text-rose-700 bg-rose-50 border-rose-200"
+                        : isMedium
+                        ? "text-amber-700 bg-amber-50 border-amber-200"
+                        : "text-emerald-700 bg-emerald-50 border-emerald-200";
+
+                      return (
+                        <div key={d.code} className="flex items-center justify-between gap-2.5">
+                          <span className="font-mono text-[10px] text-stone-500 w-6">{d.code}</span>
+                          <span className="text-[11px] text-stone-700 w-36 truncate font-medium">{d.name}</span>
+                          <div className="flex-1 h-2 rounded-full bg-stone-200 overflow-hidden">
+                            <div
+                              className="h-full rounded-full transition-all duration-500"
+                              style={{
+                                width: `${Math.min(100, Math.max(4, d.score))}%`,
+                                backgroundColor: barColor,
+                              }}
+                            />
+                          </div>
+                          <span className={`text-[9px] font-mono font-bold px-1.5 py-0.2 rounded border ${statusClass}`}>
+                            {statusText}
+                          </span>
+                          <span className="font-mono text-[11px] font-bold text-[#1C1917] w-8 text-right font-tabular">
+                            {d.score.toFixed(0)}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Primary Root Cause & Evidence Traces */}
+                <div className="space-y-2 pt-1 border-t border-[#E5DFD3]">
+                  <span className="text-xs font-bold text-stone-700 uppercase font-mono tracking-wider block">
+                    Forensic Evidence &amp; Root Cause Analysis
+                  </span>
+
+                  {result.primary_reason && (
+                    <div className="rounded-lg border border-amber-300/80 bg-amber-50/70 p-2.5 text-xs text-amber-950 space-y-1">
+                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-amber-800 block">
+                        Primary Anomaly Driver:
+                      </span>
+                      <p className="text-[11px] font-sans leading-relaxed">{result.primary_reason}</p>
+                    </div>
+                  )}
+
+                  {result.secondary_reason && (
+                    <div className="rounded-lg border border-stone-200 bg-[#FAF7F2] p-2.5 text-xs text-stone-800 space-y-1">
+                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-stone-600 block">
+                        Secondary Contributing Signal:
+                      </span>
+                      <p className="text-[11px] font-sans leading-relaxed">{result.secondary_reason}</p>
+                    </div>
+                  )}
+
+                  {result.synthesized_reasons && result.synthesized_reasons.length > 0 && (
+                    <div className="space-y-1.5">
+                      <span className="text-[10px] font-mono font-bold text-stone-500 uppercase block">
+                        Synthesized Evidence Traces:
+                      </span>
+                      <ul className="space-y-1 text-xs">
+                        {result.synthesized_reasons.map((r, i) => (
+                          <li
+                            key={i}
+                            className="flex items-start gap-1.5 bg-[#FAF7F2] p-2 rounded border border-[#E5DFD3] text-[11px] text-stone-800 leading-snug"
+                          >
+                            <span className="text-[#6E4529] font-bold font-mono shrink-0">•</span>
+                            <span>{r}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+
+                {/* Backend Response Inspector Accordion */}
+                <div className="border-t border-[#E5DFD3] pt-3">
+                  <div className="flex items-center justify-between">
+                    <button
+                      type="button"
+                      onClick={() => setShowJsonInspector((prev) => !prev)}
+                      className="text-xs font-mono font-bold text-[#6E4529] hover:text-[#4A2D1B] flex items-center gap-1.5 cursor-pointer py-1"
+                    >
+                      <Code2 className="h-3.5 w-3.5" />
+                      <span>{showJsonInspector ? "Hide Live Backend Response Payload" : "Inspect Live Backend Response Payload"}</span>
+                      {showJsonInspector ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={handleCopyJson}
+                      className="text-[11px] font-mono text-stone-500 hover:text-stone-800 flex items-center gap-1 bg-stone-100 hover:bg-stone-200 px-2 py-1 rounded transition-colors cursor-pointer"
+                    >
+                      {copiedJson ? (
+                        <>
+                          <Check className="h-3 w-3 text-emerald-600" />
+                          <span className="text-emerald-700 font-bold">Copied!</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="h-3 w-3" />
+                          <span>Copy JSON</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  {showJsonInspector && (
+                    <div className="mt-2 rounded-lg border border-stone-800 bg-[#1E1E1E] p-3 text-[11px] font-mono text-emerald-400 overflow-x-auto max-h-72">
+                      <pre>{JSON.stringify(result, null, 2)}</pre>
+                    </div>
+                  )}
+                </div>
+              </MagicCard>
+            </div>
           ) : (
-            <div className="rounded-xl border border-dashed border-[#D9D2C5] bg-[#FAF7F2]/60 p-8 text-center space-y-3">
+            <div className="rounded-xl border border-dashed border-[#D9D2C5] bg-[#FAF7F2]/60 p-10 text-center space-y-3">
               <Zap className="h-10 w-10 text-stone-400 mx-auto" />
               <div>
                 <h4 className="text-sm font-bold text-stone-700 font-editorial">
                   Inference Results Waiting
                 </h4>
-                <p className="text-xs text-stone-500 mt-1">
-                  Configure proposal parameters or select a test scenario on the left and click &quot;Evaluate Proposal Now&quot;.
+                <p className="text-xs text-stone-500 mt-1 max-w-sm mx-auto">
+                  Click &quot;Evaluate Proposal Now&quot; on the left or select any scenario preset above to run real-time multi-model evaluation.
                 </p>
               </div>
             </div>

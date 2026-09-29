@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Technical Approach | Slide 3</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background-color: #0b1120;
+      font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .slide-viewport {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .slide-canvas {
+      width: 1920px;
+      height: 1080px;
+      background: #FFFFFF;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 10px 16px 10px 16px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+    }
+    .slide-canvas::before {
+      display: none !important;
+    }
+
+    /* Top Slide Header */
+    .slide-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      height: 44px;
+      margin-bottom: 6px;
+      position: relative;
+      z-index: 10;
+      flex-shrink: 0;
+    }
+    .header-team-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #19255B;
+      border-radius: 50px;
+      padding: 4px 18px;
+      background: #FFFFFF;
+      box-shadow: 0 2px 6px rgba(25, 37, 91, 0.08);
+    }
+    .team-badge-text {
+      font-size: 14px;
+      font-weight: 800;
+      color: #19255B;
+      letter-spacing: 0.03em;
+    }
+    .header-pill-title {
+      background: #19255B;
+      color: #FFFFFF;
+      font-size: 24px;
+      font-weight: 900;
+      padding: 4px 44px;
+      border-radius: 30px;
+      box-shadow: 0 4px 14px rgba(25, 37, 91, 0.15);
+      letter-spacing: -0.01em;
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .nav-logo-sih {
+      height: 42px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    /* Main Grid: Left Architecture & Tech Stack (~74%), Right Deep Workflow (~26%) */
+    .slide3-main-container {
+      display: flex;
+      gap: 8px;
+      flex: 1;
+      height: calc(100% - 50px);
+    }
+
+    /* LEFT ARCHITECTURE COLUMN */
+    .left-arch-wrapper {
+      flex: 3.12;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      height: 100%;
+    }
+
+    /* 4 LAYERS CONTAINER matching Technical-Architecture.png */
+    .layers-container-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.02fr 1.04fr 1.38fr;
+      gap: 7px;
+      flex: 1;
+      height: calc(100% - 102px);
+      position: relative;
+    }
+
+    /* Layer Column Box */
+    .arch-layer-box {
+      border-radius: 9px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(12, 30, 60, 0.05);
+      border: 2px solid transparent;
+      background: #FFFFFF;
+      position: relative;
+      height: 100%;
+    }
+
+    .layer-1-theme {
+      border-color: #19255B;
+      background: #F4F7FB;
+    }
+    .layer-2-theme {
+      border-color: #395136;
+      background: #F4F6F2;
+    }
+    .layer-3-theme {
+      border-color: #9E472A;
+      background: #FAF5F2;
+    }
+    .layer-4-theme {
+      border-color: #42231D;
+      background: #FBF8F6;
+    }
+
+    /* Layer Top Header Banner */
+    .layer-header-banner {
+      padding: 4px 6px;
+      text-align: center;
+      color: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 44px;
+      flex-shrink: 0;
+    }
+    .layer-1-theme .layer-header-banner { background: linear-gradient(135deg, #19255B 0%, #2D55B2 100%); }
+    .layer-2-theme .layer-header-banner { background: linear-gradient(135deg, #2D422B 0%, #395136 100%); }
+    .layer-3-theme .layer-header-banner { background: linear-gradient(135deg, #8A3D22 0%, #9E472A 100%); }
+    .layer-4-theme .layer-header-banner { background: linear-gradient(135deg, #351A15 0%, #42231D 100%); }
+
+    .layer-title-text {
+      font-size: 15.5px;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      line-height: 1.15;
+    }
+    .layer-subtitle-text {
+      font-size: 12px;
+      font-weight: 700;
+      opacity: 0.95;
+      margin-top: 1px;
+      line-height: 1.15;
+    }
+
+    /* Layer Body with Cards */
+    .layer-cards-body {
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      height: calc(100% - 44px);
+      flex: 1;
+    }
+
+    /* Hero Tech Header Inside Layer */
+    .layer-tech-hero {
+      background: #FFFFFF;
+      border: 1.5px solid #CBD5E1;
+      border-radius: 7px;
+      padding: 3px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      height: 40px;
+      flex-shrink: 0;
+      text-align: center;
+    }
+    .layer-tech-hero .hero-main { font-weight: 900; font-size: 13.5px; }
+    .layer-tech-hero .hero-sub { font-size: 11px; font-weight: 700; color: #64748B; }
+    .layer-1-theme .layer-tech-hero { border-color: #C3D2E8; }
+    .layer-2-theme .layer-tech-hero { border-color: #CBD8C9; }
+    .layer-3-theme .layer-tech-hero { border-color: #E6D2CA; }
+
+    /* Content Dense Arch Card - BALANCED PROPORTIONS */
+    .arch-card-item {
+      background: #FFFFFF;
+      border: 1.3px solid #E2E8F0;
+      border-radius: 7px;
+      padding: 6px 9px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+      flex: 1;
+      min-height: 0;
+    }
+    .arch-card-item:hover {
+      border-color: #94a3b8;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+
+    .card-icon-box {
+      width: 38px;
+      height: 38px;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .icon-blue-bg { background: #EBF2FA; color: #19255B; }
+    .icon-green-bg { background: #EBF1E8; color: #395136; }
+    .icon-terracotta-bg { background: #F7EFEA; color: #9E472A; }
+    .icon-brown-bg { background: #F5EBE9; color: #42231D; }
+
+    .card-text-container {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .card-heading-title {
+      font-size: 14.5px;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.2;
+    }
+    .card-body-description {
+      font-size: 11.5px;
+      color: #334155;
+      line-height: 1.28;
+      margin-top: 2px;
+    }
+    .card-sub-bullet {
+      font-size: 10.5px;
+      font-weight: 700;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      line-height: 1.2;
+    }
+    .blue-sub { color: #2D55B2; }
+    .green-sub { color: #395136; }
+    .purple-sub, .terracotta-sub { color: #9E472A; }
+    .blue-hl { color: #19255B; font-weight: 900; }
+    .green-hl { color: #395136; font-weight: 900; }
+    .terracotta-hl { color: #9E472A; font-weight: 900; }
+    .brown-hl { color: #42231D; font-weight: 900; }
+
+    /* Inter-Layer Connector Tag */
+    .layer-connector-badge {
+      background: #FFFFFF;
+      border-radius: 7px;
+      padding: 4px 6px;
+      font-size: 11px;
+      font-weight: 800;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      height: 42px;
+      flex-shrink: 0;
+    }
+    .layer-1-theme .layer-connector-badge { border: 1.5px solid #19255B; color: #19255B; }
+    .layer-2-theme .layer-connector-badge { border: 1.5px solid #395136; color: #395136; }
+    .layer-3-theme .layer-connector-badge { border: 1.5px solid #9E472A; color: #9E472A; }
+
+    /* Layer 4 Multi-Section Structure */
+    .layer4-section-box {
+      background: #FFFFFF;
+      border: 1.3px solid #E6D8D2;
+      border-radius: 7px;
+      padding: 6px 9px;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    .section-mini-header {
+      font-size: 13px;
+      font-weight: 900;
+      color: #42231D;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      border-bottom: 1.3px dashed #D6C2B9;
+      padding-bottom: 3px;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .layer4-two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      flex: 1;
+      min-height: 0;
+    }
+    .bullet-col-title {
+      font-size: 11px;
+      font-weight: 800;
+      color: #42231D;
+      margin-bottom: 2px;
+    }
+    .dense-bullet-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .dense-bullet-list li {
+      font-size: 10px;
+      color: #1E293B;
+      line-height: 1.22;
+      position: relative;
+      padding-left: 10px;
+    }
+    .dense-bullet-list li::before {
+      content: "•";
+      color: #B89C70;
+      font-weight: bold;
+      font-size: 11px;
+      position: absolute;
+      left: 0;
+      top: -1px;
+    }
+
+    /* Output Status Items in Layer 4 */
+    .output-status-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      flex: 1;
+    }
+    .output-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 5px;
+      padding: 3.5px 6px;
+      font-size: 10.5px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .output-green { background: #EBF2EB; border: 1.2px solid #C6D8C4; color: #2A4228; }
+    .output-sand { background: #F8F3EB; border: 1.2px solid #E5D8C3; color: #705530; }
+    .output-terracotta { background: #F9EFEA; border: 1.2px solid #E8D2C6; color: #8A3A20; }
+    .output-brown { background: #F5EBE9; border: 1.2px solid #DDC5C0; color: #5E271F; }
+    .output-aqua { background: #E8F6F8; border: 1.2px solid #C4E8ED; color: #16535B; }
+    .output-navy { background: #EBF0F9; border: 1.2px solid #C7D7F0; color: #192E6B; }
+
+    .status-dot-green { width: 8px; height: 8px; border-radius: 50%; background: #395136; flex-shrink: 0; }
+    .status-dot-sand { width: 8px; height: 8px; border-radius: 50%; background: #B89C70; flex-shrink: 0; }
+    .status-dot-terracotta { width: 8px; height: 8px; border-radius: 50%; background: #9E472A; flex-shrink: 0; }
+    .status-dot-brown { width: 8px; height: 8px; border-radius: 50%; background: #42231D; flex-shrink: 0; }
+    .status-dot-aqua { width: 8px; height: 8px; border-radius: 50%; background: #4BA4B0; flex-shrink: 0; }
+    .status-dot-navy { width: 8px; height: 8px; border-radius: 50%; background: #2D55B2; flex-shrink: 0; }
+
+    /* BOTTOM TECH STACK STRIP */
+    .tech-stack-strip {
+      background: #FFFFFF;
+      border: 2px solid #19255B;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      height: 96px;
+      box-shadow: 0 3px 10px rgba(25, 37, 91, 0.08);
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .tech-stack-label-cell {
+      background: #19255B;
+      border-right: 2px solid #19255B;
+      height: 100%;
+      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 900;
+      color: #FFFFFF;
+      line-height: 1.25;
+      text-align: center;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .tech-stack-icons-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      flex: 1;
+      padding: 0 12px;
+      gap: 8px;
+    }
+    .tech-item-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+    }
+    .tech-node-name {
+      font-size: 13px;
+      font-weight: 800;
+      color: #19255B;
+      line-height: 1.1;
+      white-space: nowrap;
+    }
+    .tech-node-role {
+      font-size: 10.5px;
+      color: #64748B;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .tech-icon-svg {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+    }
+
+    /* RIGHT DEEP WORKFLOW PANEL */
+    .right-workflow-panel {
+      flex: 1.18;
+      background: #FFFFFF;
+      border-radius: 9px;
+      border: 2px solid #19255B;
+      box-shadow: 0 4px 16px rgba(25, 37, 91, 0.08);
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      height: 100%;
+    }
+    .workflow-header-title {
+      font-size: 13px;
+      font-weight: 900;
+      color: #19255B;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      text-align: center;
+      border-bottom: 2px solid #19255B;
+      width: 100%;
+      padding-bottom: 3px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    /* Flow step pill (Start / End) */
+    .flow-pill-terminal {
+      background: #19255B;
+      color: #FFFFFF;
+      font-size: 15px;
+      font-weight: 900;
+      padding: 4px 52px;
+      border-radius: 9999px;
+      border: 2px solid #19255B;
+      box-shadow: 0 2px 5px rgba(25, 37, 91, 0.2);
+      letter-spacing: 0.03em;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* Process Step Box */
+    .flow-step-box {
+      width: 100%;
+      background: #FDFBF8;
+      border: 2px solid #B89C70;
+      border-radius: 5px;
+      padding: 4px 8px;
+      text-align: center;
+      box-shadow: 0 1px 4px rgba(184, 156, 112, 0.12);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 50px;
+      flex-shrink: 0;
+    }
+    .flow-step-name {
+      font-size: 13.5px;
+      font-weight: 900;
+      color: #19255B;
+      line-height: 1.2;
+    }
+    .flow-step-desc {
+      font-size: 10.5px;
+      color: #475569;
+      line-height: 1.25;
+      margin-top: 1.5px;
+      font-weight: 600;
+    }
+
+    /* Approval Step (Step 5) */
+    .flow-step-clearance {
+      background: #F2F7F2;
+      border-color: #395136;
+    }
+    .flow-step-clearance .flow-step-name {
+      color: #2D422B;
+    }
+    .flow-step-clearance .flow-step-desc {
+      color: #395136;
+    }
+
+    /* Decision Diamond Row */
+    .flow-decision-row {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+      height: 60px;
+      flex-shrink: 0;
+    }
+    .flow-diamond-wrapper {
+      width: 195px;
+      height: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .flow-diamond-svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.12));
+    }
+
+    /* Horizontal branch connector */
+    .flow-horizontal-connector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      flex-shrink: 0;
+    }
+
+    /* Side Branch Action Card */
+    .flow-side-card {
+      width: 195px;
+      border-radius: 5px;
+      padding: 5px 8px;
+      text-align: left;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      flex-shrink: 0;
+    }
+    .side-card-title {
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+    .side-card-desc {
+      font-size: 9.5px;
+      line-height: 1.25;
+      margin-top: 1px;
+      font-weight: 600;
+    }
+
+    .side-card-terracotta {
+      background: #FDF4F0;
+      border: 1.8px solid #9E472A;
+    }
+    .side-card-terracotta .side-card-title { color: #9E472A; }
+    .side-card-terracotta .side-card-desc { color: #5E271F; }
+
+    .side-card-green {
+      background: #F4F8F4;
+      border: 1.8px solid #395136;
+    }
+    .side-card-green .side-card-title { color: #395136; }
+    .side-card-green .side-card-desc { color: #273B25; }
+
+    .side-card-brown {
+      background: #FAF0EE;
+      border: 1.8px solid #42231D;
+    }
+    .side-card-brown .side-card-title { color: #42231D; }
+    .side-card-brown .side-card-desc { color: #301712; }
+
+    /* Connector Arrows */
+    .flow-arrow-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 11px;
+      flex-shrink: 0;
+    }
+    .flow-arrow-decision-down {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 18px;
+      flex-shrink: 0;
+    }
+    .flow-branch-label {
+      font-size: 9.5px;
+      font-weight: 900;
+      color: #395136;
+      background: #EBF1E6;
+      padding: 1px 6px;
+      border-radius: 3px;
+      border: 1px solid #C4D2BE;
+      margin-bottom: 1px;
+      line-height: 1;
+    }
+
+    /* Success / Outcome Box */
+    .flow-success-box {
+      width: 100%;
+      background: #F4F7F3;
+      border: 2px solid #395136;
+      border-radius: 5px;
+      padding: 5px 8px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(57, 81, 54, 0.12);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 50px;
+      flex-shrink: 0;
+    }
+    .success-main-title {
+      font-size: 14px;
+      font-weight: 900;
+      color: #395136;
+      line-height: 1.2;
+    }
+    .success-sub-title {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #556B52;
+      line-height: 1.2;
+      margin-top: 1px;
+    }
+  </style>
+</head>
+<body data-page="3">
+  <div class="slide-viewport">
+    <main class="slide-canvas" id="slide-3">
+
+      <!-- Slide Header -->
+      <header class="slide-header">
+        <div class="header-team-badge">
+          <span class="team-badge-text">APOCALYPSE // Team P84</span>
+        </div>
+        <h1 class="header-pill-title">Technical Approach</h1>
+        <div class="header-right">
+          <img src="assets/logos/sih-logo.png" onerror="this.src='../assets/logos/sih-logo.png'" alt="SIH 2026" class="nav-logo-sih">
+        </div>
+      </header>
+
+      <!-- Main Layout Body -->
+      <div class="slide3-main-container">
+
+        <!-- LEFT: 4 ARCHITECTURE LAYERS + TECH STACK -->
+        <div class="left-arch-wrapper">
+
+          <!-- 4 Vertical Layers Grid matching Technical-Architecture.png -->
+          <div class="layers-container-grid">
+
+            <!-- LAYER 1: DATA SOURCES & TELEMETRY -->
+            <div class="arch-layer-box layer-1-theme">
+              <div class="layer-header-banner">
+                <div class="layer-title-text">Layer 1</div>
+                <div class="layer-subtitle-text">External Telemetry &amp; Sources</div>
+              </div>
+
+              <div class="layer-cards-body">
+                <!-- Top Tech Hero -->
+                <div class="layer-tech-hero">
+                  <span class="hero-main blue-hl">📡 MoSPI e-SAKSHI</span>
+                  <span class="hero-sub">• Telemetry Ingest</span>
+                </div>
+
+                <!-- Card 1 -->
+                <div class="arch-card-item">
+                  <div class="card-icon-box icon-blue-bg">🏛️</div>
+                  <div class="card-text-container">
+                    <div class="card-heading-title">e-SAKSHI Central Portal</div>
+                    <div class="card-body-description">Ingests MP recommendation letters, project cost estimates, and administrative sanctions</div>
+                    <div class="card-sub-bullet blue-sub">✓ Real-time proposal extraction via secure MoSPI adapters</div>
+                  </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="arch-card-item">
+                  <div class="card-icon-box icon-blue-bg">💳</div>
+                  <div class="card-text-container">
+                    <div class="card-heading-title">PFMS &amp; State Treasury</div>
+                    <div class="card-body-description">Tracks milestone payment tranches, bank releases, and disbursal timeline logs</div>
+                    <div class="card-sub-bullet blue-sub">✓ Intercepts funds pre-disbursal to stop wrongful releases</div>
+                  </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="arch-card-item">
+                  <div class="card-icon-box icon-blue-bg">📑</div>
+                  <div class="card-text-container">
+                    <div class="card-heading-title">Contractor &amp; Vendor Registry</div>
+                    <div class="card-body-description">Tender bids, verified GSTIN/PAN registrations, and simultaneous contractor execution capacity</div>
+                    <div class="card-sub-bullet blue-sub">✓ Uncovers beneficial ownership &amp; hidden company syndicates</div>
+                  </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="arch-card-item">
+                  <div class="card-icon-box icon-blue-bg">📍</div>
+                  <div class="card-text-container">
+                    <div class="card-heading-title">Geotagged Media &amp; Drone</div>
+                    <div class="card-body-description">Timestamped GPS boundary coordinates, field photo proofs, and aerial drone surveillance</div>
+                    <div class="card-sub-bullet blue-sub">✓ Perceptual image hashing blocks recycled photo fraud</div>
+                  </div>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="arch-card-item">
+                  <div class="card-icon-box icon-blue-bg">🗺️</div>
+                  <div class="card-text-container">
+                    <div class="card-heading-title">Constituency GIS Boundaries</div>
+                    <div class="card-body-description">543 Lok Sabha boundaries, district administrative borders, and localized revenue land registries</div>
+                    <div class="card-sub-bullet blue-sub">✓ Enforces constitutional constituency geofence limits</div>
+                  </div>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="arch-card-item">
+                  <div class="card-icon-box icon-blue-bg">🚰</div>
+                  <div class="card-text-container">
+                    <div class="card-heading-title">Cross-Scheme &amp; Relief Registry</div>
+                    <div class="card-body-description">PMGSY, JJM, AMRUT asset registries &amp; NDMA disaster emergency relief gazettes (§5.3)</div>
+                    <div class="card-sub-bullet blue-sub">✓ Blocks double-claiming &amp; validates legal tender waivers</div>
+                  </div>
+                </div>
+
+                <!-- Connector Tag matching Technical-Architecture.png -->
+                <div class="layer-connector-badge">
+                  <span>⚡ Ingest Telemetry (Real-Time / Scheduled) ➔</span>
+                  <span style="color:#2D55B2; font-size:10px; font-weight:700;">📦 Unified Standard MoSPI / PFMS Format ➔</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- LAYER 2: FRONTEND & SOVEREIGN COCKPIT -->
+            <div class="arch-layer-box layer-2-theme">
+              <div class="layer-header-banner">
+                <div class="layer-title-text">Layer 2</div>
+                <div class="layer-subtitle-text">Frontend &amp; Sovereign Cockpit</div>
+              </div>
+
+              <div class="layer-cards-body">
+                <!-- Top Tech Hero -->
+                <div class="layer-tech-hero">
+                  <span class="hero-main green-hl">⚛ React 18 + Next.js</span>
+                  <span class="hero-sub">• Web &amp; Mobile Cockpit</span>
+                </div>
+
+                <!-- Card 1 -->
+                <div class="arch-card-item">
+                  <div class="card-icon-box icon-green-bg">⚡</div>
+                  <div class="card-text-container">
+                    <div class="card-heading-title">Pre-Sanction Gatekeeper</div>
+                    <div class="card-body-description">Interactive upload sandbox for District Magistrates; triggers instant forensic compliance check (&lt;200ms)</div>
+                    <div class="card-sub-bullet green-sub">✓ Immediate triage before official financial sanction</div>
+                  </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="arch-card-item">
+                  <div class="card-icon-box icon-green-bg">🗺️</div>
+                  <div class="card-text-container">
+                    <div class="card-heading-title">Constituency GIS Explorer</div>
+                    <div class="card-body-description">Choropleth heatmaps across 543 Lok Sabha seats highlighting localized expenditure spikes and delays</div>
+                    <div class="card-sub-bullet green-sub">✓ Macro surveillance across all parliamentary zones</div>
+                  </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="arch-card-item">
+                  <div class="card-icon-box icon-green-bg">🕸️</div>
+                  <div class="card-text-container">
+                    <div class="card-heading-title">Cartel Network Graph</div>
+                    <div class="card-body-description">Interactive force-directed visualizer unmasking vendor phone/address collusion and bid rotation rings</div>
+                    <div class="card-sub-bullet green-sub">✓ Maps hidden agency links via NetworkX algorithms</div>
+                  </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="arch-card-item">
+                  <div class="card-icon-box icon-green-bg">📷</div>
+                  <div class="card-text-container">
+                    <div class="card-heading-title">Field Telemetry &amp; Drone Cam</div>
+                    <div class="card-body-description">Real-time GPS photo inspector comparing perceptual image hashing differences against previous milestones</div>
+                    <div class="card-sub-bullet green-sub">✓ Verifies physical ground reality before each tranche</div>
+                  </div>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="arch-card-item">
+                  <div class="card-icon-box icon-green-bg">🎯</div>
+                  <div class="card-text-container">
+                    <div class="card-heading-title">4-Tier Action Triage</div>
+                    <div class="card-body-description">Classifies proposals into Instant Clearance, Conditional Approval, Audit Hold, and Fund Freeze states</div>
+                    <div class="card-sub-bullet green-sub">✓ Statutory guidance matching General Financial Rules</div>
+                  </div>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="arch-card-item">
+                  <div class="card-icon-box icon-green-bg">📋</div>
+                  <div class="card-text-container">
+                    <div class="card-heading-title">Auditor Action Center</div>
+                    <div class="card-body-description">Exports CAG-compliant statutory dossiers, issues physical inspection orders, and logs DM justifications</div>
+                    <div class="card-sub-bullet green-sub">✓ 1-click legal evidence generation for tribunals</div>
+                  </div>
+                </div>
+
+                <!-- Connector Tag matching Technical-Architecture.png -->
+                <div class="layer-connector-badge">
+                  <span>🌐 HTTP/REST &amp; WebSocket Sync ➔</span>
+                  <span style="color:#395136; font-size:10px; font-weight:700;">⬅ Responses (Clearance, Alerts, Evidence Dossiers)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- LAYER 3: BACKEND & APPLICATION SERVICES -->
+            <div class="arch-layer-box layer-3-theme">
+              <div class="layer-header-banner">
+                <div class="layer-title-text">Layer 3</div>
+                <div class="layer-subtitle-text">Backend &amp; Forensic Engine</div>
+              </div>
+
+              <div class="layer-cards-body">
+                <!-- Top Tech Hero -->
+                <div class="layer-tech-hero">
+                  <span class="hero-main terracotta-hl">⚡ FastAPI Server</span>
+                  <span class="hero-sub">• High-Concurrency REST</span>
+                </div>
+
+                <!-- Card 1 -->
+                <div class="arch-card-item">
+                  <div class="card-icon-box icon-terracotta-bg">🛡️</div>
+                  <div class="card-text-container">
+                    <div class="card-heading-title">API Gateway &amp; Auth Vault</div>
+                    <div class="card-body-description">Role-based controls (DM, DPO, CAG Auditor), secure JWT sessions, and tamper-evident audit logging</div>
+                    <div class="card-sub-bullet terracotta-sub">✓ Zero-trust security architecture for public data</div>
+                  </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="arch-card-item">
+                  <div class="card-icon-box icon-terracotta-bg">⚖️</div>
+                  <div class="card-text-container">
+                    <div class="card-heading-title">Schema Normalizer</div>
+                    <div class="card-body-description">Verifies coordinates inside constituency boundaries and standardizes costs against district median rates</div>
+                    <div class="card-sub-bullet terracotta-sub">✓ Automated baseline rate anomaly calibration</div>
+                  </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="arch-card-item">
+                  <div class="card-icon-box icon-terracotta-bg">🚨</div>
+                  <div class="card-text-container">
+                    <div class="card-heading-title">Rule 14.2 Interceptor</div>
+                    <div class="card-body-description">Identifies artificial contract splitting into ₹4.95L clusters to bypass mandatory open competitive e-tenders</div>
+                    <div class="card-sub-bullet terracotta-sub">✓ Enforces statutory open tender ceiling laws</div>
+                  </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="arch-card-item">
+                  <div class="card-icon-box icon-terracotta-bg">🧠</div>
+                  <div class="card-text-container">
+                    <div class="card-heading-title">Multi-Model Anomaly Triage</div>
+                    <div class="card-body-description">Orchestrates 7 domain forensic algorithms and fuses anomalies into a composite constituency risk index</div>
+                    <div class="card-sub-bullet terracotta-sub">✓ Orthogonal checks across cost, space, &amp; cartels</div>
+                  </div>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="arch-card-item">
+                  <div class="card-icon-box icon-terracotta-bg">📜</div>
+                  <div class="card-text-container">
+                    <div class="card-heading-title">Tree SHAP Legal Explainer</div>
+                    <div class="card-body-description">Translates raw model feature importances into plain-language statutory reasons (Rule 14.2 &amp; GFR 155)</div>
+                    <div class="card-sub-bullet terracotta-sub">✓ Legally defensible administrative explanations</div>
+                  </div>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="arch-card-item">
+                  <div class="card-icon-box icon-terracotta-bg">🔄</div>
+                  <div class="card-text-container">
+                    <div class="card-heading-title">Celery + Redis Task Queue</div>
+                    <div class="card-body-description">Asynchronous workers for continuous web-scraping, periodic analytics, and disaster calamity filtering (§5.3)</div>
+                    <div class="card-sub-bullet terracotta-sub">✓ Scalable background processing without lag</div>
+                  </div>
+                </div>
+
+                <!-- Connector Tag matching Technical-Architecture.png -->
+                <div class="layer-connector-badge">
+                  <span>💾 Store &amp; Retrieve Sovereign Data ⇄</span>
+                  <span style="color:#9E472A; font-size:10px; font-weight:700;">⇄ Model Predictions, Conformal Bounds &amp; SHAP Rules</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- LAYER 4: DATA & AI FORENSICS LAYER -->
+            <div class="arch-layer-box layer-4-theme">
+              <div class="layer-header-banner">
+                <div class="layer-title-text">Layer 4</div>
+                <div class="layer-subtitle-text">Data, AI &amp; Forensics Intelligence</div>
+              </div>
+
+              <div class="layer-cards-body" style="gap: 6px;">
+                <!-- Section 1: Database (144px) -->
+                <div class="layer4-section-box" style="height: 144px; flex-shrink:0;">
+                  <div class="section-mini-header" style="border:none; margin-bottom:2px; padding-bottom:0;">
+                    <span style="font-size:13px; color:#42231D; font-weight:900;">🐘 PostgreSQL 16 + TimescaleDB Database</span>
+                    <span style="font-size:10px; color:#9E472A; font-weight:800;">(Relational + Spatial)</span>
+                  </div>
+                  <ul class="dense-bullet-list">
+                    <li><strong>PostGIS Spatial:</strong> ST_DWithin 50m duplicate check across 543 seats</li>
+                    <li><strong>Timeseries Ledgers:</strong> Tranche releases, milestone timestamps &amp; velocity curves</li>
+                    <li><strong>Relational Baselines:</strong> 5,000+ authentic works, schedule of rates &amp; vendor graphs</li>
+                    <li><strong>Cryptographic Proofs:</strong> Tamper-evident SHA-256 hash chains for CAG audits</li>
+                    <li><strong>High-IOPS Pool:</strong> Sub-10ms query execution across 50,000+ vendor profiles</li>
+                  </ul>
+                </div>
+
+                <!-- Section 2: AI / ML Technologies (Flex) -->
+                <div class="layer4-section-box" style="flex:1; min-height:0;">
+                  <div class="section-mini-header">
+                    <span>AI &amp; FORENSIC MACHINE LEARNING MODELS</span>
+                    <span style="font-size:12px;">🤗 Hugging Face + 🧠 Neural</span>
+                  </div>
+                  <div class="layer4-two-col">
+                    <div>
+                      <div class="bullet-col-title">7 Domain Anomaly Checks</div>
+                      <ul class="dense-bullet-list">
+                        <li><strong>Spatial DBSCAN:</strong> Duplicate works within 50m radius of existing assets</li>
+                        <li><strong>Isolation Forest:</strong> Cost-per-sq-ft anomalies exceeding district median by >2.5σ</li>
+                        <li><strong>NetworkX Graph:</strong> Bidder cartels, common directors, shared phone numbers &amp; PANs</li>
+                        <li><strong>Vendor Capacity:</strong> Contractors bidding beyond certified execution turnover</li>
+                        <li><strong>Velocity Tracker:</strong> Impossible speeds claiming completion in &lt;7 days</li>
+                        <li><strong>Perceptual Hashing:</strong> Compares DCT image hashes to block reused stock photos</li>
+                        <li><strong>Geofence Audit:</strong> Verifies coordinates strictly lie inside MP constituency</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <div class="bullet-col-title">Explainability &amp; Risk Fusion</div>
+                      <ul class="dense-bullet-list">
+                        <li><strong>Calibrated XGBoost:</strong> Fuses 7 orthogonal anomalies into a 0–100 risk score</li>
+                        <li><strong>Conformal Prediction:</strong> 95% statistically guaranteed confidence intervals</li>
+                        <li><strong>Tree SHAP Explainer:</strong> Translates model weights into plain statutory text</li>
+                        <li><strong>Legal Dossier Engine:</strong> Formats CAG-ready audit reports with exhibits</li>
+                        <li><strong>Calamity Filter (§5.3):</strong> Validates NDMA declarations for legal tender waivers</li>
+                        <li><strong>Rule 14.2 Intercept:</strong> Flags artificial ₹4.95L splitting bypassing open e-tenders</li>
+                        <li><strong>GFR 155 Mapping:</strong> Enforces mandatory 3-quotation requirements</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Section 3: Output Decisions & Actions (170px) -->
+                <div class="layer4-section-box" style="height: 170px; flex-shrink:0;">
+                  <div class="section-mini-header" style="margin-bottom:3px; padding-bottom:2px;">OUTPUT: STATUTORY DECISIONS &amp; ACTIONS</div>
+                  <div class="output-status-grid" style="gap: 3.5px;">
+                    <div class="output-item output-green"><span class="status-dot-green"></span> <div><strong>Instant Clearance:</strong> Pre-sanction approved (&lt;200ms)</div></div>
+                    <div class="output-item output-sand"><span class="status-dot-sand"></span> <div><strong>Site Inspection:</strong> Physical verification ordered</div></div>
+                    <div class="output-item output-terracotta"><span class="status-dot-terracotta"></span> <div><strong>Rule 14.2 Warning:</strong> Tender splitting detected</div></div>
+                    <div class="output-item output-brown"><span class="status-dot-brown"></span> <div><strong>Freeze Disbursal:</strong> Cartel ring unmasked</div></div>
+                    <div class="output-item output-aqua"><span class="status-dot-aqua"></span> <div><strong>Calamity Waiver:</strong> §5.3 Relief approved</div></div>
+                    <div class="output-item output-navy"><span class="status-dot-navy"></span> <div><strong>Audit Dossier:</strong> CAG evidence generated</div></div>
+                  </div>
+                  <div style="font-size: 10px; font-weight: 800; color: #42231D; margin-top: 3px; text-align: center; background:#FAF5F2; padding:3px 6px; border-radius:5px; border:1.2px solid #E6D8D2; flex-shrink:0; line-height:1.2;">
+                    📋 Produces 100% CAG-Defensible Evidence Dossiers for District Magistrates &amp; Tribunals
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- BOTTOM TECH STACK STRIP matching Techstack.png (76px Height) -->
+          <div class="tech-stack-strip">
+            <div class="tech-stack-label-cell">
+              Components /<br>Technology stack to be used
+            </div>
+
+            <div class="tech-stack-icons-row">
+              <!-- React -->
+              <div class="tech-item-node">
+                <svg class="tech-icon-svg" viewBox="-11.5 -10.23174 23 20.46348">
+                  <circle cx="0" cy="0" r="2.05" fill="#61dafb"/>
+                  <g stroke="#61dafb" stroke-width="1" fill="none">
+                    <ellipse rx="11" ry="4.2"/>
+                    <ellipse rx="11" ry="4.2" transform="rotate(60)"/>
+                    <ellipse rx="11" ry="4.2" transform="rotate(120)"/>
+                  </g>
+                </svg>
+                <span class="tech-node-name">React</span>
+                <span class="tech-node-role">(Frontend)</span>
+              </div>
+
+              <!-- Next.js -->
+              <div class="tech-item-node">
+                <svg class="tech-icon-svg" viewBox="0 0 180 180">
+                  <circle cx="90" cy="90" r="90" fill="#000000"/>
+                  <path fill="#ffffff" d="M149.508 159.525L69.93 54H54v71.994h14.9V72.827l69.888 92.518a90.413 90.413 0 0010.72-5.82z"/>
+                  <path fill="#ffffff" d="M115 54h14v48.5h-14z"/>
+                </svg>
+                <span class="tech-node-name">Next.js 14</span>
+                <span class="tech-node-role">(App Framework)</span>
+              </div>
+
+              <!-- Tailwind CSS -->
+              <div class="tech-item-node">
+                <svg class="tech-icon-svg" viewBox="0 0 24 24" fill="#38bdf8">
+                  <path d="M12.001,4.8c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 C13.666,10.618,15.027,12,18.001,12c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C16.337,6.182,14.976,4.8,12.001,4.8z M6.001,12c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 c1.177,1.194,2.538,2.576,5.512,2.576c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C10.337,13.382,8.976,12,6.001,12z"/>
+                </svg>
+                <span class="tech-node-name">Tailwind CSS</span>
+                <span class="tech-node-role">(Modern UI)</span>
+              </div>
+
+              <!-- FastAPI -->
+              <div class="tech-item-node">
+                <svg class="tech-icon-svg" viewBox="0 0 24 24" fill="#009688">
+                  <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-1.25 18l1.75-5.5H8.75L13.25 6l-1.75 5.5h3.75L10.75 18z"/>
+                </svg>
+                <span class="tech-node-name">FastAPI</span>
+                <span class="tech-node-role">(REST Engine)</span>
+              </div>
+
+              <!-- Python -->
+              <div class="tech-item-node">
+                <svg class="tech-icon-svg" viewBox="0 0 128 128">
+                  <path fill="#3776AB" d="M63.02 0c-16.14 0-30.72 1.9-30.72 14.54v10.96h30.72v4.36H20.73C8.61 29.86 0 37.95 0 56.4c0 18.06 7.42 26.54 20.73 26.54h7.05v-12.7c0-9.44 8.16-17.44 17.6-17.44h26.4c7.6 0 13.73-6.14 13.73-13.73V14.54C85.51 2.3 79.16 0 63.02 0zm-12.2 8.7a4.36 4.36 0 1 1 0 8.72 4.36 4.36 0 0 1 0-8.72z"/>
+                  <path fill="#FFD43B" d="M64.98 128c16.14 0 30.72-1.9 30.72-14.54v-10.96H64.98v-4.36h42.29c12.12 0 20.73-8.09 20.73-26.54 0-18.06-7.42-26.54-20.73-26.54h-7.05v12.7c0 9.44-8.16 17.44-17.6 17.44h-26.4c-7.6 0-13.73 6.14-13.73 13.73v24.53c0 12.24 6.35 14.54 22.49 14.54zm12.2-8.7a4.36 4.36 0 1 1 0-8.72 4.36 4.36 0 0 1 0 8.72z"/>
+                </svg>
+                <span class="tech-node-name">Python 3.12</span>
+                <span class="tech-node-role">(Core Analytics)</span>
+              </div>
+
+              <!-- PostgreSQL -->
+              <div class="tech-item-node">
+                <svg class="tech-icon-svg" viewBox="0 0 24 24" fill="#336791">
+                  <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 3.6c3.2 0 5.4 2.1 5.4 5.2 0 3.4-2.8 6.5-6.6 6.5H9.6v3.9H7.2V8.8h3.6c2 0 3.6-1.5 3.6-3.2 0-1.3-.9-2-2.4-2z"/>
+                </svg>
+                <span class="tech-node-name">PostgreSQL</span>
+                <span class="tech-node-role">(Sovereign DB)</span>
+              </div>
+
+              <!-- TimescaleDB -->
+              <div class="tech-item-node">
+                <svg class="tech-icon-svg" viewBox="0 0 24 24" fill="#f59e0b">
+                  <circle cx="12" cy="12" r="10" fill="none" stroke="#f59e0b" stroke-width="2"/>
+                  <polyline points="12 6 12 12 16 14" stroke="#f59e0b" stroke-width="2" fill="none"/>
+                </svg>
+                <span class="tech-node-name">TimescaleDB</span>
+                <span class="tech-node-role">(Spatial Series)</span>
+              </div>
+
+              <!-- Redis -->
+              <div class="tech-item-node">
+                <svg class="tech-icon-svg" viewBox="0 0 24 24" fill="#dc2626">
+                  <path d="M21.4 6.8l-8.9-5.1c-.3-.2-.7-.2-1 0L2.6 6.8c-.4.2-.6.6-.6 1v10.4c0 .4.2.8.6 1l8.9 5.1c.3.2.7.2 1 0l8.9-5.1c.4-.2.6-.6.6-1V7.8c0-.4-.2-.8-.6-1z"/>
+                </svg>
+                <span class="tech-node-name">Redis</span>
+                <span class="tech-node-role">(Queue / Cache)</span>
+              </div>
+
+              <!-- XGBoost -->
+              <div class="tech-item-node">
+                <svg class="tech-icon-svg" viewBox="0 0 24 24" fill="#16a34a">
+                  <path d="M3 13h4v8H3zm7-8h4v16h-4zm7 4h4v12h-4z"/>
+                </svg>
+                <span class="tech-node-name">XGBoost</span>
+                <span class="tech-node-role">(Risk Classifier)</span>
+              </div>
+
+              <!-- NetworkX -->
+              <div class="tech-item-node">
+                <svg class="tech-icon-svg" viewBox="0 0 24 24" fill="#9333ea">
+                  <circle cx="6" cy="6" r="3"/>
+                  <circle cx="18" cy="6" r="3"/>
+                  <circle cx="12" cy="18" r="3"/>
+                  <line x1="6" y1="6" x2="18" y2="6" stroke="#9333ea" stroke-width="1.5"/>
+                  <line x1="6" y1="6" x2="12" y2="18" stroke="#9333ea" stroke-width="1.5"/>
+                  <line x1="18" y1="6" x2="12" y2="18" stroke="#9333ea" stroke-width="1.5"/>
+                </svg>
+                <span class="tech-node-name">NetworkX</span>
+                <span class="tech-node-role">(Cartel Graphs)</span>
+              </div>
+
+              <!-- Docker -->
+              <div class="tech-item-node">
+                <svg class="tech-icon-svg" viewBox="0 0 24 24" fill="#0284c7">
+                  <path d="M13 8h2v2h-2zm-3 0h2v2h-2zm-3 0h2v2H7zm6-3h2v2h-2zm-3 0h2v2h-2zm11 8c-.6-.4-1.6-.5-2.4-.2-.4-1.2-1.5-2.1-2.9-2.2-.2 0-.4 0-.6.1-.8-1.5-2.4-2.5-4.2-2.5H1v4.8c0 4.1 3.5 7.4 7.8 7.4 5.3 0 9.7-3.7 10.3-8.8.8-.2 1.5-.6 2-1.1.4-.4.8-1 1-1.6-.7.2-1.4.2-2.1.1z"/>
+                </svg>
+                <span class="tech-node-name">Docker</span>
+                <span class="tech-node-role">(Container)</span>
+              </div>
+
+              <!-- Sovereign Gov Cloud -->
+              <div class="tech-item-node">
+                <svg class="tech-icon-svg" viewBox="0 0 24 24" fill="#ea580c">
+                  <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/>
+                </svg>
+                <span class="tech-node-name">MeitY Cloud</span>
+                <span class="tech-node-role">(Sovereign Infra)</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT: DEEP WORKFLOW PANEL matching Workflow.png -->
+        <div class="right-workflow-panel">
+
+          <div class="workflow-header-title">
+            ▼ END-TO-END STATUTORY DECISION WORKFLOW
+          </div>
+
+          <!-- 1. Start Pill matching Workflow.png -->
+          <div class="flow-pill-terminal">Start</div>
+
+          <!-- Down Arrow SVG line + arrowhead -->
+          <div class="flow-arrow-container">
+            <svg width="14" height="11" viewBox="0 0 14 11">
+              <line x1="7" y1="0" x2="7" y2="7" stroke="#19255B" stroke-width="2"/>
+              <polygon points="4,6 10,6 7,11" fill="#19255B"/>
+            </svg>
+          </div>
+
+          <!-- 2. Step 1: MP Recommendation -->
+          <div class="flow-step-box">
+            <div class="flow-step-name">1. MP Recommends Work on e-SAKSHI Portal</div>
+            <div class="flow-step-desc">Member of Parliament uploads signed recommendation letter with estimated outlay, village GPS &amp; sector</div>
+          </div>
+
+          <!-- Down Arrow SVG -->
+          <div class="flow-arrow-container">
+            <svg width="14" height="11" viewBox="0 0 14 11">
+              <line x1="7" y1="0" x2="7" y2="7" stroke="#19255B" stroke-width="2"/>
+              <polygon points="4,6 10,6 7,11" fill="#19255B"/>
+            </svg>
+          </div>
+
+          <!-- 3. Step 2: DPO Uploads Estimate & GPS -->
+          <div class="flow-step-box">
+            <div class="flow-step-name">2. District Authority Ingests Proposal &amp; Bids</div>
+            <div class="flow-step-desc">District Planning Officer (DPO) compiles detailed engineering estimates, contractor bid tenders &amp; site GPS</div>
+          </div>
+
+          <!-- Down Arrow SVG -->
+          <div class="flow-arrow-container">
+            <svg width="14" height="11" viewBox="0 0 14 11">
+              <line x1="7" y1="0" x2="7" y2="7" stroke="#19255B" stroke-width="2"/>
+              <polygon points="4,6 10,6 7,11" fill="#19255B"/>
+            </svg>
+          </div>
+
+          <!-- 4. Decision 1: Duplicate Asset Check -->
+          <div class="flow-decision-row">
+            <div class="flow-diamond-wrapper">
+              <svg class="flow-diamond-svg" viewBox="0 0 195 60">
+                <polygon points="97,2 193,30 97,58 2,30" fill="#19255B" stroke="#0E1738" stroke-width="2" stroke-linejoin="round"/>
+                <text x="97" y="26" text-anchor="middle" fill="#FFFFFF" font-family="'Plus Jakarta Sans', sans-serif" font-size="11.5" font-weight="900">Work Already Built</text>
+                <text x="97" y="41" text-anchor="middle" fill="#FFFFFF" font-family="'Plus Jakarta Sans', sans-serif" font-size="11.5" font-weight="900">or Duplicate GPS?</text>
+              </svg>
+            </div>
+            <!-- Horizontal Arrow Yes -->
+            <div class="flow-horizontal-connector">
+              <svg width="24" height="18" viewBox="0 0 24 18">
+                <line x1="0" y1="9" x2="16" y2="9" stroke="#9E472A" stroke-width="2"/>
+                <polygon points="14,5 14,13 22,9" fill="#9E472A"/>
+                <text x="8" y="7" text-anchor="middle" font-size="8.5" font-weight="900" fill="#9E472A">Yes</text>
+              </svg>
+            </div>
+            <div class="flow-side-card side-card-terracotta">
+              <div class="side-card-title">Ghost Work Detected</div>
+              <div class="side-card-desc">Matches nearby PMGSY/Jal Jeevan asset; disbursal frozen &amp; physical inspection ordered</div>
+            </div>
+          </div>
+
+          <!-- Down Arrow with No (Pass) -->
+          <div class="flow-arrow-decision-down">
+            <span class="flow-branch-label">No (Pass)</span>
+            <svg width="14" height="10" viewBox="0 0 14 10">
+              <line x1="7" y1="0" x2="7" y2="5" stroke="#395136" stroke-width="2"/>
+              <polygon points="4,4 10,4 7,9" fill="#395136"/>
+            </svg>
+          </div>
+
+          <!-- 5. Step 3: Statutory Rule 14.2 & Rate Verification -->
+          <div class="flow-step-box">
+            <div class="flow-step-name">3. Statutory Rule 14.2 &amp; Rate Verification</div>
+            <div class="flow-step-desc">Audits proposal against schedule-of-rates and flags artificial contract splitting below ₹5 Lakh threshold</div>
+          </div>
+
+          <!-- Down Arrow SVG -->
+          <div class="flow-arrow-container">
+            <svg width="14" height="11" viewBox="0 0 14 11">
+              <line x1="7" y1="0" x2="7" y2="7" stroke="#19255B" stroke-width="2"/>
+              <polygon points="4,6 10,6 7,11" fill="#19255B"/>
+            </svg>
+          </div>
+
+          <!-- 6. Decision 2: Rule 14.2 Splitting Check -->
+          <div class="flow-decision-row">
+            <div class="flow-diamond-wrapper">
+              <svg class="flow-diamond-svg" viewBox="0 0 195 60">
+                <polygon points="97,2 193,30 97,58 2,30" fill="#395136" stroke="#243522" stroke-width="2" stroke-linejoin="round"/>
+                <text x="97" y="26" text-anchor="middle" fill="#FFFFFF" font-family="'Plus Jakarta Sans', sans-serif" font-size="11.5" font-weight="900">Split Below ₹5L</text>
+                <text x="97" y="41" text-anchor="middle" fill="#FFFFFF" font-family="'Plus Jakarta Sans', sans-serif" font-size="11.5" font-weight="900">or Inflated Rate?</text>
+              </svg>
+            </div>
+            <!-- Horizontal Arrow Yes -->
+            <div class="flow-horizontal-connector">
+              <svg width="24" height="18" viewBox="0 0 24 18">
+                <line x1="0" y1="9" x2="16" y2="9" stroke="#395136" stroke-width="2"/>
+                <polygon points="14,5 14,13 22,9" fill="#395136"/>
+                <text x="8" y="7" text-anchor="middle" font-size="8.5" font-weight="900" fill="#395136">Yes</text>
+              </svg>
+            </div>
+            <div class="flow-side-card side-card-green">
+              <div class="side-card-title">Check Disaster Relief (§5.3)</div>
+              <div class="side-card-desc">If official calamity declared: approve waiver; else mandate open competitive e-tender</div>
+            </div>
+          </div>
+
+          <!-- Down Arrow with No (Pass) -->
+          <div class="flow-arrow-decision-down">
+            <span class="flow-branch-label">No (Pass)</span>
+            <svg width="14" height="10" viewBox="0 0 14 10">
+              <line x1="7" y1="0" x2="7" y2="5" stroke="#395136" stroke-width="2"/>
+              <polygon points="4,4 10,4 7,9" fill="#395136"/>
+            </svg>
+          </div>
+
+          <!-- 7. Step 4: Contractor Syndicate Screening -->
+          <div class="flow-step-box">
+            <div class="flow-step-name">4. Contractor Syndicate &amp; Cartel Screening</div>
+            <div class="flow-step-desc">Scans bidding agencies across MCA corporate filings, shared GSTINs, phone numbers &amp; rotated wins</div>
+          </div>
+
+          <!-- Down Arrow SVG -->
+          <div class="flow-arrow-container">
+            <svg width="14" height="11" viewBox="0 0 14 11">
+              <line x1="7" y1="0" x2="7" y2="7" stroke="#19255B" stroke-width="2"/>
+              <polygon points="4,6 10,6 7,11" fill="#19255B"/>
+            </svg>
+          </div>
+
+          <!-- 8. Decision 3: Cartel Ring Check -->
+          <div class="flow-decision-row">
+            <div class="flow-diamond-wrapper">
+              <svg class="flow-diamond-svg" viewBox="0 0 195 60">
+                <polygon points="97,2 193,30 97,58 2,30" fill="#42231D" stroke="#28140F" stroke-width="2" stroke-linejoin="round"/>
+                <text x="97" y="26" text-anchor="middle" fill="#FFFFFF" font-family="'Plus Jakarta Sans', sans-serif" font-size="11.5" font-weight="900">Collusion Ring</text>
+                <text x="97" y="41" text-anchor="middle" fill="#FFFFFF" font-family="'Plus Jakarta Sans', sans-serif" font-size="11.5" font-weight="900">or Cartel Found?</text>
+              </svg>
+            </div>
+            <!-- Horizontal Arrow Yes -->
+            <div class="flow-horizontal-connector">
+              <svg width="24" height="18" viewBox="0 0 24 18">
+                <line x1="0" y1="9" x2="16" y2="9" stroke="#42231D" stroke-width="2"/>
+                <polygon points="14,5 14,13 22,9" fill="#42231D"/>
+                <text x="8" y="7" text-anchor="middle" font-size="8.5" font-weight="900" fill="#42231D">Yes</text>
+              </svg>
+            </div>
+            <div class="flow-side-card side-card-brown">
+              <div class="side-card-title">Lock Disbursal &amp; Flag Ring</div>
+              <div class="side-card-desc">Cartel unmasked; auto-generates statutory audit dossier for Collector &amp; State Vigilance</div>
+            </div>
+          </div>
+
+          <!-- Down Arrow with No (Pass) -->
+          <div class="flow-arrow-decision-down">
+            <span class="flow-branch-label">No (Pass)</span>
+            <svg width="14" height="10" viewBox="0 0 14 10">
+              <line x1="7" y1="0" x2="7" y2="5" stroke="#395136" stroke-width="2"/>
+              <polygon points="4,4 10,4 7,9" fill="#395136"/>
+            </svg>
+          </div>
+
+          <!-- 9. Step 5: Final Clearance (Green Approval Box) -->
+          <div class="flow-step-box flow-step-clearance">
+            <div class="flow-step-name">5. Instant Pre-Sanction Clearance Issued</div>
+            <div class="flow-step-desc">District Magistrate signs digital sanction order; funds encumbered with milestone release schedule</div>
+          </div>
+
+          <!-- Down Arrow SVG -->
+          <div class="flow-arrow-container">
+            <svg width="14" height="11" viewBox="0 0 14 11">
+              <line x1="7" y1="0" x2="7" y2="7" stroke="#19255B" stroke-width="2"/>
+              <polygon points="4,6 10,6 7,11" fill="#19255B"/>
+            </svg>
+          </div>
+
+          <!-- 10. Step 6: Milestone Disbursal with Ground Photos -->
+          <div class="flow-step-box">
+            <div class="flow-step-name">6. Milestone Disbursal with Ground Proof</div>
+            <div class="flow-step-desc">Treasury disburses funds in tranches (30%-40%-30%) only upon verified geotagged, timestamped site photos</div>
+          </div>
+
+          <!-- Down Arrow SVG -->
+          <div class="flow-arrow-container">
+            <svg width="14" height="11" viewBox="0 0 14 11">
+              <line x1="7" y1="0" x2="7" y2="7" stroke="#19255B" stroke-width="2"/>
+              <polygon points="4,6 10,6 7,11" fill="#19255B"/>
+            </svg>
+          </div>
+
+          <!-- 11. Outcome Value Box -->
+          <div class="flow-success-box">
+            <div class="success-main-title">₹1.84 Cr Capital Protected Pre-Disbursal</div>
+            <div class="success-sub-title">Zero Ghost Works Funded • 100% Statutory Compliance under MPLADS Rules</div>
+          </div>
+
+          <!-- Down Arrow SVG -->
+          <div class="flow-arrow-container">
+            <svg width="14" height="11" viewBox="0 0 14 11">
+              <line x1="7" y1="0" x2="7" y2="7" stroke="#19255B" stroke-width="2"/>
+              <polygon points="4,6 10,6 7,11" fill="#19255B"/>
+            </svg>
+          </div>
+
+          <!-- 12. End Pill matching Workflow.png -->
+          <div class="flow-pill-terminal">End</div>
+
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <script src="js/navigation.js"></script>
+  <script src="../js/navigation.js"></script>
+</body>
+</html>

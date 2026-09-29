@@ -1,0 +1,24 @@
+{
+  "canvas_dimensions": {
+    "width": 1920,
+    "height": 1080,
+    "aspect_ratio": "16:9"
+  },
+  "margins": {
+    "top": 54,
+    "bottom": 54,
+    "left": 72,
+    "right": 72
+  },
+  "live_area": {
+    "width": 1776,
+    "height": 972
+  },
+  "columns": 12,
+  "gutter": 24,
+  "column_width": 126,
+  "vertical_grid": {
+    "baseline": 8,
+    "sub_unit": 4
+  }
+}

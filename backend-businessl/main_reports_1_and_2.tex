@@ -1,0 +1,1148 @@
+\documentclass[11pt,a4paper]{article}
+
+% --- Essential Packages ---
+\usepackage[top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsfonts,mathtools,bm}
+\usepackage{booktabs,tabularx,longtable,array,multirow}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{microtype}
+\usepackage{hyperref}
+
+% --- Robust Unicode & Symbol Handling (pdflatex & xelatex/lualatex compatible) ---
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[utf8]{inputenc}
+  \usepackage[T1]{fontenc}
+  \usepackage{lmodern}
+  \usepackage{textcomp}
+  \usepackage{newunicodechar}
+  \DeclareRobustCommand{\INR}{\textbf{Rs.\,}}
+  \newunicodechar{₹}{\textbf{Rs.\,}}
+  \newunicodechar{·}{\ensuremath{\cdot}}
+  \newunicodechar{×}{\ensuremath{\times}}
+  \newunicodechar{σ}{\ensuremath{\sigma}}
+  \newunicodechar{–}{--}
+  \newunicodechar{—}{---}
+  \newunicodechar{←}{\ensuremath{\leftarrow}}
+  \newunicodechar{→}{\ensuremath{\rightarrow}}
+  \newunicodechar{↓}{\ensuremath{\downarrow}}
+  \newunicodechar{−}{\ensuremath{-}}
+  \newunicodechar{≥}{\ensuremath{\ge}}
+  \newunicodechar{≤}{\ensuremath{\le}}
+  \newunicodechar{┌}{\textsf{+}}
+  \newunicodechar{┐}{\textsf{+}}
+  \newunicodechar{└}{\textsf{+}}
+  \newunicodechar{┘}{\textsf{+}}
+  \newunicodechar{─}{\textsf{-}}
+  \newunicodechar{│}{\textsf{|}}
+  \newunicodechar{├}{\textsf{+}}
+  \newunicodechar{┬}{\textsf{+}}
+  \newunicodechar{►}{\ensuremath{\blacktriangleright}}
+  \newunicodechar{◄}{\ensuremath{\blacktriangleleft}}
+  \newunicodechar{ï}{\"{i}}
+\else
+  \usepackage{fontspec}
+  \DeclareRobustCommand{\INR}{₹}
+\fi
+
+% --- Code Listing Configuration ---
+\definecolor{codegreen}{rgb}{0,0.55,0.2}
+\definecolor{codegray}{rgb}{0.45,0.45,0.45}
+\definecolor{codepurple}{rgb}{0.55,0,0.75}
+\definecolor{codeblue}{rgb}{0.05,0.2,0.65}
+\definecolor{backcolour}{rgb}{0.97,0.97,0.99}
+
+\lstset{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen}\itshape,
+    keywordstyle=\color{codeblue}\bfseries,
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=6pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    frame=single,
+    rulecolor=\color{gray!30},
+    literate=
+      {┌}{{+}}1 {┐}{{+}}1 {└}{{+}}1 {┘}{{+}}1 {─}{{-}}1 {│}{{|}}1
+      {├}{{+}}1 {┬}{{+}}1 {►}{{>}}1 {◄}{{<}}1 {↓}{{v}}1 {→}{{->}}2
+      {←}{{<-}}2 {₹}{{Rs.}}2 {·}{{.}}1 {×}{{x}}1 {–}{{-}}1 {—}{{--}}1
+      {≥}{{>=}}1 {≤}{{<=}}1
+}
+
+% --- Custom Column Types ---
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% --- Hyperref Setup ---
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!70!black,
+    citecolor=blue!70!black,
+    filecolor=magenta,      
+    urlcolor=blue!70!black,
+}
+
+% --- Header & Footer ---
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\small\textit{Comprehensive Technical Documentation Series (Reports 1 \& 2 of 12)}}
+\lhead{\small\textit{SETU --- Deep Technical Architecture}}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% --- Title Metadata ---
+\title{\Large\textbf{SETU --- Reports 1 \& 2: System Architecture \& Data Pipeline}\\[0.4em]\large\textit{Comprehensive Technical Documentation Series (Reports 1 \& 2 of 12)}}
+\author{\textbf{SETU AI Core Team}\\Smart India Hackathon 2026 --- Ministry of Statistics and Programme Implementation (MoSPI)}
+\date{September 2026}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\vspace{1.5em}
+\hrule
+\vspace{1.5em}
+
+\clearpage
+\section*{REPORT 1 --- BUSINESS LOGIC \& SYSTEM PURPOSE}
+\addcontentsline{toc}{section}{REPORT 1 --- BUSINESS LOGIC \& SYSTEM PURPOSE}
+
+\section{What This Report Teaches}
+
+This report explains \textbf{why SETU exists}, \textbf{what real-world problem it solves}, \textbf{what the system actually does when given input}, \textbf{the core entities defined mathematically}, \textbf{how the business objective translates into a mathematical objective}, and the \textbf{complete end-to-end system architecture}. No ML internals yet --- purely business logic and architecture.
+
+\vspace{1em}\hrule\vspace{1em}
+
+\section{Topic 1 --- The Real-World Problem}
+
+\subsection{Business Meaning}
+
+India's \textbf{Member of Parliament Local Area Development Scheme (MPLADS)} allocates \INR{}5 crore per year to every Member of Parliament to fund local infrastructure --- handpumps, anganwadis, rural roads, community halls, school buildings, sanitation works. Each MP recommends works to District Magistrates (DMs) who sanction, tender, and disburse funds to Implementing District Agencies (IDAs) and contractors.
+
+\textbf{The monitoring crisis:}
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt, topsep=3pt]
+\item Thousands of concurrent active works across hundreds of districts
+\item Hundreds of MPs, thousands of contractors, 1,238 unique IDAs
+\item Manual audit by District Magistrates is impossible at this scale
+\item By the time a ghost project or overpricing fraud is noticed, funds are already released and irrecoverable
+\end{itemize}
+
+\textbf{Frauds that occur in practice (each is a distinct anomaly typology):}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l Y}
+\toprule
+\textbf{Fraud Type} & \textbf{What Happens} \\
+\midrule
+\texttt{GHOST\_PROJECT} & Money fully disbursed; no physical work ever done \\
+\texttt{COST\_OVERRUN} & Project bill-of-quantities inflated 3× peer median; contractor pockets difference \\
+\texttt{BID\_RIGGING} & Contractor cartel submits identical/near-identical bids to ensure predetermined winner \\
+\texttt{PAYMENT\_STRUCTURING} & Large \INR{}15L+ work split into sub-\INR{}5L fragments to bypass GFR Rule 161 open-tender mandate \\
+\texttt{VENDOR\_CAPTURE} & One MP routes 70\%+ of constituency MPLADS funds to a single politically-connected IDA \\
+\texttt{ABANDONED\_WORK} & Financial disbursement is 80\% complete but physical ground progress is near zero \\
+\texttt{ROUND\_TRIPPING\_VENDOR} & Same contractor wins consecutive works across multiple MPs in a coordinated arrangement \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+\textbf{The decision that must be made, weekly:}
+\begin{tcolorbox}[colback=blue!4!white,colframe=blue!60!black,arc=1.5mm,boxrule=0.7pt,left=8pt,right=8pt,top=6pt,bottom=6pt]
+\textit{"Of the 5,000+ currently active MPLADS works, which should the District Magistrate's field inspection team physically visit THIS week?"}\\
+\end{tcolorbox}
+
+\textbf{Investigator bandwidth constraint:} A DM's office can realistically field-inspect ~20–30 projects per month. Without intelligent prioritization, they inspect randomly --- not by statistical risk signal.
+
+\textbf{Information available:} Sanction records, disbursement installment transactions, physical progress reports, GPS geotags, Measurement Book (MB) entries, contractor registration records, Utilization Certificates (UCs), tender documentation.
+
+\textbf{Information NOT available at inference time:}
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt, topsep=3pt]
+\item Ground-truth fraud labels (only present for the synthetic evaluation benchmark)
+\item Real-time GPS verification of physical assets
+\item Inter-state contractor ownership linkages
+\end{itemize}
+
+\vspace{1em}\hrule\vspace{1em}
+
+\section{Topic 2 --- What the System Actually Does}
+
+\subsection{One-Sentence Summary}
+
+\begin{tcolorbox}[colback=blue!4!white,colframe=blue!60!black,arc=1.5mm,boxrule=0.7pt,left=8pt,right=8pt,top=6pt,bottom=6pt]
+\textbf{"SETU takes every MPLADS project, runs it through 7 independent anomaly detectors and 1 supervised model, triangulates all signals into a risk score (0–100), tells investigators WHY a project is suspicious in plain English, and assigns a triage priority (IMMEDIATE / PRIORITY / ROUTINE)."}\\
+\end{tcolorbox}
+
+\subsection{Complete Business Logic --- Step by Step}
+
+\textbf{Step 1 --- Data Ingestion \& Validation}
+12 relational CSV datasets (5,000 projects, 13,866 payment records, etc.) are loaded. Every FK relationship (16 total) is checked for integrity. Zero orphan records tolerated.
+
+\textbf{Step 2 --- Aggregation (The Many-to-One Problem)}
+Raw payment installment rows (13,866 $\rightarrow$ 29 features per project) and progress inspection records are collapsed into one row per project. ML models require exactly one feature vector per project.
+
+\textbf{Step 3 --- Feature Join}
+All 12 tables are left-joined on \texttt{project\_id} $\rightarrow$ \texttt{project\_master\_features.csv}: 5,000 rows × 239 columns. Identity strings stripped. Labels permanently quarantined.
+
+\textbf{Step 4 --- Feature Audit \& Registry}
+239 columns classified into NUMERICAL, CATEGORICAL, TEMPORAL, IDENTIFIER, EXCLUDE. A controlled feature registry tells each model which columns it may legally use.
+
+\textbf{Step 5 --- 7 Independent Domain Models (Isolation Forest per domain)}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l l l Y}
+\toprule
+\textbf{Model} & \textbf{Domain} & \textbf{Algorithm} & \textbf{Primary Signal} \\
+\midrule
+M1 & Financial & Isolation Forest + Peer MAD & Cost overpricing, disbursement velocity \\
+M2 & Geospatial & Spatial DBSCAN / LOF & Geographic clustering anomalies \\
+M3 & Procurement & Isolation Forest & Tender rigging, single-bid anomalies \\
+M4 & Contractor/Agency & Entity aggregation & Vendor capture, capacity strain \\
+M5 & Payment & Sequential anomaly & Smurfing, structuring near statutory caps \\
+M6 & Progress & Trajectory slope & Ghost projects, physical-financial gap \\
+M7 & Graph & PageRank + Degree Centrality & MP-IDA collusive networks \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+Models are \textbf{not allowed to see each other's outputs during training} --- this guarantees independent evidence signals.
+
+\textbf{Step 6 --- Supervised Calibrated Predictor (Model 8, XGBoost)}
+Takes all 7 domain scores + context $\rightarrow$ \texttt{fraud\_probability} (0.0–1.0) + \texttt{predicted\_typology}. SHAP attributions explain each prediction.
+
+\textbf{Step 7 --- Risk Fusion Engine}
+Triangulates all 8 signals $\rightarrow$ \texttt{overall\_risk\_score} (0–100), \texttt{risk\_level}, \texttt{investigation\_priority}, \texttt{synthesized\_reasons[1..5]}.
+
+\textbf{Step 8 --- RAG Hard Negative Resolution}
+Cross-references flagged works against statutory knowledge: flood moratoriums, Election Commission MCC blackouts, Schedule of Rates benchmarks, statutory public agency designations. Scores calibrated downward for legitimate outliers.
+
+\textbf{Step 9 --- API Serving + Frontend Dashboard}
+FastAPI exposes 12 REST endpoints. Next.js dashboard provides ranked risk queue, 7-domain radar charts, network graph, full SHAP evidence dossiers.
+
+\vspace{1em}\hrule\vspace{1em}
+
+\section{Topic 3 --- Core Entities (Mathematical Definitions)}
+
+\subsection{Entity Hierarchy}
+
+\begin{tcolorbox}[colback=gray!5!white,colframe=gray!60!black,arc=1mm,boxrule=0.6pt,left=6pt,right=6pt,top=6pt,bottom=6pt]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,breaklines=true,columns=flexible]
+MP (Recommends)
+    │
+    └─► Project  ◄── Constituency (Jurisdiction)
+             │
+             ├── Financials (1:1)
+             ├── Payments   (1:N)  ──► PaymentAggregation (1:1 after aggregation)
+             ├── Progress   (1:N)  ──► ProgressAggregation (1:1 after aggregation)
+             ├── Procurement (1:1)
+             ├── Contract   (1:1)
+             ├── Documents  (1:1)
+             ├── Contractor  (N:1, 400 unique)
+             ├── Agency/IDA  (N:1, 1,238 unique)
+             └── District    (N:1, 619 unique)
+\end{lstlisting}
+\end{tcolorbox}
+
+
+\subsection{Mathematical Definitions}
+
+\textbf{Project Feature Vector:}
+
+\[ P_i = [p_1, p_2, \ldots, p_{239}] \in \mathbb{R}^{239} \]
+
+After feature audit: 142 numerical, 19 categorical (one-hot), 15 temporal (elapsed-day intervals), 56 EXCLUDED.
+
+\textbf{Domain Anomaly Score:}
+\[ s_k(P_i) \in [0.0, 100.0], \quad k \in \{1, 2, 3, 4, 5, 6, 7\} \]
+
+\textbf{Supervised Fraud Probability:}
+\[ \hat{p}_\text{fraud}(P_i) \in [0.0, 1.0] \]
+
+\textbf{Overall SETU Risk Score:}
+\[ R(P_i) \in [0.0, 100.0] \]
+
+\textbf{Risk Tier:}
+\[ T(P_i) \in \{\text{CRITICAL}, \text{HIGH}, \text{MEDIUM}, \text{LOW}\} \]
+
+\textbf{Investigation Priority:}
+\[ \Pi(P_i) \in \{\text{IMMEDIATE}, \text{PRIORITY}, \text{ROUTINE}\} \]
+
+\textbf{Reason Trace Vector:}
+\[ \mathbf{r}(P_i) = [r_1, r_2, r_3, r_4, r_5] \]
+
+Each $r_j$ is a ranked human-readable audit string.
+
+\vspace{1em}\hrule\vspace{1em}
+
+\section{Topic 4 --- Business Objective $\rightarrow$ Mathematical Objective}
+
+\subsection{Why Accuracy Is the Wrong Metric}
+
+Dataset has ~20\% fraud prevalence. A naïve "all normal" model achieves 80\% accuracy but is completely useless operationally. SETU instead optimizes \textbf{fraud concentration in the investigation queue}.
+
+\subsection{Formal Mathematical Objective}
+
+\[ \text{Maximize} \quad \text{Enrichment@}k = \frac{\text{FraudRate}(\text{Top-}k\% \text{ by } R(P_i))}{\text{BaseFraudRate}_\text{population}} \]
+
+Subject to:
+\[ \text{FalsePositiveRate}(\text{is\_hard\_negative}, \text{Top-}k\%) \leq \varepsilon \]
+
+\subsection{The Risk Fusion Formula (from \texttt{risk\_fusion\_engine.py} L78)}
+
+\[ R(P_i) = 0.40 \cdot (\hat{p}_\text{fraud} \times 100) + 0.35 \cdot \bar{s}_\text{weighted} + 0.25 \cdot \max_{k=1}^{7}(s_k) \]
+
+Where:
+\[ \bar{s}_\text{weighted} = \frac{\sum_{k=1}^{7} w_k \cdot s_k}{\sum_{k=1}^{7} w_k} \]
+
+\textbf{Domain weights $w_k$:}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l l Y}
+\toprule
+\textbf{Domain} & \textbf{Weight} & \textbf{Rationale} \\
+\midrule
+Contractor/Agency & 0.18 & Vendor capture is most systemic fraud vector \\
+Financial & 0.15 & Direct disbursement overpricing \\
+Procurement & 0.15 & Tender rigging at source \\
+Payment & 0.15 & Structuring and disbursement manipulation \\
+Graph Network & 0.15 & Collusive entity relationships \\
+Progress & 0.12 & Ghost/abandoned project indicator \\
+Geospatial & 0.10 & Geographic clustering \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+\textbf{Acute override rules (corroboration gates):}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l Y}
+\toprule
+\textbf{Condition} & \textbf{Override} \\
+\midrule
+$\hat{p}_\text{fraud} \geq 0.70$ & $R(P_i) \geq 82.0$ $\rightarrow$ CRITICAL guaranteed \\
+$\max_k(s_k) \geq 88.0$ AND $\hat{p} \geq 0.15$ & $R(P_i) \geq 82.0$ $\rightarrow$ CRITICAL guaranteed \\
+$\hat{p} \geq 0.35$ OR ($\max_k \geq 68.0$ AND $\hat{p} \geq 0.08$) & $R \geq 65.0$ $\rightarrow$ HIGH guaranteed \\
+$\hat{p} \geq 0.12$ OR ($\max_k \geq 48.0$ AND $\hat{p} \geq 0.05$) & $R \geq 42.0$ $\rightarrow$ MEDIUM guaranteed \\
+$\max_k \geq 88.0$ alone (no supervised corroboration) & $R \geq 38.0$ $\rightarrow$ awareness floor only \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+\textbf{Risk Tier Boundaries:}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l l l Y}
+\toprule
+\textbf{Score} & \textbf{Tier} & \textbf{Priority} & \textbf{Action} \\
+\midrule
+$R \geq 80$ or $\hat{p} \geq 0.70$ & CRITICAL & IMMEDIATE & Administrative freeze + joint inspection \\
+$60 \leq R < 80$ or $\hat{p} \geq 0.35$ & HIGH & PRIORITY & District Magistrate desk audit \\
+$40 \leq R < 60$ or $\hat{p} \geq 0.12$ & MEDIUM & ROUTINE & Flagged documentation requirements \\
+$R < 40$ & LOW & ROUTINE & Standard monitoring \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+\textbf{Measured enrichment (Financial Model alone --- Stage 2B):}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l l l Y}
+\toprule
+\textbf{Subset} & \textbf{Projects} & \textbf{Fraud Rate} & \textbf{Enrichment} \\
+\midrule
+Top 1\% & 50 & 86.0\% & \textbf{4.28×} \\
+Top 5\% & 250 & 68.8\% & \textbf{3.42×} \\
+Top 10\% & 500 & 64.8\% & \textbf{3.22×} \\
+Population baseline & 5,000 & 20.1\% & 1.00× \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+\vspace{1em}\hrule\vspace{1em}
+
+\section{Topic 5 --- End-to-End System Overview}
+
+\begin{tcolorbox}[colback=gray!5!white,colframe=gray!60!black,arc=1mm,boxrule=0.6pt,left=6pt,right=6pt,top=6pt,bottom=6pt]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,breaklines=true,columns=flexible]
+┌─────────────────────────────────────────────────────────────────────┐
+│                           REAL WORLD                                │
+│   MPs recommend → DMs sanction → IDAs/Contractors execute          │
+│   Payments flow → Progress inspections → Documents accumulated      │
+└───────────────────────────────┬─────────────────────────────────────┘
+                                ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│         DATA LAYER — 12 Relational Tables (Synthetic CSVs)          │
+│  01_projects(5K) · 02_financials(5K) · 03_payments(13,866)         │
+│  04_progress(5K) · 05_procurement(5K) · 06_contracts(5K)           │
+│  07_contractors(400) · 08_agencies(1,238) · 09_geography(619)      │
+│  10_constituencies(913) · 11_documents(5K) · 12_labels[QUARANTINED]│
+└───────────────────────────────┬─────────────────────────────────────┘
+                                ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│  STAGE 1 — AGGREGATION & JOIN (aggregators.py · feature_builder.py) │
+│  13,866 payment rows  →  29 project-level payment features          │
+│  progress rows        →  26 project-level progress features         │
+│  All 12 tables joined →  project_master_features.csv (5,000 × 239) │
+│  Labels quarantined   →  project_labels.csv (NEVER model input)     │
+└───────────────────────────────┬─────────────────────────────────────┘
+                                ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│  STAGE 2A — FEATURE AUDIT (audit_features.py)                       │
+│  239 columns: 142 NUMERICAL · 19 CATEGORICAL · 15 TEMPORAL          │
+│               7 IDENTIFIER · 56 EXCLUDE                             │
+│  → FEATURE_REGISTRY.md (authoritative model selectors)              │
+└───────────────────────────────┬─────────────────────────────────────┘
+                                ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│  STAGES 2B–2H — 7 INDEPENDENT DOMAIN MODELS                        │
+│  M1 Financial    → financial_anomaly_score    [DONE   - Stage 2B]   │
+│  M2 Geospatial   → geospatial_anomaly_score   [PLANNED - Stage 2C]  │
+│  M3 Procurement  → procurement_anomaly_score  [PLANNED - Stage 2D]  │
+│  M4 Contractor   → contractor_anomaly_score   [PLANNED - Stage 2E]  │
+│  M5 Payment      → payment_anomaly_score      [PLANNED - Stage 2F]  │
+│  M6 Progress     → progress_anomaly_score     [PLANNED - Stage 2G]  │
+│  M7 Graph        → graph_anomaly_score        [PLANNED - Stage 2H]  │
+└───────────────────────────────┬─────────────────────────────────────┘
+                                ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│  STAGE 3 — SUPERVISED PREDICTOR (XGBoost + CalibratedClassifierCV)  │
+│  Input: 7 domain scores + context features                          │
+│  Output: fraud_probability (0–1) + predicted_typology               │
+│          Tree SHAP attributions per sample                          │
+└───────────────────────────────┬─────────────────────────────────────┘
+                                ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│  STAGE 4 — RISK FUSION ENGINE (risk_fusion_engine.py)               │
+│  Formula: 40% supervised + 35% weighted unsupervised + 25% peak     │
+│  Acute override rules (corroboration gates)                         │
+│  Output: overall_risk_score · risk_level · investigation_priority   │
+│          synthesized_reasons[1..5] · primary_typology               │
+└───────────────────────────────┬─────────────────────────────────────┘
+                                ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│  RAG LAYER — HARD NEGATIVE RESOLUTION                               │
+│  (retriever.py · hard_negative_evaluator.py · knowledge_base.py)    │
+│  Checks: flood/calamity zone · MCC election blackout                │
+│          statutory public agency · SoR benchmark match              │
+│  Calibrates: HARD_NEGATIVE_MITIGATED → score × 0.55                │
+│              MIXED_EXPOSURE           → score × 0.80                │
+│  Attaches: GFR rule citations (GFR 149/154/155/161/173)             │
+└───────────────────────────────┬─────────────────────────────────────┘
+                                ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│  FastAPI SERVING LAYER — 12 API Routers                             │
+│  /risk-intelligence/projects  → paginated ranked triage list        │
+│  /risk-intelligence/projects/{id} → full 8-model evidence dossier   │
+│  /risk-intelligence/fuse → live interactive fusion simulator        │
+│  /risk-intelligence/score-proposal → real-time proposal scoring     │
+│  /cases · /alerts · /reports · /compliance · /geo · /graph          │
+└───────────────────────────────┬─────────────────────────────────────┘
+                                ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│  Next.js FRONTEND DASHBOARD                                         │
+│  Role-scoped views: DM · MP office · MoSPI auditor                  │
+│  7-domain radar chart · Ranked risk queue (CRITICAL → LOW)          │
+│  MP-IDA-Contractor bipartite network graph · SHAP attributions       │
+└─────────────────────────────────────────────────────────────────────┘
+\end{lstlisting}
+\end{tcolorbox}
+
+
+\vspace{1em}\hrule\vspace{1em}
+
+\section{Important Equations --- Report 1 Summary}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l l Y}
+\toprule
+\textbf{Equation} & \textbf{Source} & \textbf{Lines} \\
+\midrule
+$R(P_i) = 0.40 \cdot \hat{p} \cdot 100 + 0.35 \cdot \bar{s} + 0.25 \cdot \max_k(s_k)$ & \texttt{risk\_fusion\_engine.py} & L78 \\
+$\text{Enrichment@k} = \frac{\text{FraudRate}@k}{\text{BaseFraudRate}}$ & \texttt{evaluator.py} & L58 \\
+$T = \text{CRITICAL if } R \geq 80 \text{ or } \hat{p} \geq 0.70$ & \texttt{risk\_fusion\_engine.py} & L94–103 \\
+$s_k \in [0.0, 100.0]$ for all domain models & All model pipeline files & — \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+\vspace{1em}\hrule\vspace{1em}
+
+\section{Key Takeaways --- Report 1}
+
+\begin{enumerate}[leftmargin=1.5em, itemsep=2pt, topsep=3pt]
+\item \textbf{SETU is a triage tool.} It ranks 5,000 projects by investigation priority. It does not prosecute.
+\item \textbf{Multi-evidence triangulation} is the core principle. A single domain flag without supervised corroboration only reaches an awareness floor (≥38), not CRITICAL.
+\item \textbf{Hard negatives are a first-class design concern.} A remote single-bid handpump in a flood-prone district is statistically suspicious but operationally legitimate. SETU explicitly handles this.
+\item \textbf{The evaluation metric is enrichment, not accuracy.} Goal: when an investigator examines the top 5\% of flagged projects, >68\% should be genuine fraud scenarios.
+\item \textbf{System is at Stage 2B.} Financial Model is fully validated (31/31 tests passing). Models 2–8 have templates but await implementation.
+\end{enumerate}
+
+\vspace{1em}\hrule\vspace{1em}
+
+\clearpage
+\section*{REPORT 2 --- DATA PIPELINE \& DATA REPRESENTATION}
+\addcontentsline{toc}{section}{REPORT 2 --- DATA PIPELINE \& DATA REPRESENTATION}
+
+\section{What This Report Teaches}
+
+Every transformation data undergoes from 12 raw relational CSVs to the final scaled feature matrix entering the ML models. Covers raw schemas, transaction aggregation mathematics, feature engineering (peer normalization), normalization (RobustScaler), score calibration, and complete data lineage.
+
+\vspace{1em}\hrule\vspace{1em}
+
+\section{Topic 6 --- Data Sources}
+
+\subsection{The 12 Relational Tables}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{c l c l Y}
+\toprule
+\textbf{\#} & \textbf{File} & \textbf{Rows} & \textbf{Grain} & \textbf{Role} \\
+\midrule
+01 & \texttt{01\_projects.csv} & 5,000 & 1 = 1 project & Central master --- work type, category, status, dates, coordinates \\
+02 & \texttt{02\_financials.csv} & 5,000 & 1 = 1 project & Sanction amounts, SOR benchmarks, cost deviations, utilization ratios \\
+03 & \texttt{03\_payments.csv} & \textbf{13,866} & 1 = 1 installment & Granular disbursements --- dates, amounts, MB flags, round-number flags \\
+04 & \texttt{04\_progress.csv} & 5,000 & 1 = 1 inspection & Physical \%, financial \%, planned \%, geotag flags, MB verification status \\
+05 & \texttt{05\_procurement.csv} & 5,000 & 1 = 1 project & Bidder counts, single-bid flags, tender duration, bid price similarity \\
+06 & \texttt{06\_contracts.csv} & 5,000 & 1 = 1 project & Contract values, variation orders, extension counts, liquidated damages \\
+07 & \texttt{07\_contractors.csv} & \textbf{400} & 1 = 1 contractor & Registration tier, blacklisting history, capacity limits, shared director flags \\
+08 & \texttt{08\_agencies.csv} & \textbf{1,238} & 1 = 1 IDA & Agency type, staffing capacity, active project load \\
+09 & \texttt{09\_geography.csv} & \textbf{619} & 1 = 1 district & Terrain type, literacy rate, poverty index, infrastructure gap score \\
+10 & \texttt{10\_constituencies.csv} & \textbf{913} & 1 = 1 constituency & House type, MP allocation pool, total sanctioned funds \\
+11 & \texttt{11\_documents.csv} & 5,000 & 1 = 1 project & AS/TS/MB/DPR/UC/CC flags, tampering flags, OCR confidence scores \\
+12 & \texttt{12\_labels.csv} & 5,000 & 1 = 1 project & \textbf{QUARANTINED} --- is\_fraud, is\_hard\_negative, risk\_level, scenario\_type \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+\subsection{Key Relational Structure}
+
+\begin{tcolorbox}[colback=gray!5!white,colframe=gray!60!black,arc=1mm,boxrule=0.6pt,left=6pt,right=6pt,top=6pt,bottom=6pt]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,breaklines=true,columns=flexible]
+01_projects (5,000)          ← Central anchor table
+ ├── 1:1 ── 02_financials    ← Financial sanctions, cost deviations
+ ├── 1:N ── 03_payments      ← MUST BE AGGREGATED (13,866 → 5,000 via aggregators.py)
+ ├── 1:N ── 04_progress      ← MUST BE AGGREGATED (inspection rows → 1 per project)
+ ├── 1:1 ── 05_procurement   ← Tender process metrics
+ ├── 1:1 ── 06_contracts     ← Contract management data
+ ├── N:1 ── 07_contractors   ← 400 contractors serve 5,000 projects
+ ├── N:1 ── 08_agencies      ← 1,238 IDAs serve 5,000 projects
+ ├── N:1 ── 09_geography     ← 619 districts → contextual enrichment
+ ├── N:1 ── 10_constituencies← 913 constituencies → contextual enrichment
+ ├── 1:1 ── 11_documents     ← Document audit trail
+ └── 1:1 ── 12_labels        ← QUARANTINED — never joined into model inputs
+\end{lstlisting}
+\end{tcolorbox}
+
+
+\subsection{Critical Schema Fields}
+
+\textbf{From \texttt{02\_financials.csv}:}
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt, topsep=3pt]
+\item \texttt{estimated\_cost} --- initial project estimate (baseline for cost deviation)
+\item \texttt{cost\_per\_unit} --- normalized cost per unit of work (per metre for road, per seat for school)
+\item \texttt{cost\_deviation} = (estimated\_cost − sanctioned\_amount) / sanctioned\_amount
+\item \texttt{sor\_deviation} --- deviation from Ministry's Schedule of Rates benchmark
+\item \texttt{fund\_utilization\_ratio} --- fraction of released funds actually spent
+\end{itemize}
+
+\textbf{From \texttt{03\_payments.csv} (transaction-grain, requires aggregation):}
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt, topsep=3pt]
+\item \texttt{payment\_amount} --- installment size
+\item \texttt{payment\_date} --- disbursement date (used for inter-payment interval computation)
+\item \texttt{measurement\_book\_verified} --- boolean: was this payment MB-verified before release?
+\item \texttt{is\_round\_number} --- boolean: does this payment end in 00,000?
+\item \texttt{is\_final\_installment} --- boolean: is this the completion tranche?
+\end{itemize}
+
+\textbf{From \texttt{04\_progress.csv}:}
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt, topsep=3pt]
+\item \texttt{physical\_progress} --- reported ground progress (\% complete)
+\item \texttt{financial\_progress} --- disbursement progress (\% released)
+\item \texttt{planned\_progress} --- scheduled progress
+\item \texttt{geo\_tag\_available} --- GPS geotag present in this inspection?
+\item \texttt{measurement\_book\_verified} --- MB verified at this inspection?
+\end{itemize}
+
+\vspace{1em}\hrule\vspace{1em}
+
+\section{Topic 7 --- Raw Data $\rightarrow$ Usable Data}
+
+\subsection{The Core Transformation Chain}
+
+\[ X_\text{raw} \rightarrow X_\text{clean} \rightarrow X_\text{aggregated} \rightarrow X_\text{joined} \rightarrow X_\text{peer-normalized} \rightarrow X_\text{scaled} \]
+
+\subsection{Step 1: Raw $\rightarrow$ Clean (\texttt{validators.py})}
+
+Before any ML processing:
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt, topsep=3pt]
+\item \textbf{Primary-Key Uniqueness}: Zero duplicate \texttt{project\_id} across all 12 tables
+\item \textbf{Foreign-Key Integrity}: All 16 FK relationships checked --- zero orphan records
+\item \textbf{Temporal Validity}: Dates parsed; invalid strings flagged
+\item \textbf{Referential Loss}: 5,000 projects in $\rightarrow$ 5,000 rows out (zero lost)
+\end{itemize}
+
+\subsection{Step 2: Clean $\rightarrow$ Aggregated (\texttt{aggregators.py})}
+
+This resolves the \textbf{many-to-one problem}.
+
+\textbf{Payment Aggregation} (13,866 rows $\rightarrow$ 5,000 rows, 29 features):
+\begin{tcolorbox}[colback=gray!5!white,colframe=gray!60!black,arc=1mm,boxrule=0.6pt,left=6pt,right=6pt,top=6pt,bottom=6pt]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,breaklines=true,columns=flexible]
+03_payments.csv (13,866 rows, one per installment)
+    ↓  aggregate_payments()
+project_payment_features (5,000 rows, 29 columns)
+\end{lstlisting}
+\end{tcolorbox}
+
+
+\textbf{Progress Aggregation} (N inspection rows $\rightarrow$ 5,000 rows, 26 features):
+\begin{tcolorbox}[colback=gray!5!white,colframe=gray!60!black,arc=1mm,boxrule=0.6pt,left=6pt,right=6pt,top=6pt,bottom=6pt]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,breaklines=true,columns=flexible]
+04_progress.csv (multiple inspection records per project)
+    ↓  aggregate_progress()
+project_progress_features (5,000 rows, 26 columns)
+\end{lstlisting}
+\end{tcolorbox}
+
+
+\subsection{Step 3: Aggregated $\rightarrow$ Joined (\texttt{feature\_builder.py})}
+
+Sequential controlled LEFT JOINs on \texttt{project\_id}:
+
+\begin{lstlisting}[language=Python]
+# Exact join sequence (feature_builder.py lines 197–210)
+master = prepare_project_base(projects_df)           # 5,000 projects
+master = master.merge(prefixed_financials, ...)       # + 28 financial features
+master = master.merge(prefixed_payments, ...)         # + 29 payment features
+master = master.merge(prefixed_progress, ...)         # + 26 progress features
+master = master.merge(prefixed_procurement, ...)      # + 22 procurement features
+master = master.merge(prefixed_contracts, ...)        # + 19 contract features
+master = master.merge(contractor_context, ...)        # + 31 contractor features
+master = master.merge(agency_context, ...)            # + 3 agency features
+master = master.merge(geo_context, ...)               # + 8 geography features
+master = master.merge(constituency_context, ...)      # + 1 constituency feature
+master = master.merge(prefixed_documents, ...)        # + 50 document features
+\end{lstlisting}
+
+
+\textbf{Invariant checks enforced after join:}
+\begin{lstlisting}[language=Python]
+assert len(master) == 5000                     # No row duplication from joins
+assert master["project_id"].nunique() == 5000  # No duplicate project_ids
+assert len(dup_cols) == 0                      # No duplicate column names
+for label_col in TARGET_LEAKAGE_COLUMNS:
+    assert label_col not in master.columns     # ZERO label leakage
+\end{lstlisting}
+
+
+\subsection{Step 4: Identity Stripping (Anti-Overfitting)}
+
+Before prefixing, entity identity strings are removed from model tensors:
+\begin{lstlisting}[language=Python]
+# feature_builder.py, extract_contractor_features(), lines 28–29
+drop_cols = ["contractor_name", "home_district_id", "home_state_id"]
+\end{lstlisting}
+
+Also stripped: \texttt{agency\_name}, \texttt{mp\_name}, \texttt{district\_name}, \texttt{work\_name}, \texttt{title}.
+
+This prevents the model from learning "Contractor X is always fraudulent" instead of learning structural behavioral patterns (which generalize to new contractors).
+
+\vspace{1em}\hrule\vspace{1em}
+
+\section{Topic 8 --- Feature Engineering}
+
+\subsection{8.1 --- The Prefixing Convention}
+
+Every feature in \texttt{project\_master\_features.csv} carries a domain prefix:
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l l Y}
+\toprule
+\textbf{Prefix} & \textbf{Source} & \textbf{Example} \\
+\midrule
+\texttt{project\_\_} & 01\_projects.csv & \texttt{project\_\_work\_type} \\
+\texttt{financial\_\_} & 02\_financials.csv & \texttt{financial\_\_estimated\_cost} \\
+\texttt{payment\_\_} & 03\_payments.csv (aggregated) & \texttt{payment\_\_payment\_velocity\_mean} \\
+\texttt{progress\_\_} & 04\_progress.csv (aggregated) & \texttt{progress\_\_financial\_minus\_physical\_progress} \\
+\texttt{procurement\_\_} & 05\_procurement.csv & \texttt{procurement\_\_single\_bid\_flag} \\
+\texttt{contract\_\_} & 06\_contracts.csv & \texttt{contract\_\_contract\_value\_change} \\
+\texttt{contractor\_\_} & 07\_contractors.csv & \texttt{contractor\_\_blacklisted\_flag} \\
+\texttt{agency\_\_} & 08\_agencies.csv & \texttt{agency\_\_active\_project\_count} \\
+\texttt{geo\_\_} & 09\_geography.csv & \texttt{geo\_\_infrastructure\_gap\_index} \\
+\texttt{constituency\_\_} & 10\_constituencies.csv & \texttt{constituency\_\_total\_sanctioned\_amount} \\
+\texttt{document\_\_} & 11\_documents.csv & \texttt{document\_\_measurement\_book\_available} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+\subsection{8.2 --- Payment Aggregation Mathematics}
+
+For N installments per project, 29 behavioral statistics are computed:
+
+\textbf{Volume \& Sizing:}
+\[ \text{pay\_avg} = \frac{1}{N}\sum_{j=1}^{N} a_j, \qquad \text{pay\_std} = \sqrt{\frac{1}{N-1}\sum_{j=1}^{N}(a_j - \text{pay\_avg})^2} \]
+
+\textbf{Payment Concentration (lump-sum fraud signal):}
+\[ \text{pay\_conc\_max} = \frac{\max_j(a_j)}{\sum_j a_j} \]
+
+\begin{tcolorbox}[colback=blue!4!white,colframe=blue!60!black,arc=1.5mm,boxrule=0.7pt,left=8pt,right=8pt,top=6pt,bottom=6pt]
+A legitimate project has many moderate installments (concentration ~0.25–0.35). A ghost project often has one massive final installment equal to ~90\% of contract value (concentration ~0.90).\\
+\end{tcolorbox}
+
+\textbf{Payment Velocity (\INR{} per calendar day):}
+\[ \text{pay\_velocity} = \frac{\sum_j a_j}{\max(1, t_\text{last} - t_\text{first})} \]
+
+\begin{tcolorbox}[colback=blue!4!white,colframe=blue!60!black,arc=1.5mm,boxrule=0.7pt,left=8pt,right=8pt,top=6pt,bottom=6pt]
+Ghost projects exhibit extremely high velocity --- large amounts released in a short window before reporting "complete."\\
+\end{tcolorbox}
+
+\textbf{Round Number Rate (structuring signal):}
+\[ \text{round\_rate} = \frac{\text{count}(a_j \equiv 0 \pmod{100000})}{N} \]
+
+\begin{tcolorbox}[colback=blue!4!white,colframe=blue!60!black,arc=1.5mm,boxrule=0.7pt,left=8pt,right=8pt,top=6pt,bottom=6pt]
+Payments like \INR{}5,00,000 or \INR{}14,90,000 appear disproportionately in structuring scenarios (just below the \INR{}15L mandatory tender threshold).\\
+\end{tcolorbox}
+
+\textbf{Unverified Payment Rate:}
+\[ \text{unverified\_rate} = \frac{\text{count}(\text{mb\_verified} = \text{False})}{N} \]
+
+\textbf{Inter-Payment Interval Statistics:}
+\[ \text{avg\_interval} = \frac{1}{N-1}\sum_{j=2}^{N}(t_j - t_{j-1}), \qquad \text{interval\_std} = \sigma(\{t_j - t_{j-1}\}_{j=2}^{N}) \]
+
+\subsection{8.3 --- Progress Aggregation Mathematics}
+
+\textbf{Physical-Financial Progress Gap (ghost-project signal):}
+\[ \text{gap} = \text{financial\_progress} - \text{physical\_progress} \]
+
+\begin{tcolorbox}[colback=blue!4!white,colframe=blue!60!black,arc=1.5mm,boxrule=0.7pt,left=8pt,right=8pt,top=6pt,bottom=6pt]
+Example: 80\% funds disbursed, 5\% physical complete $\rightarrow$ gap = 0.75. The primary ghost project indicator.\\
+\end{tcolorbox}
+
+\textbf{Physical Progress Slope (time-aware, computed against calendar days):}
+\[ \text{phys\_slope} = \frac{\text{physical\_progress}_\text{latest} - \text{physical\_progress}_\text{first}}{\max(1, t_\text{latest} - t_\text{first})} \]
+
+\begin{tcolorbox}[colback=blue!4!white,colframe=blue!60!black,arc=1.5mm,boxrule=0.7pt,left=8pt,right=8pt,top=6pt,bottom=6pt]
+Critical: slope is per \textbf{calendar day}, not row index. Row-index slope would be meaningless if inspections are unevenly spaced.\\
+\end{tcolorbox}
+
+\textbf{Gap Slope (growing divergence indicator):}
+\[ \text{gap\_slope} = \frac{\text{gap}_\text{latest} - \text{gap}_\text{first}}{\text{span\_days}} \]
+
+\begin{tcolorbox}[colback=blue!4!white,colframe=blue!60!black,arc=1.5mm,boxrule=0.7pt,left=8pt,right=8pt,top=6pt,bottom=6pt]
+Positive increasing gap slope = spending money faster than completing physical work = growing divergence that signals fraud or misreporting.\\
+\end{tcolorbox}
+
+\subsection{8.4 --- Peer Deviation Engineering (the most critical step)}
+
+These features transform absolute financial values into \textbf{peer-relative deviations}, allowing the Isolation Forest to detect fraud at any project scale.
+
+\textbf{For metric $x_i$ in project $i$ (e.g., \texttt{financial\_\_estimated\_cost}):}
+
+\textbf{Peer Difference:}
+\[ \Delta_i = x_i - \text{Median}(X_{\text{peer}(i)}) \]
+
+\textbf{Peer Ratio:}
+\[ \rho_i = \frac{x_i + \varepsilon}{\text{Median}(X_{\text{peer}(i)}) + \varepsilon} \]
+
+\textbf{Robust Z-Score (MAD-normalized):}
+\[ Z_i^\text{robust} = \frac{x_i - \text{Median}(X_{\text{peer}(i)})}{1.4826 \times \text{MAD}(X_{\text{peer}(i)}) + \varepsilon} \]
+
+Where:
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt, topsep=3pt]
+\item $X_{\text{peer}(i)}$ = all projects in the same \texttt{work\_type} group
+\item $\text{MAD} = \text{Median}(|X_\text{peer} - \text{Median}(X_\text{peer})|)$
+\item $1.4826$ = standard normal consistency constant (makes MAD-based Z comparable to standard Z for Gaussian data)
+\item $\varepsilon = 10^{-6}$ (numerical stability, from \texttt{config.py peer\_epsilon})
+\item Falls back to global statistics if peer group count < 5
+\end{itemize}
+
+\textbf{Peer Groups:}
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt, topsep=3pt]
+\item \textbf{Primary}: \texttt{project\_\_work\_type} (29 work types --- e.g., "Road Construction", "Drinking Water", "Sanitation")
+\item \textbf{Secondary}: \texttt{project\_\_category} (8 broader categories --- fallback if work-type peer group is too small)
+\item \textbf{Tertiary}: Global population (final fallback)
+\end{itemize}
+
+\textbf{All 11 engineered peer features:}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l l Y}
+\toprule
+\textbf{Feature} & \textbf{Formula} & \textbf{Business Signal} \\
+\midrule
+\texttt{peer\_\_cost\_diff\_work\_type\_median} & $x_i - \text{Median}$ & Raw cost excess vs peer \\
+\texttt{peer\_\_cost\_ratio\_work\_type\_median} & $x_i / \text{Median}$ & Relative cost scaling \\
+\texttt{peer\_\_cost\_work\_type\_robust\_z} & Robust Z on cost & Standardized cost anomaly \\
+\texttt{peer\_\_unit\_cost\_ratio\_work\_type\_median} & $x_i^{unit} / \text{Median}^{unit}$ & Unit cost relative pricing \\
+\texttt{peer\_\_unit\_cost\_work\_type\_robust\_z} & Robust Z on unit cost & Standardized unit overpricing \\
+\texttt{peer\_\_cost\_deviation\_work\_type\_robust\_z} & Robust Z on cost deviation & Sanction-vs-estimate deviation \\
+\texttt{peer\_\_payment\_velocity\_ratio\_work\_type\_median} & $v_i / \text{Median}(v)$ & Relative disbursement speed \\
+\texttt{peer\_\_payment\_velocity\_work\_type\_robust\_z} & Robust Z on velocity & Standardized velocity anomaly \\
+\texttt{peer\_\_payment\_concentration\_work\_type\_robust\_z} & Robust Z on concentration & Installment concentration anomaly \\
+\texttt{peer\_\_contract\_value\_change\_work\_type\_robust\_z} & Robust Z on contract change & Post-award amendment anomaly \\
+\texttt{peer\_\_cost\_category\_robust\_z} & Robust Z vs category & Category-level cost check \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+\vspace{1em}\hrule\vspace{1em}
+
+\section{Topic 9 --- Normalization, Encoding, and Transformations}
+
+\subsection{9.1 --- RobustScaler (why not StandardScaler)}
+
+After 40 features are assembled (29 base + 11 peer), they are scaled with sklearn's \texttt{RobustScaler}:
+
+\[ \tilde{x}_j = \frac{x_j - Q_2(x_j)}{Q_3(x_j) - Q_1(x_j)} \]
+
+Where $Q_1, Q_2, Q_3$ are the 25th, 50th (median), 75th percentile of the \textbf{training population} for feature $j$.
+
+\textbf{Why RobustScaler, not StandardScaler?}
+
+Public works financial data is heavily right-skewed. A single \INR{}50 Crore highway project dominates the standard deviation of a work type where typical projects cost \INR{}5–15 Lakhs. StandardScaler's $\sigma$ would be completely distorted. RobustScaler uses IQR, which is unaffected by extreme values.
+
+\subsection{9.2 --- Isolation Forest Score Normalization}
+
+The Isolation Forest's raw output is a negative score (more negative = more anomalous). SETU converts it to 0–100:
+
+\textbf{Step 1:} Negate:
+\[ \text{raw\_anomaly}_i = -\text{decision\_function}(\mathbf{x}_i) \]
+
+\textbf{Step 2:} Clip-normalize using population P1/P99:
+\[ \text{anomaly\_score}_i = \text{clip}\!\left(\frac{\text{raw\_anomaly}_i - P_1}{P_{99} - P_1} \times 100,\ 0.0,\ 100.0\right) \]
+
+$P_1$ and $P_{99}$ are computed on the training data and stored in the fitted model object:
+
+\begin{lstlisting}[language=Python]
+# isolation_forest_model.py lines 39–55
+raw_anomaly = -self.model_.decision_function(X)
+self.raw_score_p1_  = float(np.percentile(raw_anomaly, 1.0))
+self.raw_score_p99_ = float(np.percentile(raw_anomaly, 99.0))
+# At inference:
+norm_score = (raw_anomaly - self.raw_score_p1_) / (self.raw_score_p99_ - self.raw_score_p1_) * 100.0
+return np.clip(norm_score, 0.0, 100.0)
+\end{lstlisting}
+
+
+\subsection{9.3 --- Percentile Rank Computation}
+
+Each project also receives a \textbf{population percentile rank}:
+
+\[ \text{percentile}_i = \frac{\text{rank}(s_i)}{N} \times 100 \]
+
+Using \texttt{scipy.stats.rankdata(method="average")} to handle ties. Percentile ≥ 95 $\rightarrow$ flagged anomaly.
+
+\subsection{9.4 --- Temporal Transformations}
+
+Raw timestamp columns are \textbf{never passed raw} into ML models:
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l l Y}
+\toprule
+\textbf{Raw Timestamp} & \textbf{Derived Feature} & \textbf{Formula} \\
+\midrule
+\texttt{recommendation\_date} & \texttt{days\_since\_recommended} & $t_\text{today} - t_\text{rec}$ \\
+\texttt{payment\_date\_dt} & \texttt{payment\_span\_days} & $t_\text{last\_payment} - t_\text{first\_payment}$ \\
+\texttt{payment\_date\_dt} & \texttt{average\_days\_between\_payments} & Mean of $\Delta t$ between consecutive payments \\
+\texttt{record\_date\_dt} & \texttt{physical\_progress\_slope} & $\Delta\text{progress} / \Delta\text{days}$ \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+\subsection{9.5 --- Missing Value Imputation}
+
+\begin{lstlisting}[language=Python]
+# preprocessor.py lines 191–193 — column median imputation
+for col in combined_df.columns:
+    val = combined_df[col].median()
+    self.imputer_values_[col] = float(val) if not np.isnan(val) else 0.0
+\end{lstlisting}
+
+
+Median imputation (not mean) for the same reason as RobustScaler --- resistant to extreme financial outliers.
+
+\subsection{9.6 --- Hard Negative Score Calibration (RAG Layer)}
+
+After ML scoring, the RAG layer applies post-processing calibration:
+
+\begin{lstlisting}[language=Python]
+# hard_negative_evaluator.py lines 84–88
+if portfolio_verdict == "HARD_NEGATIVE_MITIGATED":
+    calibrated_score = max(20.0, raw_avg_risk * 0.55)
+elif portfolio_verdict == "MIXED_EXPOSURE":
+    calibrated_score = max(35.0, raw_avg_risk * 0.80)
+# CONFIRMED_ANOMALY: no calibration
+\end{lstlisting}
+
+
+\textbf{HARD\_NEGATIVE\_MITIGATED} (×0.55): ≥60\% of flagged works have verified mitigations: flood zone + monsoon moratorium, statutory public agency designation, election MCC blackout, SoR-matching unit costs.
+
+\textbf{MIXED\_EXPOSURE} (×0.80): Some works mitigated, some not --- partial adjustment.
+
+\textbf{CONFIRMED\_ANOMALY}: Raw score stands unchanged.
+
+\vspace{1em}\hrule\vspace{1em}
+
+\section{Topic 10 --- Complete Data Lineage}
+
+\subsection{Source $\rightarrow$ Model Input Trace}
+
+\begin{tcolorbox}[colback=gray!5!white,colframe=gray!60!black,arc=1mm,boxrule=0.6pt,left=6pt,right=6pt,top=6pt,bottom=6pt]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,breaklines=true,columns=flexible]
+SOURCE                        TRANSFORMATION              MODEL INPUT
+──────                        ──────────────              ───────────
+
+01_projects.csv               prepare_project_base()      project__work_type
+  (5,000 rows) ──────────►    prefix "project__"    ──►   project__category, project__status
+                              strip: work_name,title       project__start_date ... (18 features)
+
+02_financials.csv             prepare_prefixed_table()    financial__estimated_cost
+  (5,000 rows) ──────────►    prefix "financial__"  ──►   financial__cost_per_unit
+                                                          financial__cost_deviation
+                                                          financial__sor_deviation ... (28 features)
+
+03_payments.csv               aggregate_payments()        payment__payment_count
+  (13,866 rows) ─────────►    → 5,000 rows                payment__payment_velocity_mean
+                              prefix "payment__"    ──►   payment__unverified_payment_rate
+                                                          payment__round_number_payment_rate
+                                                          payment__payment_concentration_max
+                                                          ... (29 features)
+
+04_progress.csv               aggregate_progress()        progress__financial_minus_physical_progress
+  (N rows) ──────────────►    → 5,000 rows                progress__physical_progress_slope
+                              prefix "progress__"   ──►   progress__geotag_available_rate
+                                                          progress__measurement_book_verified_rate
+                                                          ... (26 features)
+
+07_contractors.csv            extract_contractor_features() contractor__blacklisted_flag
+  (400 rows, N:1 join) ──►    strip: contractor_name  ──►  contractor__capacity_utilization
+                              prefix "contractor__"        contractor__shared_director_flag
+                                                          ... (31 features)
+
+09_geography.csv              extract_geography_features() geo__infrastructure_gap_index
+  (619 rows, N:1 join) ──►    strip: district_name   ──►   geo__poverty_index
+                              prefix "geo__"               geo__terrain_type ... (8 features)
+
+12_labels.csv                 STRICT QUARANTINE            NEVER ENTERS MODEL
+  (5,000 rows) ──────────►    → project_labels.csv  ──►   Used ONLY in post-hoc evaluator
+\end{lstlisting}
+\end{tcolorbox}
+
+
+\subsection{Lineage --- Master Features to Model Input}
+
+\begin{tcolorbox}[colback=gray!5!white,colframe=gray!60!black,arc=1mm,boxrule=0.6pt,left=6pt,right=6pt,top=6pt,bottom=6pt]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,breaklines=true,columns=flexible]
+project_master_features.csv (5,000 × 239)
+    │
+    └── FinancialPreprocessor.fit()
+            ├── Select 29 base early-warning financial features
+            ├── _compute_peer_stats()     → peer_stats_[work_type][col] = {median, MAD, count}
+            ├── _engineer_peer_features() → 11 peer__ columns appended
+            ├── Impute NaNs with column medians
+            └── Fit RobustScaler on 40-column matrix
+                    │
+                    └── FinancialPreprocessor.transform()
+                            → X_scaled (5,000 × 40 ndarray)
+                                    │
+                                    └── FinancialIsolationForestModel.fit(X_scaled)
+                                            └── → financial_anomaly_scores.csv (5,000 × 17)
+\end{lstlisting}
+\end{tcolorbox}
+
+
+\subsection{Lineage --- Domain Scores to API Response}
+
+\begin{tcolorbox}[colback=gray!5!white,colframe=gray!60!black,arc=1mm,boxrule=0.6pt,left=6pt,right=6pt,top=6pt,bottom=6pt]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,breaklines=true,columns=flexible]
+financial_anomaly_scores.csv  (5,000 × 17)
+geospatial_anomaly_scores.csv
+procurement_anomaly_scores.csv       ┐
+contractor_anomaly_scores.csv        ├── RiskFusionEngine.load_and_fuse_all_models()
+payment_anomaly_scores.csv           │       → fuse_project() per row
+progress_anomaly_scores.csv          │       → fused_risk_intelligence.csv (5,000 × ~25)
+graph_anomaly_scores.csv             ┘               │
+supervised_fraud_scores.csv                          └── FastAPI /risk-intelligence/projects
+                                                              → JSON response to Next.js
+\end{lstlisting}
+\end{tcolorbox}
+
+
+\subsection{Files Responsible for Each Transition}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l l Y}
+\toprule
+\textbf{Transition} & \textbf{File} & \textbf{Function} \\
+\midrule
+Raw CSVs $\rightarrow$ Validated tables & \texttt{validators.py} & \texttt{validate\_all()} \\
+Payments (13,866) $\rightarrow$ Aggregated & \texttt{aggregators.py} & \texttt{aggregate\_payments()} \\
+Progress $\rightarrow$ Aggregated & \texttt{aggregators.py} & \texttt{aggregate\_progress()} \\
+12 tables $\rightarrow$ Master features (5,000×239) & \texttt{feature\_builder.py} & \texttt{build\_project\_master\_features()} \\
+Master $\rightarrow$ Scaled financial input (5,000×40) & \texttt{preprocessor.py} & \texttt{fit\_transform()} \\
+Scaled input $\rightarrow$ Anomaly scores & \texttt{isolation\_forest\_model.py} & \texttt{score()} \\
+Anomaly scores $\rightarrow$ Reason traces & \texttt{isolation\_forest\_model.py} & \texttt{generate\_reason\_traces()} \\
+8 domain scores $\rightarrow$ Fused risk & \texttt{risk\_fusion\_engine.py} & \texttt{load\_and\_fuse\_all\_models()} \\
+RAG context $\rightarrow$ Hard negative calibration & \texttt{hard\_negative\_evaluator.py} & \texttt{evaluate\_portfolio()} \\
+Fused CSV $\rightarrow$ API JSON & \texttt{risk\_intelligence.py} & \texttt{list\_fused\_projects()} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+\vspace{1em}\hrule\vspace{1em}
+
+\section{End-to-End Numerical Example --- Payment Aggregation}
+
+\textbf{Scenario:} Project P-0042 has 4 payment installments:
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{c l c l Y}
+\toprule
+\textbf{Payment} & \textbf{Amount (\INR{})} & \textbf{Date} & \textbf{MB Verified} & \textbf{Round Number} \\
+\midrule
+1 & 2,00,000 & 2023-04-01 & Yes & No \\
+2 & 1,50,000 & 2023-05-15 & Yes & No \\
+3 & 3,00,000 & 2023-06-10 & No & No \\
+4 & 14,90,000 & 2023-06-12 & No & Yes \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+\textbf{Aggregated values:}
+
+\[ \text{pay\_count} = 4 \]
+\[ \text{pay\_avg} = \frac{2{,}00{,}000 + 1{,}50{,}000 + 3{,}00{,}000 + 14{,}90{,}000}{4} = 5{,}35{,}000 \]
+\[ \text{pay\_conc\_max} = \frac{14{,}90{,}000}{21{,}40{,}000} = 0.696 \]
+\[ \text{pay\_span\_days} = (2023\text{-}06\text{-}12) - (2023\text{-}04\text{-}01) = 72 \text{ days} \]
+\[ \text{pay\_velocity} = \frac{21{,}40{,}000}{72} = 29{,}722 \text{ \text{Rs.\,}/day} \]
+\[ \text{unverified\_rate} = \frac{2}{4} = 0.50 \quad (50\%\ \text{unverified — critical flag}) \]
+\[ \text{round\_rate} = \frac{1}{4} = 0.25 \quad (\text{\text{Rs.\,}14.9L just below \text{Rs.\,}15L threshold — structuring indicator}) \]
+
+\textbf{After RobustScaler} (assuming population IQR for payment concentration = 0.20, median = 0.35):
+\[ \tilde{x}_\text{conc} = \frac{0.696 - 0.35}{0.20} = 1.73 \]
+
+This scaled value 1.73 enters the Isolation Forest as one of 40 input dimensions. Combined with other suspicious signals (unverified rate, round-number rate), the Isolation Forest scores this project near the 97th percentile $\rightarrow$ flagged as anomaly.
+
+\vspace{1em}\hrule\vspace{1em}
+
+\section{Important Equations --- Report 2 Summary}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l Y}
+\toprule
+\textbf{Equation} & \textbf{Source} \\
+\midrule
+$Z_i^\text{robust} = \frac{x_i - \text{Median}(\text{peer})}{1.4826 \times \text{MAD}(\text{peer}) + \varepsilon}$ & \texttt{preprocessor.py} L133 \\
+$\text{pay\_velocity} = \frac{\sum a_j}{\max(1, t_\text{last} - t_\text{first})}$ & \texttt{aggregators.py} L73 \\
+$\text{phys\_slope} = \frac{\Delta\text{physical\_progress}}{\Delta\text{days}}$ & \texttt{aggregators.py} L202 \\
+$\tilde{x}_j = \frac{x_j - Q_2}{Q_3 - Q_1}$ (RobustScaler) & \texttt{preprocessor.py} L196 \\
+$\text{anomaly\_score} = \text{clip}\!\left(\frac{-\text{df}(x) - P_1}{P_{99}-P_1} \times 100,\ 0,\ 100\right)$ & \texttt{isolation\_forest\_model.py} L54 \\
+$\text{calibrated} = \max(20.0,\ \text{raw} \times 0.55)$ if HARD\_NEGATIVE\_MITIGATED & \texttt{hard\_negative\_evaluator.py} L86 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+\vspace{1em}\hrule\vspace{1em}
+
+\section{Common Misconceptions --- Report 2}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l Y}
+\toprule
+\textbf{Misconception} & \textbf{Reality} \\
+\midrule
+"The 12 tables are directly joined into the model" & 03\_payments and 04\_progress MUST be aggregated first. Direct joins produce duplicate project rows. \\
+"StandardScaler is fine for financial data" & Financial data is heavily skewed. A \INR{}50Cr highway distorts σ. RobustScaler uses IQR, which is resistant. \\
+"A high absolute cost means high risk" & Only suspicious relative to peers of the same work type. A \INR{}2Cr rural bridge is normal; \INR{}2Cr for a handpump is extreme. Peer normalization resolves this. \\
+"Temporal features can be strings" & All dates are converted to elapsed-day intervals before entering models. \\
+"The peer group is the full population" & Peer groups are work-type specific (29 types), then category (8), then global. Comparing a road to a handpump would be meaningless. \\
+"Labels are used for training the domain models" & Labels are quarantined and only used post-hoc in \texttt{FinancialModelEvaluator} for benchmarking. Domain models are unsupervised. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+\vspace{1em}\hrule\vspace{1em}
+
+\section{Key Takeaways --- Report 2}
+
+\begin{enumerate}[leftmargin=1.5em, itemsep=2pt, topsep=3pt]
+\item \textbf{The many-to-one problem} is the fundamental data engineering challenge. Payments and progress are transaction-grain; models are project-grain. Aggregation is mandatory and deterministic.
+\item \textbf{Peer normalization is the most critical feature engineering step.} Without it, large legitimate infrastructure projects dominate anomaly rankings purely due to scale.
+\item \textbf{RobustScaler + MAD} are used throughout (not StandardScaler + σ) because MPLADS financial data is heavily right-skewed.
+\item \textbf{Label quarantine is enforced at multiple independent levels}: schemas, feature\_builder assertions, preprocessor \texttt{\_validate\_safety()} --- all independently guard against leakage.
+\item \textbf{Every output value can be traced back} to a specific row in a specific source CSV through the documented transformation chain.
+\end{enumerate}
+
+\vspace{1em}\hrule\vspace{1em}
+
+\section{Prerequisites for Report 3}
+
+Report 3 covers the mathematical and ML core: how Isolation Forest works as an isolation tree algorithm, the exact path length score derivation, why contamination=0.05 sets the decision boundary, the XGBoost dual-head classifier, SHAP-based explainability, and a complete numerical walkthrough tracing one real project through every transformation. Prerequisites from Reports 1–2: 40-dimensional RobustScaled feature vectors, normalized anomaly scores [0,100], work-type peer groups, quarantined labels.
+
+\vspace{1em}\hrule\vspace{1em}
+
+\textit{Say \textbf{"Continue"} for Report 3 --- Mathematical \& ML Core (Isolation Forest internals, XGBoost, SHAP)}
+\textit{Say \textbf{"Go deeper"} on any specific topic in Report 1 or 2}
+\textit{Say \textbf{"Trace this"} + a feature name to trace its full journey from source CSV to model output}
+
+\vspace{1em}\hrule\vspace{1em}
+
+\textbf{SETU --- Smart Evidence-based Triangulation for Uncovering Anomalies in MPLADS}
+\textit{Reports prepared from source-code analysis of \texttt{backend/app/ml/} and \texttt{backend/app/api/}.}
+\textit{Developed for Smart India Hackathon 2026 --- MoSPI Problem Statement.}
+\end{document}

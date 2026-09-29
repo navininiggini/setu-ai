@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proposed Solution - SETU | Slide 2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background-color: #0b1120;
+      font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .slide-viewport {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .slide-canvas {
+      width: 1920px;
+      height: 1080px;
+      background: #FFFFFF;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 24px 44px 28px 44px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+    }
+    .slide-canvas::before {
+      display: none !important;
+    }
+    .bg-watermark {
+      display: none !important;
+    }
+
+    /* Top Slide Header */
+    .slide-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      height: 75px;
+      margin-bottom: 22px;
+      position: relative;
+      z-index: 10;
+    }
+    .header-team-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #1e3a66;
+      border-radius: 50px;
+      padding: 8px 24px;
+      background: #FFFFFF;
+      box-shadow: 0 2px 8px rgba(15, 35, 65, 0.08);
+    }
+    .team-badge-text {
+      font-size: 16px;
+      font-weight: 800;
+      color: #1e3a66;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .slide-main-title {
+      font-size: 32px;
+      font-weight: 900;
+      color: #0b1a30;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      text-decoration: underline;
+      text-underline-offset: 8px;
+      text-decoration-thickness: 3px;
+      text-decoration-color: #1a4373;
+    }
+    .header-logos {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .nav-logo-sih {
+      height: 58px;
+      width: auto;
+      object-fit: contain;
+    }
+    .nav-logo-ssn {
+      height: 52px;
+      width: auto;
+      object-fit: contain;
+    }
+    .nav-logo-sathyabama {
+      height: 56px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    /* 3 Columns Solution Grid */
+    .solution-columns {
+      display: flex;
+      gap: 32px;
+      flex: 1;
+      position: relative;
+      z-index: 5;
+      padding-top: 10px;
+    }
+
+    /* Individual Column Card */
+    .solution-card-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* Ribbon Banner Header with Chevron */
+    .ribbon-banner-container {
+      position: relative;
+      width: 100%;
+      height: 64px;
+      z-index: 6;
+      margin-bottom: -12px;
+    }
+    .ribbon-banner {
+      position: absolute;
+      top: 0;
+      left: -14px;
+      height: 58px;
+      background: linear-gradient(135deg, #1c4b82 0%, #153966 100%);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      padding: 0 42px 0 24px;
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      box-shadow: 0 4px 12px rgba(12, 33, 62, 0.28);
+      border-radius: 6px 0 0 0;
+      clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 50%, calc(100% - 22px) 100%, 0 100%);
+      white-space: nowrap;
+    }
+    /* Ribbon Fold Triangle */
+    .ribbon-fold {
+      position: absolute;
+      top: 58px;
+      left: -14px;
+      width: 0;
+      height: 0;
+      border-top: 12px solid #0c203b;
+      border-left: 14px solid transparent;
+      z-index: 5;
+    }
+
+    /* Card Main Body */
+    .solution-card-body {
+      flex: 1;
+      background: #FFFFFF;
+      border: 1.5px solid #d4e0ee;
+      border-radius: 20px 20px 16px 16px;
+      padding: 34px 28px 24px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      gap: 16px;
+      box-shadow: 0 10px 28px rgba(15, 35, 65, 0.07);
+      border-bottom: 7px solid #153966;
+    }
+
+    .solution-bullet-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .bullet-dot {
+      font-size: 24px;
+      line-height: 1.1;
+      color: #153966;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .bullet-text {
+      font-size: 17.5px;
+      line-height: 1.48;
+      color: #24354d;
+      font-weight: 500;
+    }
+    .bullet-text strong {
+      font-weight: 800;
+      color: #0c203b;
+      font-size: 18px;
+    }
+
+    /* Bottom subtle template note */
+    .slide-footer-subtle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+      font-size: 13px;
+      color: #8396ab;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+  </style>
+</head>
+<body data-page="2">
+  <div class="slide-viewport">
+    <main class="slide-canvas" id="slide-2">
+      <!-- Slide Header -->
+      <header class="slide-header">
+        <div class="header-team-badge">
+          <span class="team-badge-text">APOCALYPSE // Team P84</span>
+        </div>
+        <h1 class="slide-main-title">CIS-GATEWAY: SETU PROPOSED SOLUTION</h1>
+        <div class="header-logos">
+          <img src="assets/logos/sih-logo.png" onerror="this.src='../assets/logos/sih-logo.png'" alt="SIH 2026" class="nav-logo-sih">
+        </div>
+      </header>
+
+      <!-- 3 Columns Matching pg2-ref2.png -->
+      <div class="solution-columns">
+
+        <!-- Column 1: Detailed Explanation -->
+        <div class="solution-card-wrapper">
+          <div class="ribbon-banner-container">
+            <div class="ribbon-banner">Detailed Explanation of the Proposed Solution</div>
+            <div class="ribbon-fold"></div>
+          </div>
+          <div class="solution-card-body">
+            <div class="solution-bullet-item">
+              <span class="bullet-dot">&#8226;</span>
+              <p class="bullet-text">
+                <strong>Continuous Pre-Sanction Gatekeeping:</strong> Automatically ingests project proposals from MoSPI's e-SAKSHI portal, contractor bids, estimates, and GPS coordinates in real-time, executing instant statutory triage (&lt;200 ms) before treasury release.
+              </p>
+            </div>
+            <div class="solution-bullet-item">
+              <span class="bullet-dot">&#8226;</span>
+              <p class="bullet-text">
+                <strong>8-Model Orthogonal Forensic AI:</strong> Deconstructs proposals across 7 specialized domain anomaly models (cost, spatial, cartels, contractor load, smurfing, velocity, graph) fused with a Calibrated Supervised XGBoost Classifier.
+              </p>
+            </div>
+            <div class="solution-bullet-item">
+              <span class="bullet-dot">&#8226;</span>
+              <p class="bullet-text">
+                <strong>Sub-200ms CPU Latency:</strong> Optimized lightweight inference running on standard commodity cloud instances without expensive GPUs, enabling live interactive decision support during District Magistrate meetings.
+              </p>
+            </div>
+            <div class="solution-bullet-item">
+              <span class="bullet-dot">&#8226;</span>
+              <p class="bullet-text">
+                <strong>Empirically Validated Scale:</strong> Benchmarked on 5,000+ authentic works across 589 Indian districts with 91 passing test suites, ensuring production-ready reliability.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column 2: How It Addresses the Problem? -->
+        <div class="solution-card-wrapper">
+          <div class="ribbon-banner-container">
+            <div class="ribbon-banner">How It Addresses the Problem?</div>
+            <div class="ribbon-fold"></div>
+          </div>
+          <div class="solution-card-body">
+            <div class="solution-bullet-item">
+              <span class="bullet-dot">&#8226;</span>
+              <p class="bullet-text">
+                <strong>Pre-Emptive Capital Preservation:</strong> Shifts vigilance from 2-year retrospective CAG post-mortem audits to pre-sanction interception, preventing unlawful fund diversion before cash leaves the treasury.
+              </p>
+            </div>
+            <div class="solution-bullet-item">
+              <span class="bullet-dot">&#8226;</span>
+              <p class="bullet-text">
+                <strong>Rule 14.2 Anti-Smurfing Enforcement:</strong> Automatically catches civil works split into ₹4,92,000 clusters just below the ₹5 Lakh statutory e-tender ceiling to bypass mandatory open competitive bidding.
+              </p>
+            </div>
+            <div class="solution-bullet-item">
+              <span class="bullet-dot">&#8226;</span>
+              <p class="bullet-text">
+                <strong>Calamity Gazette Safeguards:</strong> Ingests NDMA/SDMA disaster declarations to legally exempt emergency flood or cyclone works under MPLADS Guidelines §5.3, eliminating false alarms.
+              </p>
+            </div>
+            <div class="solution-bullet-item">
+              <span class="bullet-dot">&#8226;</span>
+              <p class="bullet-text">
+                <strong>4-Tier Actionable Triage:</strong> Categorizes each proposal into Automatic Clearance, Conditional Approval, Mandatory Technical Audit, or Reject, giving clear procedural guidance.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column 3: Innovation and Uniqueness -->
+        <div class="solution-card-wrapper">
+          <div class="ribbon-banner-container">
+            <div class="ribbon-banner">Innovation and Uniqueness of the Solution</div>
+            <div class="ribbon-fold"></div>
+          </div>
+          <div class="solution-card-body">
+            <div class="solution-bullet-item">
+              <span class="bullet-dot">&#8226;</span>
+              <p class="bullet-text">
+                <strong>Statutory Tree SHAP Reason Traces:</strong> Replaces opaque black-box ML with plain-language legal audit explanations citing MoSPI Rule 14.2 and GFR 155, ensuring full accountability.
+              </p>
+            </div>
+            <div class="solution-bullet-item">
+              <span class="bullet-dot">&#8226;</span>
+              <p class="bullet-text">
+                <strong>Bipartite Collusion Graph Analytics:</strong> Uncovers hidden vendor-agency collusion rings, shared registered premises, and revolving-door bidding cartels via NetworkX graph algorithms.
+              </p>
+            </div>
+            <div class="solution-bullet-item">
+              <span class="bullet-dot">&#8226;</span>
+              <p class="bullet-text">
+                <strong>Unified Multi-Source Scheme Intelligence:</strong> Blends e-SAKSHI data, PFMS treasury transactions, CPWD rates, and geotagged site inspection images into a single sovereign knowledge layer.
+              </p>
+            </div>
+            <div class="solution-bullet-item">
+              <span class="bullet-dot">&#8226;</span>
+              <p class="bullet-text">
+                <strong>Zero-Disruption Integration:</strong> Drop-in API compatibility with MoSPI infrastructure requiring ₹0 recurring proprietary licenses and zero workflow disruption for district administrations.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Slide Footer -->
+      <footer class="slide-footer-subtle">
+        <span>SETU: Smart Evidence-based Triangulation for Uncovering Anomalies in MPLADS</span>
+        <span>Slide 2 | SIH 2026 Presentation</span>
+      </footer>
+    </main>
+  </div>
+
+  <script src="js/navigation.js"></script>
+</body>
+</html>

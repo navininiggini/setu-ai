@@ -1,4 +1,13 @@
 import os
+import pathlib
+import sys
+
+# Cross-platform compatibility for unpickling models serialized across OS environments (Windows <-> Linux/macOS)
+if os.name != "nt":
+    pathlib.WindowsPath = pathlib.PosixPath
+else:
+    pathlib.PosixPath = pathlib.WindowsPath
+
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware

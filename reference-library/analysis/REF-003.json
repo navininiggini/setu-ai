@@ -1,0 +1,86 @@
+{
+  "slide_id": "REF-003",
+  "slide_number": 3,
+  "title": "TECHNICAL APPROACH",
+  "required_fields": [
+    "Technologies Used",
+    "Methodology & Implementation Pipeline (Flowchart)"
+  ],
+  "layout_geometry": {
+    "header_band": {
+      "top_inches": 0.0,
+      "height_inches": 1.0,
+      "team_badge_left": 0.4,
+      "team_badge_width": 1.8,
+      "title_center_left": 2.4,
+      "title_width": 8.0,
+      "logo_strip_right": 10.8,
+      "logo_strip_width": 2.2
+    },
+    "content_canvas": {
+      "top_inches": 1.1,
+      "bottom_inches": 6.85,
+      "left_inches": 0.5,
+      "right_inches": 12.83,
+      "width_inches": 12.33,
+      "height_inches": 5.75
+    },
+    "footer_band": {
+      "top_inches": 6.95,
+      "height_inches": 0.55,
+      "fill": "#0F2B5C",
+      "text_placeholder": "@SIH Idea submission- Template",
+      "slide_number_right": "Slide X of 6"
+    }
+  },
+  "color_palette": {
+    "primary_sih_navy": "#0F2B5C",
+    "secondary_navy_dark": "#0A1D3F",
+    "accent_saffron_orange": "#FF6B00",
+    "accent_vibrant_blue": "#2563EB",
+    "success_green": "#16A34A",
+    "danger_red": "#DC2626",
+    "warning_amber": "#D97706",
+    "canvas_background": "#FFFFFF",
+    "card_background": "#F8FAFC",
+    "card_border": "#E2E8F0",
+    "text_primary": "#0F172A",
+    "text_secondary": "#475569",
+    "text_white": "#FFFFFF"
+  },
+  "typography": {
+    "primary_family": "Calibri, Arial, Inter, sans-serif",
+    "slide_title": {
+      "size_pt": 24,
+      "weight": "bold",
+      "color": "#0F2B5C",
+      "transform": "uppercase"
+    },
+    "section_heading": {
+      "size_pt": 15,
+      "weight": "bold",
+      "color": "#0F2B5C"
+    },
+    "sub_heading": {
+      "size_pt": 13,
+      "weight": "600",
+      "color": "#FF6B00"
+    },
+    "body_text": {
+      "size_pt": 11,
+      "weight": "normal",
+      "color": "#1E293B",
+      "line_spacing": 1.3
+    },
+    "table_text": {
+      "size_pt": 10.5,
+      "weight": "normal",
+      "color": "#1E293B"
+    },
+    "metric_callout": {
+      "size_pt": 22,
+      "weight": "bold",
+      "color": "#0F2B5C"
+    }
+  }
+}

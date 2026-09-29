@@ -1,0 +1,86 @@
+{
+  "art_direction_meta": {
+    "director": "ROLE 11 \u2014 REFERENCE MATCHING ART DIRECTOR",
+    "standard": "Smart India Hackathon 2026 Statutory Formatting Standard",
+    "narrative": "Strategy D: The Fiscal Leakage Interceptor"
+  },
+  "slide_mappings": [
+    {
+      "slide": 1,
+      "title": "TITLE SLIDE",
+      "primary_reference": "REF-001",
+      "pattern": "PATTERN-001",
+      "reason": "Matches the official SIH title requirements: high-contrast hero typography, problem statement metadata ledger, team credentials, and live prototype proof badge.",
+      "transferred_techniques": [
+        "Official SIH 2026 header emblem logo",
+        "Color-coded statutory metadata panel (PS ID, Category, Ministry)",
+        "Team P84 badge with registered team name Innovexa",
+        "Live working prototype badge with 5,000+ works telemetry"
+      ]
+    },
+    {
+      "slide": 2,
+      "title": "PROPOSED SOLUTION",
+      "primary_reference": "REF-002",
+      "pattern": "PATTERN-002",
+      "reason": "Adheres strictly to the four evaluation pointers (Overview, Explanation, Problem Addressed, Innovation) in a balanced 2x2 quadrant layout.",
+      "transferred_techniques": [
+        "Numbered circular step badges (1 to 4)",
+        "Color-coded 4px top accent strips (Navy, Orange, Green, Blue)",
+        "Bullet point hierarchy emphasizing the 8 models, Risk Fusion v2.0, and sub-200ms latency",
+        "Official SIH header and footer frame"
+      ]
+    },
+    {
+      "slide": 3,
+      "title": "TECHNICAL APPROACH",
+      "primary_reference": "REF-003",
+      "pattern": "PATTERN-003",
+      "reason": "Structures the technical narrative into Technologies Used (4-card top ribbon) and the end-to-end Methodology Pipeline Flowchart.",
+      "transferred_techniques": [
+        "4-Column categorized tech stack cards",
+        "Sequential pipeline container showing ingestion -> 7 domain models + XGBoost -> Risk Fusion formula -> SHAP output",
+        "Directional arrows and mathematical formula callout box",
+        "Official SIH header and footer frame"
+      ]
+    },
+    {
+      "slide": 4,
+      "title": "FEASIBILITY AND VIABILITY",
+      "primary_reference": "REF-004",
+      "pattern": "PATTERN-004",
+      "reason": "Splits the canvas into a 3-pillar Feasibility Analysis (Technical, Operational, Economic) and a direct Challenge-Mitigation matrix.",
+      "transferred_techniques": [
+        "Left column: 3 Feasibility cards with colored left border indicators",
+        "Right column: High-visibility Red alert header for Challenges paired with Green header for Mitigations",
+        "District median baseline normalization and human override callouts",
+        "Official SIH header and footer frame"
+      ]
+    },
+    {
+      "slide": 5,
+      "title": "IMPACT AND BENEFITS",
+      "primary_reference": "REF-005",
+      "pattern": "PATTERN-005",
+      "reason": "Combines a 4-tier Stakeholder Impact ribbon (DM, MoSPI, State, MP) with a comprehensive 4-row Quantifiable Benefits table.",
+      "transferred_techniques": [
+        "Top 4-card stakeholder distribution ribbon",
+        "Structured tabular grid with official navy header row and alternating clean rows",
+        "Hard empirical evidence callouts: Rs 1.84 Cr Satna pilot, 18-month audit compression to <200ms",
+        "Official SIH header and footer frame"
+      ]
+    },
+    {
+      "slide": 6,
+      "title": "RESEARCH AND REFERENCES",
+      "primary_reference": "REF-006",
+      "pattern": "PATTERN-006",
+      "reason": "Directly addresses the SIH research criteria across Statutory Guidelines, Algorithmic Citations, and Open-Source Repository.",
+      "transferred_techniques": [
+        "Two-column split: Left Statutory Guidelines (MoSPI Rule 14.2, CVC, GFR 155)",
+        "Right column: Peer-reviewed literature (Tree SHAP, Graph AI, Benford) + Verified GitHub Repository card",
+        "Official SIH header and footer frame"
+      ]
+    }
+  ]
+}

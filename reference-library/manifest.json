@@ -1,0 +1,160 @@
+{
+  "collection_name": "SIH 2026 & Editorial Visual Reference Collection",
+  "analyzed_at": "2026-09-26T01:25:00+05:30",
+  "sources": [
+    {
+      "id": "REF-SIH-TEMPLATE",
+      "name": "SIH2026-IDEA-Presentation-Format.pptx",
+      "path": "/home/jarvis/Downloads/SIH2026-IDEA-Presentation-Format.pptx",
+      "type": "Official Government/Hackathon Template",
+      "slide_count": 7,
+      "dimensions": {
+        "width_in": 13.333,
+        "height_in": 7.5,
+        "aspect_ratio": "16:9"
+      },
+      "statutory_rules": [
+        "Maximum 6 slides limit including title slide (Slide 7 is instructions to delete)",
+        "Avoid text walls; use points, diagrams, infographics, tables",
+        "Keep explanation precise and evidence-based",
+        "Follow standard 6-slide structure: Title, Solution, Technical Approach, Feasibility, Impact, References"
+      ],
+      "slides": [
+        {
+          "slide_number": 1,
+          "type": "Title / Hero",
+          "title": "SMART INDIA HACKATHON 2026",
+          "shape_count": 4
+        },
+        {
+          "slide_number": 2,
+          "type": "Proposed Solution",
+          "title": "SETU \u2014 AI-Powered MPLADS Platform",
+          "shape_count": 8
+        },
+        {
+          "slide_number": 3,
+          "type": "Technical Approach",
+          "title": "TECHNICAL APPROACH",
+          "shape_count": 16
+        },
+        {
+          "slide_number": 4,
+          "type": "Feasibility & Viability",
+          "title": "FEASIBILITY AND VIABILITY",
+          "shape_count": 7
+        },
+        {
+          "slide_number": 5,
+          "type": "Impact & Benefits",
+          "title": "IMPACT AND BENEFITS",
+          "shape_count": 9
+        },
+        {
+          "slide_number": 6,
+          "type": "Research & References",
+          "title": "RESEARCH AND REFERENCES",
+          "shape_count": 5
+        },
+        {
+          "slide_number": 7,
+          "type": "Instructional Metadata (Delete)",
+          "title": "IMPORTANT INSTRUCTIONS",
+          "shape_count": 4
+        }
+      ]
+    },
+    {
+      "id": "REF-SIH-DRAFT",
+      "name": "SIH2026_IDEA-PRESENTATION.pptx.pptx",
+      "path": "/home/jarvis/Downloads/SIH2026_IDEA-PRESENTATION.pptx.pptx",
+      "type": "Prior Iteration Deck",
+      "slide_count": 6,
+      "dimensions": {
+        "width_in": 20.0,
+        "height_in": 11.25,
+        "aspect_ratio": "16:9"
+      },
+      "slides": [
+        {
+          "slide_number": 1,
+          "type": "Title / Hero",
+          "title": "Problem Statement ID - SIH26102"
+        },
+        {
+          "slide_number": 2,
+          "type": "Proposed Solution / Problem",
+          "title": "SETU Proposed Solution"
+        },
+        {
+          "slide_number": 3,
+          "type": "Technical Approach",
+          "title": "TECHNICAL APPROACH"
+        },
+        {
+          "slide_number": 4,
+          "type": "Feasibility & Viability",
+          "title": "FEASIBILITY AND VIABILITY"
+        },
+        {
+          "slide_number": 5,
+          "type": "Impact & Stakeholders",
+          "title": "IMPACTS AND BENEFITS"
+        },
+        {
+          "slide_number": 6,
+          "type": "Research & Citations",
+          "title": "RESEARCH AND REFERENCES"
+        }
+      ]
+    },
+    {
+      "id": "REF-EDITORIAL-DESIGN",
+      "name": "new-design-refernce",
+      "path": "/home/jarvis/SIH-DEMOS/sih-2026-v1/sih-2026/new-design-refernce",
+      "type": "Curated Editorial Design Language System",
+      "assets": [
+        {
+          "name": "header.png",
+          "resolution": [
+            1795,
+            97
+          ],
+          "role": "Minimalist masthead navigation with thin hairline bounds"
+        },
+        {
+          "name": "hero-window.png",
+          "resolution": [
+            1800,
+            980
+          ],
+          "role": "Warm beige canvas, high-contrast serif typography, asymmetric floating gallery cards"
+        },
+        {
+          "name": "image copy.png",
+          "resolution": [
+            1791,
+            798
+          ],
+          "role": "Deep olive dark mode, two-column split with hairline row dividers, lime accents"
+        },
+        {
+          "name": "image copy 3.png",
+          "resolution": [
+            1791,
+            798
+          ],
+          "role": "Soft lilac / muted lavender canvas, asymmetric 50/50 split editorial portrait and headline"
+        },
+        {
+          "name": "footer.png",
+          "resolution": [
+            1791,
+            391
+          ],
+          "role": "Architectural bottom signoff with oversized tonal watermark typography"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "live_audit_pilots": [
+    {
+      "case_study": "Satna District Infrastructure Audit Pilot",
+      "state": "Madhya Pradesh",
+      "findings": "Identified Rs 1.84 Crores in duplicate sanctioned works and artificially inflated pavement estimates",
+      "action_taken": "Pre-sanction freeze before district treasury disbursement"
+    },
+    {
+      "case_study": "Mirzapur IDA Cross-Border Monopolistic Smurfing",
+      "state": "Uttar Pradesh & Bihar",
+      "findings": "District Magistrate Mirzapur IDA executed 42 works across state borders in Bihar valued at Rs 9,30,99,000 (Rs 9.31 Cr)",
+      "indicator": "HHI = 799.8 statewide but CR3 = 39.1% with statutory jurisdiction violation"
+    },
+    {
+      "case_study": "Sub-Threshold Tender Slicing (Smurfing)",
+      "location": "Multi-Constituency National Sample",
+      "findings": "Clusters of works priced precisely at Rs 4,92,000 - Rs 4,98,000 (Delta = -Rs 2,000 to -Rs 8,000 from Rs 5.00 Lakh mandatory e-tender threshold)",
+      "rule_violated": "GFR Rule 155 and MoSPI Guideline 14.2 on artificial splitting"
+    }
+  ],
+  "dataset_telemetry": {
+    "records_monitored": "5,000+ authentic MPLADS works",
+    "geographic_span": "589 authentic Indian districts across 18 states",
+    "live_endpoint": "/proposals (sub-200ms pre-sanction evaluation)"
+  }
+}

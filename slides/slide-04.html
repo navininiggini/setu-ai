@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feasibility and Viability | Slide 4</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background-color: #0b1120;
+      font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .slide-viewport {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .slide-canvas {
+      width: 1920px;
+      height: 1080px;
+      background: #FFFFFF;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 28px 50px 24px 50px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+    }
+    .slide-canvas::before {
+      display: none !important;
+    }
+
+    /* Top Slide Header matching pg4-ref1.png */
+    .slide-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      height: 75px;
+      margin-bottom: 24px;
+      position: relative;
+      z-index: 10;
+    }
+    .header-team-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #0f274a;
+      border-radius: 50px;
+      padding: 8px 24px;
+      background: #F8FAFC;
+      box-shadow: 0 2px 8px rgba(15, 35, 65, 0.08);
+    }
+    .team-badge-text {
+      font-size: 17px;
+      font-weight: 800;
+      color: #0f274a;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .slide-main-title {
+      font-size: 38px;
+      font-weight: 900;
+      color: #051329;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+    .header-logos {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .nav-logo-sih {
+      height: 60px;
+      width: auto;
+      object-fit: contain;
+    }
+    .nav-logo-ssn {
+      height: 52px;
+      width: auto;
+      object-fit: contain;
+    }
+    .nav-logo-sathyabama {
+      height: 56px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    /* 2-Column Grid matching pg4-ref1.png */
+    .feasibility-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px 32px;
+      flex: 1;
+      padding-bottom: 12px;
+    }
+
+    /* Clean bordered card matching pg4-ref1.png */
+    .feasibility-card {
+      background: #FFFFFF;
+      border: 1.8px solid #2563EB;
+      border-radius: 4px;
+      padding: 22px 26px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.06);
+      transition: all 0.2s ease;
+    }
+    .feasibility-card:hover {
+      border-color: #1D4ED8;
+      box-shadow: 0 6px 20px rgba(29, 78, 216, 0.12);
+    }
+
+    .card-check-icon {
+      font-size: 26px;
+      font-weight: 900;
+      color: #0f172a;
+      line-height: 1;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .card-text-body {
+      font-size: 18.5px;
+      line-height: 1.52;
+      color: #1e293b;
+      font-weight: 500;
+    }
+    .card-title-lead {
+      font-weight: 900;
+      color: #091931;
+      font-size: 19.5px;
+    }
+    .card-text-body strong {
+      font-weight: 800;
+      color: #091931;
+    }
+
+    /* Slide Footer */
+    .slide-footer-subtle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      font-size: 13.5px;
+      color: #64748b;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 10px;
+    }
+  </style>
+</head>
+<body data-page="4">
+  <div class="slide-viewport">
+    <main class="slide-canvas" id="slide-4">
+
+      <!-- Slide Header matching pg4-ref1.png -->
+      <header class="slide-header">
+        <div class="header-team-badge">
+          <span class="team-badge-text">APOCALYPSE // Team P84</span>
+        </div>
+        <h1 class="slide-main-title">FEASIBILITY AND VIABILITY</h1>
+        <div class="header-logos">
+          <img src="assets/logos/sih-logo.png" onerror="this.src='../assets/logos/sih-logo.png'" alt="SIH 2026" class="nav-logo-sih">
+        </div>
+      </header>
+
+      <!-- 2-Column Grid Layout matching pg4-ref1.png -->
+      <div class="feasibility-grid">
+
+        <!-- Card 1: Technical Feasibility -->
+        <div class="feasibility-card">
+          <span class="card-check-icon">&#10003;</span>
+          <p class="card-text-body">
+            <span class="card-title-lead">Technical Feasibility:</span> The technology required for SETU, including high-throughput async processing and ML models for spatial clustering, cost anomaly detection, and bipartite graph analytics, is already mature and available. Built on <strong>FastAPI, PostgreSQL + TimescaleDB, and Next.js 14</strong>, the engine delivers <strong>sub-200ms CPU inference</strong> on commodity cloud infrastructure with <strong>zero costly GPU dependencies</strong>, ensuring seamless real-time execution.
+          </p>
+        </div>
+
+        <!-- Card 2: Technical Viability -->
+        <div class="feasibility-card">
+          <span class="card-check-icon">&#10003;</span>
+          <p class="card-text-body">
+            <span class="card-title-lead">Technical Viability:</span> Continuous ingestion of e-SAKSHI proposal telemetry and geo-tagged images allows the 8-model ensemble to adapt to evolving cartel patterns. Asynchronous <strong>Celery + Redis task workers</strong> ensure elastic horizontal scalability during intense <strong>fiscal year-end sanction surges</strong> across all 543 parliamentary constituencies without server congestion or data loss.
+          </p>
+        </div>
+
+        <!-- Card 3: Operational Feasibility -->
+        <div class="feasibility-card">
+          <span class="card-check-icon">&#10003;</span>
+          <p class="card-text-body">
+            <span class="card-title-lead">Operational Feasibility:</span> Seamless plug-and-play integration with MoSPI's existing <strong>e-SAKSHI portal APIs</strong> without disrupting standard district collectorate workflows. Designed with role-tailored dashboards requiring <strong>minimal training (&lt;15 mins)</strong> for District Magistrates, planning directors, and field vigilance officers to review flagged works before signing approvals.
+          </p>
+        </div>
+
+        <!-- Card 4: Operational & Economic Viability -->
+        <div class="feasibility-card">
+          <span class="card-check-icon">&#10003;</span>
+          <p class="card-text-body">
+            <span class="card-title-lead">Operational &amp; Economic Viability:</span> 100% open-source foundation with <strong>₹0 recurring proprietary software license fees</strong>. Demonstrated empirical efficacy in Satna pilot with <strong>₹1.84 Cr capital safeguarded pre-disbursal</strong>, delivering immediate multi-fold return on investment for public treasuries while maintaining continuous system uptime.
+          </p>
+        </div>
+
+        <!-- Card 5: Legal and Security Feasibility -->
+        <div class="feasibility-card">
+          <span class="card-check-icon">&#10003;</span>
+          <p class="card-text-body">
+            <span class="card-title-lead">Legal and Security Feasibility:</span> Fully compliant with <strong>MoSPI 2023 Guidelines (Rule 14.2)</strong>, General Financial Rules (<strong>GFR 155</strong>), and Central Vigilance Commission (CVC) public procurement norms. Every score is backed by <strong>Tree SHAP legal reason traces</strong>, ensuring statutory defensibility in case of judicial or administrative inquiry.
+          </p>
+        </div>
+
+        <!-- Card 6: Risk Mitigation & Fault Tolerance -->
+        <div class="feasibility-card">
+          <span class="card-check-icon">&#10003;</span>
+          <p class="card-text-body">
+            <span class="card-title-lead">Risk Mitigation &amp; Fault Tolerance:</span> Automatically ingests official NDMA/SDMA calamity gazettes to exempt legitimate disaster emergency tenders under <strong>§5.3</strong>, while district-median baselines eliminate geographical cost biases. Includes <strong>Human-in-the-Loop overrides</strong> for District Magistrates with recorded statutory justification logs.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Slide Footer -->
+      <footer class="slide-footer-subtle">
+        <span>@SIH Idea submission- Template</span>
+        <span>Slide 4 | SIH 2026 Presentation</span>
+      </footer>
+
+    </main>
+  </div>
+
+  <script src="js/navigation.js"></script>
+</body>
+</html>

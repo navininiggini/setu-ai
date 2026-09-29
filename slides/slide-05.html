@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Impacts and Benefits | Slide 5</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background-color: #0b1120;
+      font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .slide-viewport {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .slide-canvas {
+      width: 1920px;
+      height: 1080px;
+      background: #FFFFFF;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 16px 48px 20px 48px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+    }
+    .slide-canvas::before {
+      display: none !important;
+    }
+
+    /* Top Slide Header matching pg5-ref2.png */
+    .slide-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      height: 64px;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 10;
+    }
+    .header-team-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #0f274a;
+      border-radius: 50px;
+      padding: 6px 20px;
+      background: #FFFFFF;
+      box-shadow: 0 2px 8px rgba(15, 35, 65, 0.08);
+    }
+    .team-badge-text {
+      font-size: 15px;
+      font-weight: 800;
+      color: #0f274a;
+      letter-spacing: 0.03em;
+    }
+    .header-pill-title {
+      background: #0f274a;
+      color: #FFFFFF;
+      font-size: 28px;
+      font-weight: 900;
+      padding: 6px 48px;
+      border-radius: 30px;
+      box-shadow: 0 4px 16px rgba(10, 30, 60, 0.15);
+      letter-spacing: -0.01em;
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .nav-logo-sih {
+      height: 48px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    /* Top 4 KPI Metrics Bar matching pg5-ref2.png */
+    .kpi-metrics-bar {
+      display: flex;
+      justify-content: space-around;
+      background: #F8FAFC;
+      border-radius: 16px;
+      padding: 14px 24px;
+      box-shadow: 0 4px 16px rgba(12, 30, 60, 0.06);
+      border: 1.5px solid #e2e8f0;
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 5;
+    }
+    .kpi-col {
+      flex: 1;
+      text-align: center;
+      padding: 0 20px;
+      border-right: 2px solid #cbd5e1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .kpi-col:last-child {
+      border-right: none;
+    }
+    .kpi-number {
+      font-size: 44px;
+      font-weight: 900;
+      color: #0044cc;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .kpi-title {
+      font-size: 16px;
+      font-weight: 900;
+      color: #0b1a30;
+      margin-top: 4px;
+      line-height: 1.25;
+    }
+    .kpi-sub {
+      font-size: 12px;
+      color: #334155;
+      font-weight: 500;
+      margin-top: 4px;
+      line-height: 1.35;
+      max-width: 290px;
+    }
+
+    .slide-canvas::before {
+      display: none !important;
+    }
+
+    /* Main Impact Visualization Stage */
+    .impact-stage {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Center Medallion Graphic */
+    .center-medallion-img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 490px;
+      height: 490px;
+      object-fit: contain;
+      filter: drop-shadow(0 14px 30px rgba(180, 130, 20, 0.35));
+      z-index: 3;
+    }
+
+    /* 5 Stakeholder Content Blocks matching pg5-ref2.png */
+    .stakeholder-card {
+      position: absolute;
+      z-index: 5;
+      max-width: 450px;
+      background: #FFFFFF;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 16px 20px;
+      box-shadow: 0 4px 20px rgba(15, 35, 65, 0.08);
+    }
+    .stakeholder-role {
+      font-size: 21px;
+      font-weight: 900;
+      color: #0044cc;
+      line-height: 1.2;
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+    .stakeholder-desc {
+      font-size: 15.5px;
+      line-height: 1.45;
+      color: #0f1f38;
+      font-weight: 600;
+    }
+
+    /* Positions corresponding to connector line terminals */
+    .pos-top-left {
+      top: 160px;
+      left: 170px;
+      text-align: left;
+      max-width: 500px;
+    }
+    .pos-bottom-left {
+      bottom: 80px;
+      left: 170px;
+      text-align: left;
+      max-width: 500px;
+    }
+    .pos-top-right {
+      top: 160px;
+      right: 170px;
+      text-align: left;
+      max-width: 500px;
+    }
+    .pos-bottom-right {
+      bottom: 80px;
+      right: 170px;
+      text-align: left;
+      max-width: 500px;
+    }
+    .pos-bottom-center {
+      bottom: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      max-width: 760px;
+      padding: 12px 24px;
+    }
+    .pos-bottom-center .stakeholder-role {
+      font-size: 20px;
+      margin-bottom: 4px;
+    }
+    .pos-bottom-center .stakeholder-desc {
+      font-size: 15px;
+    }
+
+    /* Slide Footer */
+    .slide-footer-subtle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 6px;
+      font-size: 13px;
+      color: #334155;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+  </style>
+</head>
+<body data-page="5">
+  <div class="slide-viewport">
+    <main class="slide-canvas" id="slide-5">
+
+      <!-- Slide Header matching pg5-ref2.png -->
+      <header class="slide-header">
+        <div class="header-team-badge">
+          <span class="team-badge-text">APOCALYPSE // Team P84</span>
+        </div>
+        <h1 class="header-pill-title">Impacts and Benefits</h1>
+        <div class="header-right">
+          <img src="assets/logos/sih-logo.png" onerror="this.src='../assets/logos/sih-logo.png'" alt="SIH 2026" class="nav-logo-sih" style="height: 52px;">
+        </div>
+      </header>
+
+      <!-- Top 4 KPI Metrics Bar matching pg5-ref2.png -->
+      <section class="kpi-metrics-bar">
+        <div class="kpi-col">
+          <span class="kpi-number">5,000+</span>
+          <span class="kpi-title">Monitored Works Across 589 Districts</span>
+          <p class="kpi-sub">Validated against authentic Indian administrative geography from MoSPI e-SAKSHI.</p>
+        </div>
+        <div class="kpi-col">
+          <span class="kpi-number">₹1.84 Cr</span>
+          <span class="kpi-title">Capital Safeguarded Pre-Disbursal</span>
+          <p class="kpi-sub">Demonstrated in Satna pre-sanction audit pilot prior to treasury cash release.</p>
+        </div>
+        <div class="kpi-col">
+          <span class="kpi-number">&lt;200ms</span>
+          <span class="kpi-title">Instantaneous Triage Latency</span>
+          <p class="kpi-sub">Sub-second inference enables live interactive triage during DM sanction meetings.</p>
+        </div>
+        <div class="kpi-col">
+          <span class="kpi-number">100%</span>
+          <span class="kpi-title">Statutory Audit Traceability</span>
+          <p class="kpi-sub">Strict GFR 155 &amp; Rule 14.2 compliance powered by explainable Tree SHAP attributions.</p>
+        </div>
+      </section>
+
+      <!-- Main Visual Stage with Center Gold Medallion and 5 Radiating Stakeholders -->
+      <div class="impact-stage">
+
+        <!-- Center Gold Medallion Graphic with Radiating Connectors -->
+        <img src="assets/images/clean-medallion-with-connectors.png" alt="Potential Impact on Targeted Users" class="center-medallion-img">
+
+        <!-- 1. Top-Left: District Magistrates -->
+        <div class="stakeholder-card pos-top-left">
+          <div class="stakeholder-role">District Magistrates (DMs):</div>
+          <p class="stakeholder-desc">
+            Immediate pre-sanction triage prevents inadvertent approval of corrupt, duplicate, or split tenders before treasury cash is released.
+          </p>
+        </div>
+
+        <!-- 2. Bottom-Left: State Nodal Departments -->
+        <div class="stakeholder-card pos-bottom-left">
+          <div class="stakeholder-role">State Nodal Departments:</div>
+          <p class="stakeholder-desc">
+            Automated inter-district risk comparison, statutory quota compliance (SC 15% / ST 7.5%), and execution bottleneck alerts.
+          </p>
+        </div>
+
+        <!-- 3. Top-Right: MoSPI Central Ministry -->
+        <div class="stakeholder-card pos-top-right">
+          <div class="stakeholder-role">Ministry of Statistics &amp; PI (MoSPI):</div>
+          <p class="stakeholder-desc">
+            Real-time macro-surveillance across all 543 Lok Sabha &amp; Rajya Sabha constituencies via national choropleth dashboards.
+          </p>
+        </div>
+
+        <!-- 4. Bottom-Right: Local Contractors & MSMEs -->
+        <div class="stakeholder-card pos-bottom-right">
+          <div class="stakeholder-role">Local Contractors &amp; MSMEs:</div>
+          <p class="stakeholder-desc">
+            Eradicates single-vendor cartels and monopoly collusion rings, fostering fair, open, and competitive procurement opportunities.
+          </p>
+        </div>
+
+        <!-- 5. Bottom-Center: Citizens -->
+        <div class="stakeholder-card pos-bottom-center">
+          <div class="stakeholder-role">Citizens &amp; Parliamentary Constituencies:</div>
+          <p class="stakeholder-desc">
+            Eliminates ghost infrastructure and project stalls, ensuring vital community assets (drinking water, roads, schools) actually materialize.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Slide Footer -->
+      <footer class="slide-footer-subtle">
+        <span>SETU: Smart Evidence-based Triangulation for Uncovering Anomalies in MPLADS</span>
+        <span>Slide 5 | SIH 2026 Presentation</span>
+      </footer>
+
+    </main>
+  </div>
+
+  <script src="js/navigation.js"></script>
+</body>
+</html>

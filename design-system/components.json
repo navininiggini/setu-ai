@@ -1,0 +1,22 @@
+{
+  "header": {
+    "team_badge": "Top-left rounded oval badge (White fill, Navy border) containing Team Name & Team ID",
+    "title": "Centered uppercase statutory slide title (PROPOSED SOLUTION, TECHNICAL APPROACH, etc.)",
+    "sih_logo": "Top-right official SIH 2026 / AICTE / MoE logo strip"
+  },
+  "footer": {
+    "bar": "Full-width dark navy banner (#0F2B5C)",
+    "label": "@SIH Idea submission- Template",
+    "page_number": "Slide X of 6 (Right aligned)"
+  },
+  "content_cards": {
+    "style": "Clean white/light slate cards (#F8FAFC) with thin borders (#CBD5E1) and subtle shadow",
+    "header_strip": "Top navy or orange accent border (3px)"
+  },
+  "flowchart_boxes": {
+    "style": "Structured rectangular pipeline blocks with directional arrows for implementation flowcharts"
+  },
+  "table": {
+    "style": "Clean structured tabular grids for Quantifiable Benefits and Feasibility Matrices"
+  }
+}

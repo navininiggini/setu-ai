@@ -1,0 +1,6 @@
+{
+  "pattern_id": "PATTERN-006",
+  "slide_title": "RESEARCH AND REFERENCES",
+  "sih_mandate": "Three mandatory sections: 1. Statutory Guidelines & Policy Foundation, 2. Machine Learning & Algorithmic References, 3. Working Prototype Codebase",
+  "layout": "Split layout: Left Statutory Directives (MoSPI Rule 14.2, CVC, GFR 155); Right Academic citations (SHAP, Graph AI) + GitHub Repository card"
+}

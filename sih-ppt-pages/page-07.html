@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reference and Inspiration | Slide 7</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background-color: #0b1120;
+      font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .slide-viewport {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .slide-canvas {
+      width: 1920px;
+      height: 1080px;
+      background: #FFFFFF;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 24px 48px 30px 48px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+    }
+    .slide-canvas::before {
+      display: none !important;
+    }
+    .slide-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      height: 70px;
+      margin-bottom: 16px;
+    }
+    .header-team-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #0f274a;
+      border-radius: 50px;
+      padding: 6px 20px;
+      background: #FFFFFF;
+      box-shadow: 0 2px 8px rgba(15, 35, 65, 0.08);
+    }
+    .team-badge-text {
+      font-size: 15px;
+      font-weight: 800;
+      color: #0f274a;
+      letter-spacing: 0.03em;
+    }
+    .title-pill {
+      background: #0f274a;
+      color: #FFFFFF;
+      font-size: 30px;
+      font-weight: 900;
+      padding: 6px 44px;
+      border-radius: 30px;
+      box-shadow: 0 4px 16px rgba(18, 43, 84, 0.15);
+    }
+    .title-pill strong {
+      color: #FFFFFF !important;
+    }
+    .slide7-card {
+      flex: 1;
+      background: #F8FAFC;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 22px;
+      padding: 36px 48px;
+      box-shadow: 0 4px 20px rgba(12, 28, 56, 0.08);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      backdrop-filter: blur(12px);
+      border: 1.5px solid rgba(255, 255, 255, 0.85);
+    }
+    .slide7-item {
+      font-size: 19px;
+      line-height: 1.5;
+      color: #102d5a;
+    }
+    .slide7-item u {
+      text-decoration-color: #2563eb;
+      text-decoration-thickness: 1.5px;
+    }
+    .slide7-item strong {
+      font-weight: 800;
+      color: #081a33;
+    }
+  </style>
+</head>
+<body data-page="7">
+  <div class="slide-viewport">
+    <main class="slide-canvas" id="slide-7">
+      <!-- Top Navigation Header -->
+      <header class="slide-header">
+        <div class="header-team-badge">
+          <span class="team-badge-text">APOCALYPSE // Team P84</span>
+        </div>
+        <div class="title-pill-container">
+          <h1 class="title-pill"><strong>Reference and Inspiration</strong></h1>
+        </div>
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <img src="assets/logos/sih-logo.png" onerror="this.src='../assets/logos/sih-logo.png'" alt="SIH Logo" style="height: 52px; object-fit: contain;">
+        </div>
+      </header>
+
+      <!-- References List Card -->
+      <div class="slide7-card">
+        <p class="slide7-item">
+          <u>[1] Lundberg, S. M., et al., “From Local Explanations to Global Understanding with Explainable AI for Trees,” Nature Machine Intelligence.</u> Nature Machine Intelligence &#8212; <strong>Tree SHAP Reference</strong> for local feature attribution, non-linear fraud scoring, and legally defensible statutory reason traces.
+        </p>
+        <p class="slide7-item">
+          <u>[2] Ministry of Statistics and Programme Implementation (MoSPI), “MPLADS Scheme Implementation Guidelines (2023 &amp; Revisions),” Government of India.</u> MoSPI &#8212; <strong>Statutory Policy Reference</strong> for Rule 14.2 mandatory e-tendering over &#8377;5.00 Lakhs, prohibition of artificial work-splitting, and District Authority pre-sanction diligence.
+        </p>
+        <p class="slide7-item">
+          <u>[3] Akoglu, L., Chandy, R., &amp; Faloutsos, C., “Graph-based Anomaly Detection and Fraud Detection: Problems, Algorithms, and Resources,” ACM KDD.</u> ACM KDD &#8212; <strong>Graph Analytics Reference</strong> for bipartite entity network modeling, repeat agency-contractor collusion rings, and PageRank centrality scoring.
+        </p>
+        <p class="slide7-item">
+          <u>[4] Central Vigilance Commission (CVC), “Directives on Public Procurement, Integrity Pacts, and Tender Vigilance,” Government of India.</u> CVC &#8212; <strong>Public Procurement Integrity Reference</strong> for single-bid tender anomaly patterns, anti-cartel vigilance, and transparent rate benchmarking.
+        </p>
+        <p class="slide7-item">
+          <u>[5] Nigrini, M. J., “Benford's Law: Applications for Forensic Accounting, Auditing, and Fraud Detection,” John Wiley &amp; Sons.</u> Wiley &#8212; <strong>Forensic Accounting Reference</strong> for first-digit frequency distribution analysis to detect manipulated contractor bills and milestone invoices.
+        </p>
+        <p class="slide7-item">
+          <u>[6] SETU Prototype Codebase, “SETU: Real-Time Anomaly Detection &amp; Risk Fusion Engine for MPLADS,” GitHub Repository.</u> Open Source Working Prototype Reference: <u>https://github.com/Barath-j593/sih-2026</u> for full-stack implementation, 8-model architecture, and 91 passing test suites.
+        </p>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/navigation.js"></script>
+  <script src="../js/navigation.js"></script>
+</body>
+</html>

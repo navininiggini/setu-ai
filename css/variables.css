@@ -1,0 +1,33 @@
+:root {
+  --canvas-width: 1920px;
+  --canvas-height: 1080px;
+
+  /* Color Palette matching Reference PPT */
+  --bg-sky-top: #8ca2bf;
+  --bg-sky-mid: #9eb3ca;
+  --bg-sky-bottom: #829ab7;
+  --bg-canvas: linear-gradient(135deg, #8ba1bd 0%, #a2b6cc 50%, #7e97b4 100%);
+
+  --navy-dark: #0d2244;
+  --navy-primary: #122b54;
+  --navy-text: #0c1a30;
+  --navy-pill: #4a73a6;
+  --navy-pill-dark: #3a6192;
+
+  --accent-gold: #f5b842;
+  --accent-orange: #e67e22;
+  --accent-cyan: #0284c7;
+  --accent-red: #e11d48;
+  --accent-green: #16a34a;
+  --accent-purple: #9333ea;
+
+  /* Glassmorphism Styles */
+  --glass-bg: rgba(244, 248, 253, 0.88);
+  --glass-bg-subtle: rgba(240, 246, 252, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.75);
+  --glass-shadow: 0 16px 45px rgba(12, 28, 56, 0.14);
+  --glass-radius: 24px;
+
+  /* Typography */
+  --font-main: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
